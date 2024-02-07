@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint =='phone' {
+    @media (max-width: 600px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint =='tablet' {
+    @media (max-width: 900px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint =='desktop' {
+    @media (min-width: 901px) {
+      @content;
+    }
+  }
+}
