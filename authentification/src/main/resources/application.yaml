@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: service-auth
+  cloud:
+    consul:
+      discovery:
+        hostname: ${CONSUL_HOST:localhost}
+        port: ${CONSUL_PORT:8500}
+  datasource:
+    url: jdbc:mysql://localhost:3306/your_database
+    username: your_user
+    password: your_user_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+jwt:
+  private.key: classpath:app.key
+  public.key: classpath:app.pub
+server:
+  port: 8080
+
