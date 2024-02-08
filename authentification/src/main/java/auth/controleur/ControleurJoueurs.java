@@ -2,9 +2,9 @@ package auth.controleur;
 
 import auth.dto.LoginDto;
 import auth.dto.UserDto;
-import auth.facade.UserService;
-import auth.facade.erreurs.BadLoginException;
-import auth.facade.erreurs.ExistingUserException;
+import auth.service.UserService;
+import auth.service.exceptions.BadLoginException;
+import auth.service.exceptions.ExistingUserException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

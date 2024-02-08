@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserDto {
     @Email
+    @NotEmpty
     private String email;
 
     @Size(min=4,max=128)

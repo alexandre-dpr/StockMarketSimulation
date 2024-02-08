@@ -1,9 +1,9 @@
-package auth.facade;
+package auth.service;
 
-import auth.facade.erreurs.BadLoginException;
-import auth.facade.erreurs.ExistingUserException;
 import auth.modele.User;
 import auth.repository.UserRepository;
+import auth.service.exceptions.BadLoginException;
+import auth.service.exceptions.ExistingUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class UserService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    Function<User,String> generateToken;
+    Function<User, String> generateToken;
 
     @Autowired
     UserRepository userRepository;

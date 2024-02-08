@@ -1,2 +1,2 @@
-openssl genrsa -out app.prv 1024
-openssl rsa -in app.prv -out app.pub -pubout -outform PEM
+openssl genrsa -out app.key 2048
+openssl rsa -in app.key -out app.pub -pubout -outform PEM
