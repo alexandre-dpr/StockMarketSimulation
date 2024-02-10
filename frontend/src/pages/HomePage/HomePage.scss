@@ -32,54 +32,6 @@
 }
 
 
-.logoApp {
-    font-family: Gabarito-Bold;
-    display: flex;
-    margin-top: 2%;
-    margin-left: 1%;
-
-    @include respond-to('phone') {
-        font-size: 15px;
-    }
-
-    @include respond-to('tablet') {
-        font-size: 20px;
-    }
-
-    @include respond-to('desktop') {
-        font-size: 30px;
-    }
-
-    @include respond-to('large-desktop') {
-        font-size: 40px;
-    }
-
-
-    .logo {
-        margin-left: 0.5%;
-        font-family: simpletype;
-        line-height: 0.5;
-
-        @include respond-to('phone') {
-            font-size: 15px;
-        }
-
-        @include respond-to('tablet') {
-            font-size: 20px;
-        }
-
-        @include respond-to('desktop') {
-            font-size: 45px;
-        }
-
-        @include respond-to('large-desktop') {
-            font-size: 40px;
-        }
-    }
-
-
-}
-
 
 .homePageFooter {
     position: absolute;
@@ -138,7 +90,7 @@
             font-size: 35px;
         }
 
-        font-family: Gabarito-SemiBold;
+        font-family: Gabarito;
         line-height: 0.9;
         margin-bottom: 3%;
     }

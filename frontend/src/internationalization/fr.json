@@ -8,5 +8,9 @@
     },
     "contact": {
         "contactUs": "Contactez-nous"
+    },
+    "header": {
+        "login": "Connecte toi!",
+        "register": "Inscris-toi!"
     }
 }

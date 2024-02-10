@@ -1,0 +1,7 @@
+{
+    "authType": "/auth/:type",
+    "auth": "/auth/",
+    "login": "login",
+    "register": "register",
+    "home": "/"
+}
