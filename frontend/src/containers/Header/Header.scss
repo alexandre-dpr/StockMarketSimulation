@@ -2,7 +2,7 @@
 
 .header {
     width: 100%;
-    margin-top: 2%;
+    margin-top: 1%;
     display: flex;
     align-items: center;
 }
@@ -15,6 +15,15 @@
     display: flex;
     justify-content: right;
     padding-right: 2%;
+}
+
+.containerNavBar {
+    display: flex;
+    justify-content: space-around;
+    font-family: Gabarito;
+    padding-left: 3%;
+    padding-right: 3%;
+
 }
 
 .logoApp {
@@ -61,6 +70,4 @@
             font-size: 40px;
         }
     }
-
-
 }

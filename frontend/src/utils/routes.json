@@ -2,5 +2,8 @@
     "auth": "/auth",
     "login": "login",
     "register": "register",
-    "home": "/"
+    "home": "/",
+    "about": "/about",
+    "market": "/market",
+    "leaderboard": "/leaderboard"
 }

@@ -11,6 +11,9 @@
     },
     "header": {
         "login": "Connecte toi!",
-        "register": "Inscris-toi!"
+        "register": "Inscris-toi!",
+        "about": "À propos",
+        "leaderboard": "Classement",
+        "market": "Marché"
     }
 }

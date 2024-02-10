@@ -30,6 +30,27 @@ function Header() {
 
 
             <div className='containerNavBar flex-item'>
+                <NavTo
+                    path={routes.market}
+                >
+                    <div>
+                        {t('header.market')}
+                    </div>
+                </NavTo>
+                <NavTo
+                    path={routes.leaderboard}>
+                    <div>
+
+                        {t('header.leaderboard')}
+                    </div>
+                </NavTo>
+                <NavTo
+                    path={routes.about}>
+                    <div>
+                        {t('header.about')}
+
+                    </div>
+                </NavTo>
 
             </div>
 
