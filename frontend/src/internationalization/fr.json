@@ -1,8 +1,19 @@
 {
     "home": {
-        "welcomeMessage": "Bienvenue sur notre site !"
+        "bourse": "BOURSE",
+        "play": "PLAY",
+        "welcomeMessage": "Bienvenue sur notre site !",
+        "slogan": "Votre première expérience en bourse, sans risque.",
+        "trigger": "Tradez gratuitement, apprenez en jouant. Relevez le défi, dominez le leaderboard. Votre aventure boursière commence maintenant."
     },
     "contact": {
         "contactUs": "Contactez-nous"
+    },
+    "header": {
+        "login": "Connecte toi!",
+        "register": "Inscris-toi!",
+        "about": "À propos",
+        "leaderboard": "Classement",
+        "market": "Marché"
     }
 }

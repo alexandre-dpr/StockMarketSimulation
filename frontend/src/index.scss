@@ -12,6 +12,37 @@ code {
     monospace;
 }
 
+//FONTS
+
+@font-face {
+  font-family: Unbounded;
+  src: url('assets/fonts/Unbounded/static/Unbounded-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Gabarito-Bold;
+  src: url('assets/fonts/Gabarito/static/Gabarito-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: Gabarito-SemiBold;
+  src: url('assets/fonts/Gabarito/static/Gabarito-SemiBold.ttf') format('truetype');
+}
+
+
+@font-face {
+  font-family: Gabarito;
+  src: url('assets/fonts/Gabarito/static/Gabarito-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: simpletype;
+  src: url('assets/fonts/simpletype/Simpletype.ttf') format('truetype');
+}
+
+
+//
+
 @mixin respond-to($breakpoint) {
   @if $breakpoint =='phone' {
     @media (max-width: 600px) {
@@ -20,13 +51,20 @@ code {
   }
 
   @else if $breakpoint =='tablet' {
-    @media (max-width: 900px) {
+    @media (min-width: 601px) and (max-width: 1399px) {
       @content;
     }
   }
 
+
   @else if $breakpoint =='desktop' {
-    @media (min-width: 901px) {
+    @media (min-width: 1400px) and (max-width: 1920px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint =='large-desktop' {
+    @media (min-width: 1921px) {
       @content;
     }
   }

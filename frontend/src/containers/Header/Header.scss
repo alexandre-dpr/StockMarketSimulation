@@ -1,0 +1,73 @@
+@import '../../index.scss';
+
+.header {
+    width: 100%;
+    margin-top: 1%;
+    display: flex;
+    align-items: center;
+}
+
+.flex-item {
+    flex: 1;
+}
+
+.buttonsLogin {
+    display: flex;
+    justify-content: right;
+    padding-right: 2%;
+}
+
+.containerNavBar {
+    display: flex;
+    justify-content: space-around;
+    font-family: Gabarito;
+    padding-left: 3%;
+    padding-right: 3%;
+
+}
+
+.logoApp {
+    font-family: Gabarito-Bold;
+    display: flex;
+    margin-left: 1%;
+    cursor: pointer;
+
+    @include respond-to('phone') {
+        font-size: 15px;
+    }
+
+    @include respond-to('tablet') {
+        font-size: 20px;
+    }
+
+    @include respond-to('desktop') {
+        font-size: 30px;
+    }
+
+    @include respond-to('large-desktop') {
+        font-size: 40px;
+    }
+
+
+    .logo {
+        margin-left: 0.5%;
+        font-family: simpletype;
+        line-height: 0.5;
+
+        @include respond-to('phone') {
+            font-size: 15px;
+        }
+
+        @include respond-to('tablet') {
+            font-size: 20px;
+        }
+
+        @include respond-to('desktop') {
+            font-size: 45px;
+        }
+
+        @include respond-to('large-desktop') {
+            font-size: 40px;
+        }
+    }
+}

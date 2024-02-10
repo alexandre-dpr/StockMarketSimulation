@@ -1,0 +1,9 @@
+{
+    "auth": "/auth",
+    "login": "login",
+    "register": "register",
+    "home": "/",
+    "about": "/about",
+    "market": "/market",
+    "leaderboard": "/leaderboard"
+}
