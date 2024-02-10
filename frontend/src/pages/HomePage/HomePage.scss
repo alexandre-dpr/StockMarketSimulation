@@ -1,0 +1,145 @@
+@import '../../index.scss';
+
+.tablette {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 5%;
+    transform: scaleX(-1);
+
+
+    img {
+
+
+        @include respond-to('phone') {
+            width: 45vw;
+        }
+
+        @include respond-to('tablet') {
+            width: 52vw;
+        }
+
+        @include respond-to('desktop') {
+            width: 55vw;
+        }
+
+        @include respond-to('large-desktop') {
+            width: 60vw;
+        }
+
+
+    }
+}
+
+
+.logoApp {
+    font-family: Gabarito-Bold;
+    display: flex;
+    margin-top: 2%;
+    margin-left: 1%;
+
+    @include respond-to('phone') {
+        font-size: 15px;
+    }
+
+    @include respond-to('tablet') {
+        font-size: 20px;
+    }
+
+    @include respond-to('desktop') {
+        font-size: 30px;
+    }
+
+    @include respond-to('large-desktop') {
+        font-size: 40px;
+    }
+
+
+    .logo {
+        margin-left: 0.5%;
+        font-family: simpletype;
+        line-height: 0.5;
+
+        @include respond-to('phone') {
+            font-size: 15px;
+        }
+
+        @include respond-to('tablet') {
+            font-size: 20px;
+        }
+
+        @include respond-to('desktop') {
+            font-size: 45px;
+        }
+
+        @include respond-to('large-desktop') {
+            font-size: 40px;
+        }
+    }
+
+
+}
+
+
+.homePageFooter {
+    position: absolute;
+    bottom: 0;
+    word-wrap: break-word;
+    width: 50%;
+    margin-left: 1%;
+
+    @include respond-to('phone') {
+        width: 80%;
+    }
+
+    .slogan {
+        font-family: Gabarito-Bold;
+        line-height: 0.9;
+        margin-bottom: 5%;
+
+        @include respond-to('phone') {
+            font-size: 40px;
+        }
+
+
+        @include respond-to('tablet') {
+            font-size: 50px;
+        }
+
+        @include respond-to('desktop') {
+
+            font-size: 70px;
+
+        }
+
+        @include respond-to('large-desktop') {
+            font-size: 105px;
+
+        }
+
+
+    }
+
+    .phraseAccroche {
+        @include respond-to('phone') {
+            font-size: 17px;
+        }
+
+        @include respond-to('tablet') {
+            font-size: 20px;
+        }
+
+        @include respond-to('desktop') {
+            font-size: 25px;
+
+        }
+
+        @include respond-to('large-desktop') {
+            font-size: 35px;
+        }
+
+        font-family: Gabarito-SemiBold;
+        line-height: 0.9;
+        margin-bottom: 3%;
+    }
+}

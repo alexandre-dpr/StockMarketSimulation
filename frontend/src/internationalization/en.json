@@ -1,6 +1,10 @@
 {
     "home": {
-        "welcomeMessage": "Welcome to our site!"
+        "bourse": "BOURSE",
+        "play": "PLAY",
+        "welcomeMessage": "Welcome to our site!",
+        "slogan": "Your first experience on the stock market, without risk.",
+        "trigger": "Trade for free, learn by playing. Take on the challenge, dominate the leaderboard. Your stock market adventure begins now."
     },
     "contact": {
         "contactUs": "Contact Us"
