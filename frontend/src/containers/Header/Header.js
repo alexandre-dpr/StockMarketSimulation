@@ -27,12 +27,7 @@ function Header() {
 
             </NavTo>
 
-            <Link className='custom-link logoApp flex-item'
-                to="/" >
 
-
-
-            </Link >
 
             <div className='containerNavBar flex-item'>
 
