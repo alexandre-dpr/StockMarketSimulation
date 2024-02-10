@@ -13,7 +13,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path={routes.authType} element={<AuthPage />} />
+          <Route path={routes.auth} element={<AuthPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

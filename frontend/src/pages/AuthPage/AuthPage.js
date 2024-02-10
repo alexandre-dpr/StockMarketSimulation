@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import './AuthPage.scss'
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 
 
 function AuthPage() {
     const { t } = useTranslation();
-    const { type } = useParams();
     const [authType, setAuthType] = useState()
-
+    const location = useLocation();
 
     useEffect(() => {
-        setAuthType(type)
-    }, [type]);
+        setAuthType(location.state)
+    }, [location.state]);
 
     return (
         <div>
