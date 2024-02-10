@@ -1,6 +1,6 @@
 spring:
   application:
-    name: service-auth
+    name: service-community
   cloud:
     consul:
       discovery:
@@ -19,4 +19,4 @@ jwt:
   private.key: classpath:app.key
   public.key: classpath:app.pub
 server:
-  port: 8080
+  port: 8081

@@ -40,7 +40,6 @@ public class UserService {
 
     public String login(String login, String password) throws BadLoginException {
         Optional<User> user = userRepository.findByEmailOrUsername(login, login);
-
         if (user.isEmpty()) {
             throw new BadLoginException("No user found.");
         }

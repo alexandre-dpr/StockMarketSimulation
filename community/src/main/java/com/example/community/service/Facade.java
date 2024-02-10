@@ -1,17 +1,23 @@
 package com.example.community.service;
 
+import com.example.community.dto.request.AddCommentDTO;
+import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.CommentaireInexistantException;
 import com.example.community.model.Commentaire;
+import jakarta.transaction.Transactional;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Facade {
 
-    ArrayList<Commentaire> getAllCommentaire();
+    List<CommentaireDTO> getAllCommentaire(String action) throws CommentaireInexistantException;
 
-    Commentaire addComentaire(Integer userId, String content);
+    @Transactional
+    CommentaireDTO addComentaire(AddCommentDTO commentaireDTO);
 
-    Commentaire addInteraction(Integer userId, Integer idCommentaire) throws CommentaireInexistantException;
+    @Transactional
+    CommentaireDTO addInteraction(String userId, Integer idCommentaire) throws CommentaireInexistantException;
 
+    @Transactional
     void deleteCommentaire(Integer idCommentaire) throws CommentaireInexistantException;
 }

@@ -1,23 +1,25 @@
 package com.example.community.service;
 
+import com.example.community.dto.request.AddCommentDTO;
+import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.CommentaireInexistantException;
 import com.example.community.model.Commentaire;
-import com.example.community.model.Interaction;
-import jakarta.persistence.EntityManager;
-import org.springframework.stereotype.Service;
+import com.example.community.repository.CommentaireRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-@Service
+import java.util.List;
+import java.util.Optional;
+
+@Component("CommunityService")
 public class FacadeImpl implements Facade{
 
     private static FacadeImpl facade;
-    private ArrayList<Commentaire> commentaires;
 
-    private EntityManager e;
-
-    private FacadeImpl() {
-        this.commentaires = new ArrayList<>();
-    }
+    @Autowired
+    CommentaireRepository commentaireRepository;
 
     /**
      * @return singeleton facade
@@ -29,35 +31,46 @@ public class FacadeImpl implements Facade{
         return facade;
     }
     @Override
-    public ArrayList<Commentaire> getAllCommentaire() {
-        return commentaires;
+    public List<CommentaireDTO> getAllCommentaire(String action) throws CommentaireInexistantException {
+        Optional <List<Commentaire>> commentaires = commentaireRepository.findAllByAction(action);
+        if(commentaires.isEmpty()) {
+            throw new CommentaireInexistantException("Comment not found ");
+        }
+        List<CommentaireDTO> commentaireDTOS = new ArrayList<>();
+        commentaires.get().forEach(e -> {
+            commentaireDTOS.add(e.toDTO());
+        });
+        return commentaireDTOS;
     }
 
     @Override
-    public Commentaire addComentaire(Integer userId, String content) {
-        Commentaire commentaire = new Commentaire(userId, content);
-        commentaires.add(commentaire);
-        return commentaire;
+    @Transactional
+    public CommentaireDTO addComentaire(AddCommentDTO commentaireDTO) {
+        Commentaire commentaire = new Commentaire(commentaireDTO.userId(), commentaireDTO.content(), commentaireDTO.action());
+        commentaireRepository.save(commentaire);
+        return commentaire.toDTO();
     }
 
     @Override
-    public Commentaire addInteraction(Integer userId, Integer idCommentaire) throws CommentaireInexistantException {
-        Commentaire commentaire = this.getCommentaireById(idCommentaire);
-        commentaire.getInteractions().put(userId, Interaction.LIKE);
-        return commentaire;
+    @Transactional
+    public CommentaireDTO addInteraction(String userId, Integer idCommentaire) throws CommentaireInexistantException {
+        Optional<Commentaire> commentaire = commentaireRepository.findById(idCommentaire);
+        if(commentaire.isEmpty()) {
+            throw new CommentaireInexistantException("Comment not found ");
+        }
+        commentaire.get().addInteraction(userId);
+        commentaireRepository.save(commentaire.get());
+        return commentaire.get().toDTO();
     }
 
+    @Transactional
     @Override
     public void deleteCommentaire(Integer idCommentaire) throws CommentaireInexistantException {
-        commentaires.remove(this.getCommentaireById(idCommentaire));
+        Optional<Commentaire> commentaire = commentaireRepository.findById(idCommentaire);
+        if(commentaire.isEmpty()) {
+            throw new CommentaireInexistantException("Comment not found ");
+        }
+        commentaireRepository.delete(commentaire.get());
     }
 
-    private Commentaire getCommentaireById(Integer idCommentaire) throws CommentaireInexistantException{
-        for (Commentaire c : commentaires){
-            if (idCommentaire.equals(c.getId())){
-                return c;
-            }
-        }
-        throw new CommentaireInexistantException("Comment not found");
-    }
 }
