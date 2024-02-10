@@ -3,7 +3,7 @@ import './Header.scss'
 import { useTranslation } from 'react-i18next';
 import Button from '../../components/Buttons/Button/Button';
 import routes from '../../utils/routes.json'
-import { Link } from 'react-router-dom';
+import NavTo from '../../components/NavTo/NavTo';
 
 function Header() {
     const { t } = useTranslation();
@@ -11,43 +11,47 @@ function Header() {
 
     return (
         <div className='header'>
-            <Link className='custom-link'
-                to="/" >
-                <div className='logoApp flex-item'>
+            <NavTo
+                to={routes.home}
+                className='logoApp flex-item'>
 
-                    <div className='logoBourse'>
-                        {t('home.bourse')}
-                    </div>
-                    <div className='logoPlay'>
-                        {t('home.play')}
-                    </div>
-                    <div className='logo'>
-                        B
-                    </div>
+                <div className='logoBourse'>
+                    {t('home.bourse')}
                 </div>
-            </Link >
+                <div className='logoPlay'>
+                    {t('home.play')}
+                </div>
+                <div className='logo'>
+                    B
+                </div>
 
+            </NavTo>
+
+            <Link className='custom-link logoApp flex-item'
+                to="/" >
+
+
+
+            </Link >
 
             <div className='containerNavBar flex-item'>
 
             </div>
 
             <div className='buttonsLogin flex-item'>
-
-                <Link className='custom-link'
-                    to="/auth"
+                <NavTo className='custom-link'
+                    path={routes.auth}
                     state={routes.login}
                 >
                     <Button children={t('header.login')} styles={"button black"} />
-                </Link>
-                <Link
+                </NavTo>
+                <NavTo
                     className='custom-link'
-                    to="/auth"
+                    path={routes.auth}
                     state={routes.register}
                 >
                     <Button children={t('header.register')} styles={"button"} />
-                </Link>
-
+                </NavTo>
             </div>
         </div >
     )
