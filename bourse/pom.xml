@@ -12,8 +12,8 @@
 
     <groupId>projet-microservices</groupId>
 
-    <artifactId>authentification</artifactId>
-    <name>authentification</name>
+    <artifactId>bourse</artifactId>
+    <name>bourse</name>
     <version>1.0.0</version>
 
     <properties>
