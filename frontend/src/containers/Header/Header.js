@@ -12,7 +12,7 @@ function Header() {
     return (
         <div className='header'>
             <NavTo
-                to={routes.home}
+                path={routes.home}
                 className='logoApp flex-item'>
 
                 <div className='logoBourse'>
