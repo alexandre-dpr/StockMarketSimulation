@@ -4,6 +4,7 @@ import auth.modele.User;
 import auth.repository.UserRepository;
 import auth.service.exceptions.BadLoginException;
 import auth.service.exceptions.ExistingUserException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Transactional
     public String register(String email, String username, String password) throws ExistingUserException {
         Optional<User> user = userRepository.findByEmailOrUsername(email, username);
 
