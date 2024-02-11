@@ -7,13 +7,13 @@ import auth.service.exceptions.ExistingUserException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.function.Function;
 
 
-@Component("UserService")
+@Service("UserService")
 public class UserService {
 
     @Autowired
