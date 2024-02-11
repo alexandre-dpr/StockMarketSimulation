@@ -1,21 +1,3 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.image-container {
-  flex: 1;
-}
-
-.form-container {
-  flex: 1;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
 .input-container {
   position: relative;
   margin: 20px;
@@ -42,5 +24,3 @@ label {
   transition: top 0.3s, font-size 0.3s, color 0.3s;
   pointer-events: none;
 }
-
-/* Pour un meilleur style, vous pouvez ajouter des styles spécifiques à votre formulaire et à votre image */
