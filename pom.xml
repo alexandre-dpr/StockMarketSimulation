@@ -13,5 +13,6 @@
         <module>authentification</module>
         <module>frontend</module>
         <module>community</module>
+        <module>gateway</module>
     </modules>
 </project>
