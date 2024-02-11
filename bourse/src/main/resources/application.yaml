@@ -25,6 +25,6 @@ server:
 stocks:
   fetch:
     interval: 1 # en minutes
-logging:
-  level:
-    bourse: DEBUG
+api:
+  token:
+    tiingo: <TOKEN_API_TIINGO> # https://www.tiingo.com/ --> Compte gratuit

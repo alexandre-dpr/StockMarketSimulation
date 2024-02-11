@@ -39,11 +39,14 @@ public class StockService {
     @Value("${stocks.fetch.interval}")
     private Integer STOCKS_FETCH_INTERVAL;
 
+    @Value("${api.token.tiingo}")
+    private String TIINGO_API_TOKEN;
+
     /**
      * Récupère l'historique de prix d'une action pour un interval donné. Si l'action n'a jamais été récupérée, récupère aussi les informations dessus.
      *
      * @param ticker Ticker de l'action à récupérer
-     * @param range  1d, 1Y
+     * @param range  1d, 1y
      * @return StockDto
      */
     public StockDto getStock(String ticker, Range range) throws IOException {
@@ -160,7 +163,7 @@ public class StockService {
      * Appelle l'API Tiingo pour récupérer les informations sur l'action
      */
     private Optional<JsonNode> getStockDescription(String ticker) throws IOException {
-        String TIINGO_API = String.format("https://api.tiingo.com/tiingo/daily/%s?token=ca38a7dad1cc4789a499ace957e72cea82a7b234", ticker);
+        String TIINGO_API = String.format("https://api.tiingo.com/tiingo/daily/%s?token=%s", ticker, TIINGO_API_TOKEN);
 
         HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(TIINGO_API);
