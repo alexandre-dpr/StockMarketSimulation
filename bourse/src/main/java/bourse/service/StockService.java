@@ -1,7 +1,9 @@
 package bourse.service;
 
 import bourse.dto.StockDto;
+import bourse.dto.StockListDto;
 import bourse.enums.Range;
+import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Stock;
 import bourse.modele.Ticker;
 import bourse.repository.StockRepository;
@@ -22,6 +24,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,7 +53,7 @@ public class StockService {
      * @param range  1d, 1y
      * @return StockDto
      */
-    public StockDto getStock(String ticker, Range range) throws IOException {
+    public StockDto getStock(String ticker, Range range) throws IOException, UnauthorizedException {
         // On vérifie si on n'a pas déjà fetch les infos très récemment
         Optional<Stock> optStock = getSavedStock(ticker);
         Stock stock = null;
@@ -75,8 +79,8 @@ public class StockService {
         String YAHOO_API = "https://query1.finance.yahoo.com/v8/finance/chart/%s?region=US&lang=en-US&includePrePost=false&interval=%s&useYfid=true&range=%s&corsDomain=finance.yahoo.com&.tsrc=finance";
 
         switch (range) {
-            case ONE_DAY -> YAHOO_API = String.format(YAHOO_API, ticker, "2m", range);
-            case ONE_YEAR -> YAHOO_API = String.format(YAHOO_API, ticker, "1d", range);
+            case ONE_DAY -> YAHOO_API = String.format(YAHOO_API, ticker, "2m", range.label);
+            case ONE_YEAR -> YAHOO_API = String.format(YAHOO_API, ticker, "1d", range.label);
             default -> throw new IllegalArgumentException("Invalid range");
         }
 
@@ -137,13 +141,13 @@ public class StockService {
 
                 switch (range) {
                     case ONE_DAY -> {
-                        stock.setOneDayHistory(jsonNode.toString());
+                        stock.setOneDayHistory(responseBody);
                         stock.setLastOneDayUpdate(LocalDateTime.now());
                         saveStock(stock);
                         return StockDto.oneDayDto(stock);
                     }
                     case ONE_YEAR -> {
-                        stock.setOneYearHistory(jsonNode.toString());
+                        stock.setOneYearHistory(responseBody);
                         stock.setLastOneYearUpdate(LocalDateTime.now());
                         saveStock(stock);
                         return StockDto.oneYearDto(stock);
@@ -152,7 +156,7 @@ public class StockService {
                 }
 
             } else {
-                throw new IOException(String.format("Failed to get stock price for ticker '%s'", ticker));
+                throw new UnauthorizedException(String.format("Failed to get stock price for ticker '%s'", ticker));
             }
         } catch (IOException e) {
             throw new IOException(String.format("Failed to get stock price for ticker '%s'", ticker));
@@ -162,7 +166,7 @@ public class StockService {
     /**
      * Appelle l'API Tiingo pour récupérer les informations sur l'action
      */
-    private Optional<JsonNode> getStockDescription(String ticker) throws IOException {
+    private Optional<JsonNode> getStockDescription(String ticker) throws IOException, UnauthorizedException {
         String TIINGO_API = String.format("https://api.tiingo.com/tiingo/daily/%s?token=%s", ticker, TIINGO_API_TOKEN);
 
         HttpClient httpClient = HttpClients.createDefault();
@@ -181,12 +185,25 @@ public class StockService {
                 return Optional.empty();
 
             } else {
-                throw new IOException(String.format("Failed to get stock price for ticker '%s'", ticker));
+                throw new UnauthorizedException(String.format("Failed to get stock price for ticker '%s'", ticker));
             }
 
         } catch (IOException e) {
             throw new IOException(String.format("Failed to get stock price for ticker '%s'", ticker));
         }
+    }
+
+    public List<StockListDto> getStocks(String[] tickers, Range range) throws IOException, UnauthorizedException {
+        List<StockListDto> stocks = new ArrayList<>();
+        for (String ticker : tickers) {
+            stocks.add(
+                    new StockListDto(
+                            ticker,
+                            getStock(ticker, range)
+                    )
+            );
+        }
+        return stocks;
     }
 
     private Optional<Stock> getSavedStock(String ticker) {
