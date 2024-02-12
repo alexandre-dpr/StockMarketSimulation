@@ -23,7 +23,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/auth")
 @EnableWebSecurity
-public class ControleurJoueurs {
+public class UserController {
 
     @Autowired
     UserService userService;

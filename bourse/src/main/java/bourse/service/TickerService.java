@@ -26,7 +26,11 @@ public class TickerService {
     }
 
     public Page<Ticker> getStocksList(int page) {
-        Pageable pageable = PageRequest.of(page, 50);
-        return tickerRepository.findAll(pageable);
+        if (page >= 1) {
+            Pageable pageable = PageRequest.of(page - 1, 50);
+            return tickerRepository.findAll(pageable);
+        } else {
+            throw new IllegalArgumentException("Pagination must be superior to 1");
+        }
     }
 }

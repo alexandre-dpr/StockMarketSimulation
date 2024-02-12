@@ -3,5 +3,5 @@
   "name": "BoursePlay",
   "theme_color": "#000000",
   "background_color": "#ffffff",
-  "url_api" : "http://localhost:8080/api/v1"
+  "url_api": "http://localhost:8081"
 }
