@@ -1,0 +1,33 @@
+@import './index.scss';
+
+
+.containerPage {
+    margin-top: 5vw;
+    width: 100vw;
+    padding-left: 20vw;
+}
+
+
+h1 {
+    font-family: Gabarito-Bold;
+
+    @include respond-to('phone') {
+        font-size: 25px;
+    }
+
+
+    @include respond-to('tablet') {
+        font-size: 28px;
+    }
+
+    @include respond-to('desktop') {
+
+        font-size: 30px;
+
+    }
+
+    @include respond-to('large-desktop') {
+        font-size: 33px;
+
+    }
+}

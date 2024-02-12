@@ -31,7 +31,6 @@ function AuthPage() {
     };
 
     useEffect(() => {
-        console.log(location.state)
         setAuthType(location.state)
     }, [location.state]);
 
@@ -45,10 +44,10 @@ function AuthPage() {
                 <form>
                     {
                         authType == route.register ?
-                            <InputLabel label="Nom utilisateur" type="text" id="username" onInputChange={username}/> : null
+                            <InputLabel label="Nom utilisateur" type="text" id="username" onInputChange={username} /> : null
                     }
-                    <InputLabel label="Email/Username" type="text" id="email" onInputChange={login}/>
-                    <InputLabel label="Mot de passe" type="password" id="password" onInputChange={password}/>
+                    <InputLabel label="Email/Username" type="text" id="email" onInputChange={login} />
+                    <InputLabel label="Mot de passe" type="password" id="password" onInputChange={password} />
                     {
                         authType == route.register ?
                             <Button children={t('header.register')} styles={"button black"} />

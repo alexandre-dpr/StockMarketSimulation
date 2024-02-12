@@ -15,5 +15,8 @@
         "about": "À propos",
         "leaderboard": "Classement",
         "market": "Marché"
+    },
+    "market": {
+        "market": "Marché"
     }
 }

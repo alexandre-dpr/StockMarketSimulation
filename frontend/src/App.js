@@ -8,6 +8,7 @@ import routes from './utils/routes.json'
 import Market from './pages/Market/Market';
 import Leaderboard from './pages/Leaderboard/Leaderboard';
 import About from './pages/About/About';
+import Stock from './pages/Action/Stock';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path={routes.market} element={<Market />} />
           <Route path={routes.leaderboard} element={<Leaderboard />} />
           <Route path={routes.about} element={<About />} />
+          <Route path={routes.stock} element={<Stock />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
