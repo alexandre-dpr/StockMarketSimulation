@@ -45,7 +45,9 @@
   width: max-content;
 }
 
-
+.flex-column{
+  flex-direction: column;
+}
 
 @for $i from 1 through 100 {
   .w-#{$i} {

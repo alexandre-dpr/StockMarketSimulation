@@ -1,12 +1,15 @@
 .input-container {
   position: relative;
-  margin: 20px;
+  margin-block: 20px;
+  width: 80%;
 }
 
 input {
-  width: 200px;
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 5px;
 }
 
 input:focus + label,

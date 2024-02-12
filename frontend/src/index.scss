@@ -1,11 +1,19 @@
 @import "utils/utils.scss";
 
-html,
-body,
-#root,
-.App {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.App {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 

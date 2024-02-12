@@ -6,59 +6,52 @@ import InputLabel from "../../components/Input/InputLabel/InputLabel";
 import Button from "../../components/Buttons/Button/Button";
 import tablette from "../../assets/img/tablette.png";
 import route from "../../utils/routes.json";
+import {RequestAuth} from "../../request/RequestAuth";
 
 
 
 
 function AuthPage() {
     const { t } = useTranslation();
+    const request = new RequestAuth();
     const [authType, setAuthType] = useState();
     const location = useLocation();
+    const[username, setUsername] = useState();
+    const[login,setLogin] = useState();
+    const[password, setPassword] = useState();
 
-    const username = (value) => {
-        console.log('Valeur du champ d\'entrée :', value);
-
-    };
-
-    const login = (value) => {
-        console.log('Valeur du champ d\'entrée :', value);
-
-    };
-
-    const password = (value) => {
-        console.log('Valeur du champ d\'entrée :', value);
-
-    };
 
     useEffect(() => {
         console.log(location.state)
         setAuthType(location.state)
     }, [location.state]);
 
+    function connected(){
+        const resp = request.login(login,password);
+    }
+
+    function register(){
+        const resp = request.register(username,login,password);
+    }
+
     return (
         <div className="login-container">
-            <div className="image-container">
+            <div className="w-50">
                 <img src={tablette} className="w-80" alt="Image login" />
             </div>
             <div className="form-container">
-                <h2>Connexion</h2>
-                <form>
+                <h2>{authType === route.register ? t('login.registration') : t('login.connection')}</h2>
+                <form className="w-100 d-flex flex-column align-center">
                     {
-                        authType == route.register ?
-                            <InputLabel label="Nom utilisateur" type="text" id="username" onInputChange={username}/> : null
+                        authType === route.register ?
+                            <InputLabel label={t('login.username')} type="text" id="username" onInputChange={setUsername}/> : null
                     }
-                    <InputLabel label="Email/Username" type="text" id="email" onInputChange={login}/>
-                    <InputLabel label="Mot de passe" type="password" id="password" onInputChange={password}/>
-                    {
-                        authType == route.register ?
-                            <Button children={t('header.register')} styles={"button black"} />
-                            :
-                            <Button children={t('header.login')} styles={"button black"} />
-                    }
+                    <InputLabel label={authType === route.register ? t('login.email') : t('login.email-username')} type="text" id="email" onInputChange={setLogin}/>
+                    <InputLabel label={t('login.password')} type="password" id="password" onInputChange={setPassword}/>
+                    <Button children={authType === route.register ? t('login.register'):t('login.connect')} styles={"button black"}  handleClick={authType === route.register ? register : connected}/>
                 </form>
             </div>
         </div>
-
     )
 }
 

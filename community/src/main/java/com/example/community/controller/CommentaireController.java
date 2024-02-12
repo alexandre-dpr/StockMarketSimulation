@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@RequestMapping(value = "/community/v1", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/community", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CommentaireController {
     private final FacadeImpl facade;
 

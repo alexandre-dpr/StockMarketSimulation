@@ -20,3 +20,5 @@ jwt:
   public.key: classpath:app.pub
 server:
   port: 8082
+  servlet:
+    context-path: /api/v1
