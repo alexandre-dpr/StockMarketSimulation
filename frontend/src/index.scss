@@ -1,9 +1,11 @@
 @import "utils/utils.scss";
 
-html, body, #root, .App {
+html,
+body,
+#root,
+.App {
   margin: 0;
   padding: 0;
-  height: 100%;
 }
 
 
@@ -63,6 +65,12 @@ code {
 
   @else if $breakpoint =='tablet' {
     @media (min-width: 601px) and (max-width: 1399px) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint =='small-tablet' {
+    @media (min-width: 601px) and (max-width: 1000px) {
       @content;
     }
   }

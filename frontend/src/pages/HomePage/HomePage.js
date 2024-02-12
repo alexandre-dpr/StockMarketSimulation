@@ -2,6 +2,7 @@ import React from 'react'
 import './HomePage.scss'
 import { useTranslation } from 'react-i18next';
 import tablette from "../../assets/img/tablette.png"
+import AnimatedLineChart from '../../containers/Charts/AnimatedLineChart';
 
 
 function HomePage() {
@@ -9,6 +10,9 @@ function HomePage() {
 
     return (
         <div>
+            <div className='animatedLineCharts'>
+                <AnimatedLineChart />
+            </div>
 
             <div className='tablette'>
                 <img className='imgTablette' src={tablette} />
