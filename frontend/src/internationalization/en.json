@@ -16,7 +16,17 @@
         "leaderboard": "Classement",
         "market": "Marché"
     },
-    "market": {
-        "market": "Market"
-    }
+    "login" : {
+        "connection" : "Connection",
+        "registration" : "Registration",
+        "password" :  "Password",
+        "connect" : "Log in ",
+        "register" : "Register",
+        "email" : "Email",
+        "username" : "Username",
+        "email-username" : "Email / Username"
+    },
+  "market": {
+    "market": "Market"
+  }
 }

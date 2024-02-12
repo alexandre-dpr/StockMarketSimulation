@@ -18,5 +18,15 @@
     },
     "market": {
         "market": "Marché"
+    },
+    "login" : {
+        "connection" : "Connexion",
+        "registration" : "Inscription",
+        "password" :  "Mot de passe",
+        "connect" : "Se connecter",
+        "register" : "S'inscrire",
+        "email" : "Email",
+        "username" : "Nom d'utilisateur",
+        "email-username" : "Email/Nom d'utilisateur"
     }
 }
