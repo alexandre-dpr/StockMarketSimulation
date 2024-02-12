@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../../components/Buttons/Button/Button';
 import routes from '../../utils/routes.json'
 import NavTo from '../../components/NavTo/NavTo';
+import logo from "./../../assets/img/logo.png"
 
 function Header() {
     const { t } = useTranslation();
@@ -11,46 +12,47 @@ function Header() {
 
     return (
         <div className='header'>
-            <NavTo
-                path={routes.home}
-                className='logoApp flex-item'>
-
-                <div className='logoBourse'>
-                    {t('home.bourse')}
-                </div>
-                <div className='logoPlay'>
-                    {t('home.play')}
-                </div>
-                <div className='logo'>
-                    B
-                </div>
-
-            </NavTo>
-
-
-
             <div className='containerNavBar flex-item'>
+
+                <NavTo
+                    path={routes.home}
+                    className='logoApp'>
+
+                    <div className='logoBourse'>
+                        {t('home.bourse')}
+                    </div>
+                    <div className='logoPlay'>
+                        {t('home.play')}
+                    </div>
+                    <div className='containerLogo'>
+                        <img className='logo' src={logo} alt='logo' />
+                    </div>
+
+
+                </NavTo>
+
                 <NavTo
                     path={routes.market}
                 >
-                    <div>
+                    <div className='itemNav'>
                         {t('header.market')}
                     </div>
                 </NavTo>
                 <NavTo
                     path={routes.leaderboard}>
-                    <div>
-
+                    <div className='itemNav'>
                         {t('header.leaderboard')}
                     </div>
                 </NavTo>
                 <NavTo
                     path={routes.about}>
-                    <div>
+                    <div className='itemNav'>
                         {t('header.about')}
 
                     </div>
                 </NavTo>
+
+
 
             </div>
 

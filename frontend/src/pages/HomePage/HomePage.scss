@@ -2,34 +2,40 @@
 
 .tablette {
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
     margin-top: 5%;
     transform: scaleX(-1);
-
+    margin-bottom: 12vh;
 
     img {
 
-
         @include respond-to('phone') {
-            width: 45vw;
+            display: none;
+        }
+
+        @include respond-to('small-tablet') {
+            display: none;
         }
 
         @include respond-to('tablet') {
-            width: 52vw;
+            width: 800px;
         }
 
         @include respond-to('desktop') {
-            width: 55vw;
+            width: 1000px;
+
         }
 
         @include respond-to('large-desktop') {
-            width: 60vw;
+            width: 1300px;
+
         }
 
 
     }
 }
+
 
 
 
@@ -41,7 +47,17 @@
     margin-left: 1%;
 
     @include respond-to('phone') {
-        width: 80%;
+        width: 90%;
+        margin-left: 5%;
+        top: 20%;
+        text-align: center;
+    }
+
+    @include respond-to('small-tablet') {
+        width: 90%;
+        margin-left: 5%;
+        top: 20%;
+        text-align: center;
     }
 
     .slogan {
@@ -94,4 +110,17 @@
         line-height: 0.9;
         margin-bottom: 3%;
     }
+}
+
+.animatedLineCharts {
+    @include respond-to('phone') {
+        display: none;
+    }
+
+    @include respond-to('small-tablet') {
+        display: none;
+    }
+
+    height: 90vh;
+    width: 100vw;
 }
