@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      discovery:
+        register: true
+      host: localhost
+      port: 8500
+      ribbon:
+        enabled: false
+    gateway:
+      routes:
+        - id: auth
+          uri: lb://service-auth
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth(?<segment>/?.*), /auth$\{segment}
+            - PreserveHostHeader=true
+        - id: rewritepath_route_community
+          uri: lb://service-community
+          predicates:
+            - Path=/api/community/**
+          filters:
+            - RewritePath=/api/community(?<segment>/?.*), /community/v1$\{segment}
+            - PreserveHostHeader
