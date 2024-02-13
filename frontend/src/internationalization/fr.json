@@ -16,9 +16,6 @@
         "leaderboard": "Classement",
         "market": "Marché"
     },
-    "market": {
-        "market": "Marché"
-    },
     "login" : {
         "connection" : "Connexion",
         "registration" : "Inscription",
@@ -28,5 +25,15 @@
         "email" : "Email",
         "username" : "Nom d'utilisateur",
         "email-username" : "Email/Nom d'utilisateur"
-    }
+    },
+    "market": {
+        "market": "Marché",
+        "table": {
+            "ticker": "Ticker",
+            "name": "Nom",
+            "exchange":"Exchange",
+            "category": "Catégorie",
+            "country": "Pays"
+        }
+}
 }

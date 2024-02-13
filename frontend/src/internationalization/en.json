@@ -27,6 +27,13 @@
         "email-username" : "Email / Username"
     },
   "market": {
-    "market": "Market"
+    "market": "Market",
+      "marketTable": {
+          "ticker": "Ticker",
+          "name": "Nom",
+          "exchange":"Exchange",
+          "Category": "Category",
+          "Country": "Pays"
+      }
   }
 }

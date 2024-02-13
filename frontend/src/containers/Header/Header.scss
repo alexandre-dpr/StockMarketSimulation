@@ -3,11 +3,21 @@
 .header {
     width: 100%;
     display: flex;
-    margin-top: 1%;
+    padding-top: 1%;
+    padding-bottom: 1%;
 }
 
-.flex-item {
+.box-shadow{
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.flex-item-1 {
     flex: 1;
+}
+
+.flex-item-2{
+    flex: 2;
 }
 
 .buttonsLogin {
@@ -18,27 +28,24 @@
     .button {
 
         @include respond-to('phone') {
-            font-size: 15px;
+            font-size: 12px;
         }
 
         @include respond-to('tablet') {
-            font-size: 15px;
+            font-size: 13px;
 
         }
 
         @include respond-to('desktop') {
-            font-size: 20px;
+            font-size: 17px;
 
         }
 
         @include respond-to('large-desktop') {
-            font-size: 25px;
+            font-size: 20px;
 
         }
     }
-
-
-
 }
 
 .containerNavBar {
@@ -46,6 +53,7 @@
     align-items: center;
     justify-content: space-between;
     font-family: Gabarito;
+
 
     .itemNav {
         @include respond-to('phone') {
@@ -60,20 +68,15 @@
     }
 
     @include respond-to('tablet') {
-        padding-left: 3%;
-        font-size: 14px;
-
+        font-size: 15px;
     }
 
     @include respond-to('desktop') {
-        padding-left: 3%;
         font-size: 17px;
-
     }
 
     @include respond-to('large-desktop') {
-        font-size: 20px;
-        padding-left: 3%;
+        font-size: 19px;
     }
 
 }
@@ -95,21 +98,21 @@
         }
 
         @include respond-to('tablet') {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
         }
 
         @include respond-to('desktop') {
             padding-top: 2px;
-            width: 33px;
-            height: 33px;
+            width: 31px;
+            height: 31px;
 
         }
 
         @include respond-to('large-desktop') {
             padding-top: 4px;
-            width: 37px;
-            height: 37px;
+            width: 35px;
+            height: 35px;
         }
 
     }
@@ -122,15 +125,15 @@
         }
 
         @include respond-to('tablet') {
-            font-size: 30px;
+            font-size: 28px;
         }
 
         @include respond-to('desktop') {
-            font-size: 35px;
+            font-size: 30px;
         }
 
         @include respond-to('large-desktop') {
-            font-size: 40px;
+            font-size: 35px;
         }
 
     }

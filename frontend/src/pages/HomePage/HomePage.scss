@@ -1,12 +1,12 @@
 @import '../../index.scss';
 
-.tablette {
+.bg-pc {
     position: absolute;
     bottom: 0;
     right: 0;
     margin-top: 5%;
-    transform: scaleX(-1);
     margin-bottom: 12vh;
+
 
     img {
 
@@ -23,7 +23,7 @@
         }
 
         @include respond-to('desktop') {
-            width: 1000px;
+            width: 1100px;
 
         }
 
@@ -34,6 +34,34 @@
 
 
     }
+}
+
+.paper-1{
+    margin-top: 10vh;
+    margin-left: 5vw;
+    width: 20vw;
+    padding: 3% 3% 2% 2%;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.initial-load-animation {
+    animation: fadeIn 2s ease-out;
+}
+
+
+.bg-svg{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
 }
 
 
@@ -112,15 +140,3 @@
     }
 }
 
-.animatedLineCharts {
-    @include respond-to('phone') {
-        display: none;
-    }
-
-    @include respond-to('small-tablet') {
-        display: none;
-    }
-
-    height: 90vh;
-    width: 100vw;
-}

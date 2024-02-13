@@ -1,48 +1,38 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import './Market.scss'
 import { useTranslation } from 'react-i18next';
-import { CompactTable } from '@table-library/react-table-library/compact';
+import market from "../../modele/stocks-list.json"
+import  "../../request/RequestMarket";
+import StickyHeadTable from "../../containers/Table/StickyHeadTable";
+import {getStocksList} from "../../request/RequestMarket";
 
-const nodes = [
-    {
-        id: '0',
-        name: 'Shopping List',
-        deadline: new Date(2020, 1, 15),
-        type: 'TASK',
-        isComplete: true,
-        nodes: 3,
-    },
-];
-
-const COLUMNS = [
-    { label: 'Task', renderCell: (item) => item.name },
-    {
-        label: 'Deadline',
-        renderCell: (item) =>
-            item.deadline.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-            }),
-    },
-    { label: 'Type', renderCell: (item) => item.type },
-    {
-        label: 'Complete',
-        renderCell: (item) => item.isComplete.toString(),
-    },
-    { label: 'Tasks', renderCell: (item) => item.nodes },
-];
 
 function Market() {
-    const data = { nodes };
     const { t } = useTranslation();
+
+    const COLUMNS = market.table
+
+   const [nodes, setNodes] = useState([])
+
+    useEffect(() => {
+        (async () => {
+            const result = await getStocksList(1); // Utilisez 1 ou tout autre numéro de page
+            if (result.data) {
+                setNodes(result.data.content)
+            } else if (result.error) {
+                console.error('Erreur lors de la récupération des données :', result.error);
+            }
+        })();
+        }, []);
+
+    const data = { nodes };
+
     return (
         <div className='containerPage'>
             <h1>
                 {t('market.market')}
             </h1>
-            <CompactTable columns={COLUMNS} data={data} />
-
+            <StickyHeadTable data={nodes} columns={COLUMNS} keyInter={"market.table"}/>
         </div>
     )
 }

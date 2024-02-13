@@ -1,19 +1,34 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './Header.scss'
 import { useTranslation } from 'react-i18next';
 import Button from '../../components/Buttons/Button/Button';
 import routes from '../../utils/routes.json'
 import NavTo from '../../components/NavTo/NavTo';
 import logo from "./../../assets/img/logo.png"
+import {useLocation} from "react-router-dom";
+
 
 function Header() {
+
+    const location = useLocation();
     const { t } = useTranslation();
 
+    useEffect(() => {
+        if(location.pathname !== routes.home){
+            const baliseHeader = document.getElementById("header");
+            baliseHeader.className = "header box-shadow"
+        }
+
+        return () => {
+            const baliseHeader = document.getElementById("header");
+            baliseHeader.className ="header"
+        };
+
+    }, [location.pathname]);
 
     return (
-        <div className='header'>
-            <div className='containerNavBar flex-item'>
-
+        <div id="header" className='header'>
+            <div className="flex-item-2">
                 <NavTo
                     path={routes.home}
                     className='logoApp'>
@@ -30,6 +45,10 @@ function Header() {
 
 
                 </NavTo>
+            </div>
+            <div className='containerNavBar flex-item-1'>
+
+
 
                 <NavTo
                     path={routes.market}
@@ -56,7 +75,7 @@ function Header() {
 
             </div>
 
-            <div className='buttonsLogin flex-item'>
+            <div className='buttonsLogin flex-item-2'>
                 <NavTo className='custom-link'
                     path={routes.auth}
                     state={routes.login}
