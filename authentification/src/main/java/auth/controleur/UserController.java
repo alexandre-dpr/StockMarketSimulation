@@ -37,7 +37,7 @@ public class UserController {
                     .fromCurrentRequest().path("/{pseudo}")
                     .buildAndExpand(userDto.getUsername()).toUri();
 
-            return ResponseEntity.created(location).header(HttpHeaders.AUTHORIZATION, token).build();
+            return ResponseEntity.created(location).body(token);
 
         } catch (ExistingUserException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -48,7 +48,7 @@ public class UserController {
     public ResponseEntity<String> login(@Valid @RequestBody LoginDto loginDto) {
         try {
             String token = userService.login(loginDto.getLogin(), loginDto.getPassword());
-            return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, token).build();
+            return ResponseEntity.ok().body(token);
 
         } catch (BadLoginException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
