@@ -20,7 +20,9 @@ public class Stock {
 
     private String name;
 
-    private String exchangeCode;
+    private String exchange;
+
+    private String exchangeShortName;
 
     private String category;
 
@@ -29,7 +31,13 @@ public class Stock {
 
     private Double price;
 
+    private Integer marketCap;
+
     private String currency;
+
+    private String website;
+
+    private String ceo;
 
     @Column(length = 100000)
     private String oneDayHistory;
@@ -44,7 +52,7 @@ public class Stock {
     @Override
     public String toString() {
         String res = ticker + " - " + name + "\n";
-        res += "Exchange code: " + exchangeCode + "\n";
+        res += "Exchange code: " + exchange + "\n";
         res += "Price: " + price + " " + currency;
         return res;
     }
