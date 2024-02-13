@@ -20,8 +20,6 @@ jwt:
   public.key: classpath:app.pub
 server:
   port: 8080
-  servlet:
-    context-path: /api/v1
 stocks:
   fetch:
     interval: 1 # en minutes
