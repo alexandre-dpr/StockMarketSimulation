@@ -20,11 +20,9 @@ jwt:
   public.key: classpath:app.pub
 server:
   port: 8080
-  servlet:
-    context-path: /api/v1
 stocks:
   fetch:
     interval: 1 # en minutes
 api:
   token:
-    tiingo: <TOKEN_API_TIINGO> # https://www.tiingo.com/ --> Compte gratuit
+    fmi: <TOKEN_API_FMI> # https://site.financialmodelingprep.com/developer --> Compte gratuit

@@ -3,12 +3,33 @@ services:
   discovery:
     image: consul:1.9
     ports:
-      - 8500:8500
+      - "8500:8500"
+
+  mysql_database:
+    image: mysql:latest
+    container_name: your_container_name
+    hostname: f6a25063ca31
+    mac_address: 02:42:ac:11:00:02
+    environment:
+      MYSQL_ROOT_PASSWORD: your_password
+      MYSQL_DATABASE: your_database
+      MYSQL_USER: your_user
+      MYSQL_PASSWORD: your_user_password
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      GOSU_VERSION: 1.16
+      MYSQL_MAJOR: innovation
+      MYSQL_VERSION: 8.3.0-1.el8
+      MYSQL_SHELL_VERSION: 8.3.0-1.el8
+    volumes:
+      - /var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: "no"
 
   service-community:
     build:
-      context: community
-    image: bourseplay/service-community
+      context: ./community
+      dockerfile: ./Dockerfile
     restart: always
     environment:
       - JAVA_TOOL_OPTIONS=
@@ -16,24 +37,27 @@ services:
     depends_on:
       - discovery
       - service-auth
+      - mysql_database
 
   service-auth:
     build:
-      context: authentification
-    image: bourseplay/service-auth
+      context: ./authentification
+      dockerfile: ./Dockerfile
     restart: always
     environment:
       - JAVA_TOOL_OPTIONS=
         -DCONSUL_HOST=discovery -DCONSUL_PORT=8500
     depends_on:
       - discovery
+      - mysql_database
 
   gateway:
     build:
-      context: gateway
-    image: bourseplay/gateway
+      context: ./gateway
+      dockerfile: ./Dockerfile
+
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
       - JAVA_TOOL_OPTIONS=
         -DCONSUL_HOST=discovery

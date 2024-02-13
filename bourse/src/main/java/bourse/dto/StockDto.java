@@ -10,22 +10,30 @@ public class StockDto {
 
     private String ticker;
     private String name;
-    private String exchangeCode;
+    private String exchange;
+    private String exchangeShortName;
     private String category;
     private String description;
     private Double price;
+    private Integer marketCap;
     private String currency;
+    private String website;
+    private String ceo;
     private String history;
 
     public static StockDto oneDayDto(Stock stock) {
         return new StockDto(
                 stock.getTicker(),
                 stock.getName(),
-                stock.getExchangeCode(),
+                stock.getExchange(),
+                stock.getExchangeShortName(),
                 stock.getCategory(),
                 stock.getDescription(),
                 stock.getPrice(),
+                stock.getMarketCap(),
                 stock.getCurrency(),
+                stock.getWebsite(),
+                stock.getCeo(),
                 stock.getOneDayHistory()
         );
     }
@@ -34,11 +42,15 @@ public class StockDto {
         return new StockDto(
                 stock.getTicker(),
                 stock.getName(),
-                stock.getExchangeCode(),
+                stock.getExchange(),
+                stock.getExchangeShortName(),
                 stock.getCategory(),
                 stock.getDescription(),
                 stock.getPrice(),
+                stock.getMarketCap(),
                 stock.getCurrency(),
+                stock.getWebsite(),
+                stock.getCeo(),
                 stock.getOneYearHistory()
         );
     }

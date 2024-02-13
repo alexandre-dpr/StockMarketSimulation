@@ -16,5 +16,5 @@ Générer les clés RSA :
 Générer la table ticker en exécutant le script ticker.sql
 > bourse/src/main/resources/ticker.sql
 
-Définir le token pour accéder à l'API Tiingo dans application.properties \
+Définir le token pour accéder à l'API FMI dans application.properties \
 /!\ Attention à ne pas push le token

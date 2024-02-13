@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface TickerRepository extends JpaRepository<Ticker, String> {
 
-    @Query("SELECT t FROM Ticker t WHERE t.Name LIKE %:name%")
+    @Query("SELECT t FROM Ticker t WHERE t.ticker=:name OR t.Name LIKE %:name% ORDER BY LENGTH(t.ticker)")
     List<Ticker> findBySimilarName(@Param("name") String name);
 
     Page<Ticker> findAll(Pageable pageable);

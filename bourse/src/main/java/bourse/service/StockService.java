@@ -43,8 +43,8 @@ public class StockService {
     @Value("${stocks.fetch.interval}")
     private Integer STOCKS_FETCH_INTERVAL;
 
-    @Value("${api.token.tiingo}")
-    private String TIINGO_API_TOKEN;
+    @Value("${api.token.fmi}")
+    private String FMI_API_TOKEN;
 
     /**
      * Récupère l'historique de prix d'une action pour un interval donné. Si l'action n'a jamais été récupérée, récupère aussi les informations dessus.
@@ -112,10 +112,15 @@ public class StockService {
 
                         stock = Stock.builder()
                                 .ticker(ticker)
-                                .name(stockDesc.path("name").asText())
-                                .exchangeCode(stockDesc.path("exchangeCode").asText())
+                                .name(stockDesc.path("companyName").asText())
+                                .exchange(stockDesc.path("exchange").asText())
+                                .exchangeShortName(stockDesc.path("exchangeShortName").asText())
+                                .category(stockDesc.path("sector").asText())
                                 .description(stockDesc.path("description").asText())
+                                .marketCap(stockDesc.path("mktCap").asInt())
                                 .currency(metaData.path("currency").asText())
+                                .website(stockDesc.path("website").asText())
+                                .ceo(stockDesc.path("ceo").asText())
                                 .build();
                     } else {
 
@@ -128,7 +133,10 @@ public class StockService {
                     Optional<Ticker> tickerOpt = tickerService.getTickerOpt(ticker);
                     if (tickerOpt.isPresent()) {
                         Ticker t = tickerOpt.get();
-                        stock.setCategory(t.getCategory());
+
+                        if (Objects.nonNull(t.getCategory())) {
+                            stock.setCategory(t.getCategory());
+                        }
 
                         if (Objects.isNull(stock.getName())) {
                             stock.setName(t.getName());
@@ -164,22 +172,22 @@ public class StockService {
     }
 
     /**
-     * Appelle l'API Tiingo pour récupérer les informations sur l'action
+     * Appelle l'API FMI pour récupérer les informations sur l'action
      */
     private Optional<JsonNode> getStockDescription(String ticker) throws IOException, UnauthorizedException {
-        String TIINGO_API = String.format("https://api.tiingo.com/tiingo/daily/%s?token=%s", ticker, TIINGO_API_TOKEN);
+        String FMI_API_URL = String.format("https://financialmodelingprep.com/api/v3/profile/%s?apikey=%s", ticker, FMI_API_TOKEN);
 
         HttpClient httpClient = HttpClients.createDefault();
-        HttpGet httpGet = new HttpGet(TIINGO_API);
+        HttpGet httpGet = new HttpGet(FMI_API_URL);
 
         try {
-            logger.debug("Calling Tiingo API");
+            logger.debug("Calling FMI API");
             HttpResponse response = httpClient.execute(httpGet);
 
             if (response.getStatusLine().getStatusCode() == 200) {
                 String responseBody = EntityUtils.toString(response.getEntity());
                 ObjectMapper objectMapper = new ObjectMapper();
-                return Optional.of(objectMapper.readTree(responseBody));
+                return Optional.of(objectMapper.readTree(responseBody).path(0));
 
             } else if (response.getStatusLine().getStatusCode() == 404) {
                 return Optional.empty();
