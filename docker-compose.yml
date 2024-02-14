@@ -51,6 +51,18 @@ services:
       - discovery
       - mysql_database
 
+  service-bourse:
+    build:
+      context: ./bourse
+      dockerfile: ./Dockerfile
+    restart: always
+    environment:
+      - JAVA_TOOL_OPTIONS=
+        -DCONSUL_HOST=discovery -DCONSUL_PORT=8500
+    depends_on:
+      - discovery
+      - service-auth
+      - mysql_database
   gateway:
     build:
       context: ./gateway
