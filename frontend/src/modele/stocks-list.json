@@ -1,0 +1,9 @@
+{
+  "table": [
+    {"label": "ticker"},
+    {"label": "name"},
+    {"label": "exchange"},
+    {"label": "category"},
+    {"label": "country"}
+  ]
+}
