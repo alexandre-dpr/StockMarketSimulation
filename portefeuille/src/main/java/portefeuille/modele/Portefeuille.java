@@ -1,5 +1,6 @@
 package portefeuille.modele;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -20,9 +21,9 @@ public class Portefeuille {
 
     private Double solde;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     List<Mouvement> actions;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     List<Mouvement> historique;
 }

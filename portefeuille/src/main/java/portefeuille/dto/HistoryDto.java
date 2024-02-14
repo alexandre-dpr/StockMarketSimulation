@@ -9,15 +9,13 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class PortefeuilleDto {
+public class HistoryDto {
     private String username;
-    private Double solde;
     private List<Mouvement> mouvements;
 
-    public static PortefeuilleDto createPortefeuilleDto(Portefeuille p) {
-        return new PortefeuilleDto(
+    public static HistoryDto createHistoryDto(Portefeuille p) {
+        return new HistoryDto(
                 p.getUsername(),
-                p.getSolde(),
                 p.getActions()
         );
     }

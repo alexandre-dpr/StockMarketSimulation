@@ -7,8 +7,11 @@ import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Ticker;
 import bourse.service.StockService;
 import bourse.service.TickerService;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,22 +28,22 @@ public class BourseController {
     TickerService tickerService;
 
     @GetMapping("/stock/{ticker}")
-    public StockDto getStock(@PathVariable String ticker, @RequestParam Range range) throws IOException, UnauthorizedException {
-        return stockService.getStock(ticker, range);
+    public ResponseEntity<StockDto> getStock(@PathVariable @NotBlank String ticker, @RequestParam @NotBlank Range range) throws IOException, UnauthorizedException {
+        return ResponseEntity.ok().body(stockService.getStock(ticker, range));
     }
 
     @GetMapping("/stocks/{tickers}")
-    public List<StockListDto> getStocks(@RequestParam Range range, @PathVariable String... tickers) throws IOException, UnauthorizedException {
-        return stockService.getStocks(tickers, range);
+    public ResponseEntity<List<StockListDto>> getStocks(@RequestParam @NotBlank Range range, @PathVariable @NotBlank String... tickers) throws IOException, UnauthorizedException {
+        return ResponseEntity.ok().body(stockService.getStocks(tickers, range));
     }
 
     @PostMapping("/tickerAutocomplete")
-    public List<Ticker> findTickerByName(@RequestParam String name) {
-        return tickerService.findTickerByName(name);
+    public ResponseEntity<List<Ticker>> findTickerByName(@RequestParam String name) {
+        return ResponseEntity.ok().body(tickerService.findTickerByName(name));
     }
 
     @GetMapping("/stocksList")
-    public Page<Ticker> getStocksList(@RequestParam Integer page) {
-        return tickerService.getStocksList(page);
+    public ResponseEntity<Page<Ticker>> getStocksList(@RequestParam @NotNull Integer page) {
+        return ResponseEntity.ok().body(tickerService.getStocksList(page));
     }
 }
