@@ -45,6 +45,7 @@ public class PortefeuilleService {
         }
     }
 
+    // TODO Récupérer les prix actuels pour donner le bénéfice
     public PortefeuilleDto getPortefeuille(String username) throws NotFoundException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
         if (p.isPresent()) {
