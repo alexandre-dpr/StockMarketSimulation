@@ -1,6 +1,10 @@
 spring:
   application:
     name: service-auth
+security:
+  basic:
+    enabled: false
+  ignored: /**
   cloud:
     consul:
       discovery:

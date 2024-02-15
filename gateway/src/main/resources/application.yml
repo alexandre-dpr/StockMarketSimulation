@@ -1,6 +1,9 @@
 server:
   port: 8080
-
+security:
+  basic:
+    enabled: false
+  ignored: /**
 spring:
   application:
     name: gateway
@@ -13,6 +16,10 @@ spring:
       ribbon:
         enabled: false
     gateway:
+      discovery:
+        locator:
+          enabled: true
+
       routes:
         - id: auth
           uri: lb://service-auth
@@ -21,10 +28,17 @@ spring:
           filters:
             - RewritePath=/api/auth(?<segment>/?.*), /auth$\{segment}
             - PreserveHostHeader=true
-        - id: rewritepath_route_community
+        - id: community
           uri: lb://service-community
           predicates:
             - Path=/api/community/**
           filters:
             - RewritePath=/api/community(?<segment>/?.*), /community/v1$\{segment}
             - PreserveHostHeader
+        - id: bourse
+          uri: lb://service-bourse
+          predicates:
+            - Path=/api/bourse/**
+          filters:
+            - RewritePath=/api/bourse(?<segment>/?.*), /bourse$\{segment}
+            - PreserveHostHeader=true
