@@ -7,12 +7,15 @@ import portefeuille.dto.HistoryDto;
 import portefeuille.dto.PortefeuilleDto;
 import portefeuille.enums.TypeMouvement;
 import portefeuille.exceptions.InsufficientFundsException;
+import portefeuille.exceptions.NotEnoughStocksException;
 import portefeuille.exceptions.NotFoundException;
+import portefeuille.exceptions.WalletAlreadyCreatedException;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.Portefeuille;
 import portefeuille.repository.MouvementRepository;
 import portefeuille.repository.PortefeuilleRepository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -24,14 +27,22 @@ public class PortefeuilleService {
     @Autowired
     MouvementRepository mouvementRepository;
 
-    public PortefeuilleDto creerPortefeuille(String username) {
-        Portefeuille p = Portefeuille.builder()
-                .username(username)
-                .solde(1000.0)
-                .build();
+    @Transactional
+    public PortefeuilleDto creerPortefeuille(String username) throws WalletAlreadyCreatedException {
+        Optional<Portefeuille> optPortefeuille = portefeuilleRepository.getPortefeuille(username);
 
-        portefeuilleRepository.save(p);
-        return PortefeuilleDto.createPortefeuilleDto(p);
+        if (optPortefeuille.isEmpty()) {
+            Portefeuille p = Portefeuille.builder()
+                    .username(username)
+                    .solde(1000.0)
+                    .build();
+
+            portefeuilleRepository.save(p);
+            return PortefeuilleDto.createPortefeuilleDto(p);
+
+        } else {
+            throw new WalletAlreadyCreatedException("Portefeuille déjà existant");
+        }
     }
 
     public PortefeuilleDto getPortefeuille(String username) throws NotFoundException {
@@ -57,14 +68,15 @@ public class PortefeuilleService {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
         if (p.isPresent()) {
             Portefeuille portefeuille = p.get();
-            Double prixAction = 110.0; // TODO APPELER SERVICE BOURSE POUR RECUP PRIX
+            double prixAction = 90.0; // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS ACHAT
 
-            if (portefeuille.getSolde() >= prixAction) {
+            if (portefeuille.getSolde() >= prixAction * quantity) {
 
                 Mouvement achatHistorique = Mouvement.builder()
+                        .time(LocalDateTime.now())
                         .type(TypeMouvement.ACHAT)
                         .ticker(ticker)
-                        .buyPrice(prixAction)
+                        .price(prixAction)
                         .quantity(quantity)
                         .build();
 
@@ -81,11 +93,56 @@ public class PortefeuilleService {
                     portefeuille.getActions().add(achatAction);
                 }
 
-                portefeuille.setSolde(portefeuille.getSolde() - prixAction);
+                portefeuille.setSolde(portefeuille.getSolde() - prixAction * quantity);
                 portefeuilleRepository.save(portefeuille);
 
             } else {
                 throw new InsufficientFundsException("Fonds insuffisants");
+            }
+        } else {
+            throw new NotFoundException("Personne non trouvée");
+        }
+    }
+
+    @Transactional
+    public void vendreAction(String username, String ticker, int quantity) throws NotFoundException, NotEnoughStocksException {
+        Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
+
+        if (p.isPresent()) {
+            Portefeuille portefeuille = p.get();
+            Optional<Mouvement> optMouvement = portefeuilleRepository.getActionPossedee(username, ticker);
+
+            if (optMouvement.isPresent()) {
+                Mouvement actionPossedee = optMouvement.get();
+
+                if (actionPossedee.getQuantity() >= quantity) {
+
+                    double prixAction = 90.0; // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS VENTE
+                    Mouvement mouvementHistorique = Mouvement.builder()
+                            .time(LocalDateTime.now())
+                            .type(TypeMouvement.VENTE)
+                            .ticker(ticker)
+                            .price(prixAction)
+                            .quantity(quantity)
+                            .build();
+
+                    portefeuille.getHistorique().add(mouvementHistorique);
+
+                    if (actionPossedee.getQuantity() > quantity) {
+                        actionPossedee.setQuantity(actionPossedee.getQuantity() - quantity);
+                    } else {
+                        portefeuille.getActions().remove(actionPossedee);
+                        mouvementRepository.delete(actionPossedee);
+                    }
+
+                    portefeuille.setSolde(portefeuille.getSolde() + quantity * prixAction);
+                    portefeuilleRepository.save(portefeuille);
+
+                } else {
+                    throw new NotEnoughStocksException("Pas assez d'actions possédées");
+                }
+            } else {
+                throw new NotFoundException("Action non trouvée");
             }
         } else {
             throw new NotFoundException("Personne non trouvée");

@@ -10,7 +10,9 @@ import portefeuille.dto.PortefeuilleDto;
 import portefeuille.dto.request.TransactionActionReqDto;
 import portefeuille.dto.request.UsernameReqDto;
 import portefeuille.exceptions.InsufficientFundsException;
+import portefeuille.exceptions.NotEnoughStocksException;
 import portefeuille.exceptions.NotFoundException;
+import portefeuille.exceptions.WalletAlreadyCreatedException;
 import portefeuille.service.PortefeuilleService;
 
 @RestController
@@ -22,7 +24,7 @@ public class PortefeuilleController {
 
     // TODO Une fois Spring Sec rajouté, ne plus prendre le username dans rq body mais dans Principal
     @PostMapping
-    public ResponseEntity<PortefeuilleDto> createPortefeuille(@RequestBody @Valid UsernameReqDto req) {
+    public ResponseEntity<PortefeuilleDto> createPortefeuille(@RequestBody @Valid UsernameReqDto req) throws WalletAlreadyCreatedException {
         return ResponseEntity.created(
                 ServletUriComponentsBuilder
                         .fromCurrentRequest().build().toUri()
@@ -43,6 +45,12 @@ public class PortefeuilleController {
     @PostMapping("/achat")
     public ResponseEntity<Void> acheter(@RequestBody @Valid TransactionActionReqDto req) throws InsufficientFundsException, NotFoundException {
         portefeuilleService.acheterAction(req.getUsername(), req.getTicker(), req.getQuantity());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/vente")
+    public ResponseEntity<Void> vendre(@RequestBody @Valid TransactionActionReqDto req) throws NotEnoughStocksException, NotFoundException {
+        portefeuilleService.vendreAction(req.getUsername(), req.getTicker(), req.getQuantity());
         return ResponseEntity.ok().build();
     }
 }

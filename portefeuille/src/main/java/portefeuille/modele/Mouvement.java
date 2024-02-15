@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import portefeuille.enums.TypeMouvement;
 
+import java.time.LocalDateTime;
+
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -19,11 +21,13 @@ public class Mouvement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer mouvementId;
 
+    private LocalDateTime time;
+
     private TypeMouvement type;
 
     private String ticker;
 
-    private Double buyPrice;
+    private Double price;
 
     private Integer quantity;
 
@@ -39,9 +43,10 @@ public class Mouvement {
      */
     public Mouvement moyennePrixAchat(Mouvement m) {
         int quantite = this.quantity + m.quantity;
-        Double buyPrice = ((this.buyPrice * this.quantity) + (m.buyPrice * m.quantity)) / quantite;
+        Double buyPrice = ((this.price * this.quantity) + (m.price * m.quantity)) / quantite;
         return new Mouvement(
                 this.mouvementId,
+                LocalDateTime.now(),
                 this.type,
                 this.ticker,
                 buyPrice,
@@ -57,9 +62,10 @@ public class Mouvement {
      */
     public Mouvement cloner() {
         return Mouvement.builder()
+                .time(time)
                 .type(type)
                 .ticker(ticker)
-                .buyPrice(buyPrice)
+                .price(price)
                 .quantity(quantity)
                 .portefeuille(portefeuille)
                 .build();
