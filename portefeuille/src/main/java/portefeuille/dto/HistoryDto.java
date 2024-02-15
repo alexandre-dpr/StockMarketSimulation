@@ -16,7 +16,7 @@ public class HistoryDto {
     public static HistoryDto createHistoryDto(Portefeuille p) {
         return new HistoryDto(
                 p.getUsername(),
-                p.getActions()
+                p.getHistorique()
         );
     }
 }

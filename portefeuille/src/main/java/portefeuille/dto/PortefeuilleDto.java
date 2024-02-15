@@ -5,6 +5,7 @@ import lombok.Getter;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.Portefeuille;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,7 +19,7 @@ public class PortefeuilleDto {
         return new PortefeuilleDto(
                 p.getUsername(),
                 p.getSolde(),
-                p.getActions()
+                p.getActions() == null ? new ArrayList<>() : p.getActions()
         );
     }
 }

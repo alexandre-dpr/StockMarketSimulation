@@ -68,7 +68,6 @@ public class PortefeuilleService {
                         .quantity(quantity)
                         .build();
 
-                mouvementRepository.save(achatHistorique);
                 portefeuille.getHistorique().add(achatHistorique);
 
                 // Si l'utilisateur a déjà acheté cette action
@@ -76,11 +75,11 @@ public class PortefeuilleService {
                 Mouvement achatAction;
                 if (optAction.isPresent()) {
                     achatAction = optAction.get().moyennePrixAchat(achatHistorique);
+                    mouvementRepository.save(achatAction);
                 } else {
                     achatAction = achatHistorique.cloner();
+                    portefeuille.getActions().add(achatAction);
                 }
-                mouvementRepository.save(achatAction);
-                portefeuille.getActions().add(achatAction);
 
                 portefeuille.setSolde(portefeuille.getSolde() - prixAction);
                 portefeuilleRepository.save(portefeuille);
