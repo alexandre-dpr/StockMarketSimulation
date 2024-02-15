@@ -15,5 +15,6 @@
         <module>frontend</module>
         <module>community</module>
         <module>gateway</module>
+        <module>portefeuille</module>
     </modules>
 </project>
