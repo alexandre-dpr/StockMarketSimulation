@@ -72,7 +72,7 @@ function AnimatedLineChart() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             animation,
             interaction: {
                 intersect: false,
@@ -91,17 +91,18 @@ function AnimatedLineChart() {
                         display: false,
                     },
                     ticks: {
-                        color: 'rgb(141,141,141)',
+                        color: 'rgba(141,141,141,0.83)',
                     }
                 },
                 y: {
                     display: true,
                     grid: {
                         display: true,
-                        color: 'rgba(141,141,141,0.17)',
+                        color: 'rgba(141,141,141,0.2)',
                     },
                     ticks: {
-                        color: 'rgb(141,141,141)',
+                        color: 'rgb(141,141,141,0.83)',
+                        maxTicksLimit: 5
                     }
                 },
             },

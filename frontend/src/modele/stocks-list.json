@@ -1,5 +1,6 @@
 {
   "table": [
+    {"label": "logo"},
     {"label": "ticker"},
     {"label": "name"},
     {"label": "exchange"},

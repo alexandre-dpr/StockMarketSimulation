@@ -31,16 +31,28 @@
             width: 1300px;
 
         }
-
-
     }
 }
 
+
+
 .paper-1{
     margin-top: 10vh;
-    margin-left: 5vw;
+    margin-left: 3vw;
     width: 20vw;
+    height: 20vh;
     padding: 3% 3% 2% 2%;
+}
+
+.paper-2{
+    position: absolute;
+    display: flex;
+    justify-content: space-around;
+    margin-top: -15vh;
+    margin-left: 10vw;
+    width: 20vw;
+    height: 20vh;
+    padding: 3% 3% 3% 3%;
 }
 
 @keyframes fadeIn {
@@ -139,4 +151,18 @@
         margin-bottom: 3%;
     }
 }
+
+@keyframes flottant {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.paper-1, .paper-2{
+    animation: flottant 3s ease-in-out infinite;
+}
+
 

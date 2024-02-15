@@ -1,18 +1,19 @@
 @import './index.scss';
 
 .containerPage {
-    margin-top: 5vw;
+    padding-top: 3vh;
     width: 70vw;
     padding-left: 15vw;
     padding-right: 15vw;
-
 }
 
+
 .paper{
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.09);
     border-radius: 30px;
     background:white;
 }
+
 
 h1 {
     font-family: Gabarito-Bold;

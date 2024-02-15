@@ -26,6 +26,7 @@ function Header() {
 
     }, [location.pathname]);
 
+
     return (
         <div id="header" className='header'>
             <div className="flex-item-2">

@@ -5,34 +5,62 @@ import market from "../../modele/stocks-list.json"
 import  "../../request/RequestMarket";
 import StickyHeadTable from "../../containers/Table/StickyHeadTable";
 import {getStocksList} from "../../request/RequestMarket";
+import CustomImage from "../../components/CustomImage/CustomImage";
 
 
 function Market() {
     const { t } = useTranslation();
-
     const COLUMNS = market.table
 
-   const [nodes, setNodes] = useState([])
+    const [data, setData] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(50);
+
 
     useEffect(() => {
-        (async () => {
-            const result = await getStocksList(1); // Utilisez 1 ou tout autre numéro de page
-            if (result.data) {
-                setNodes(result.data.content)
-            } else if (result.error) {
-                console.error('Erreur lors de la récupération des données :', result.error);
+        async function fetchData() {
+            try {
+                const result = await getStocksList(page + 1); // Assurez-vous que cela correspond à la pagination attendue
+                if (result.data) {
+                    const newData = result.data.content.map(item => ({
+                        ...item,
+                        logo: <CustomImage
+                            style={{width: "35px"}}
+                            src={`https://financialmodelingprep.com/image-stock/${item.ticker}.png`}
+                            alt={"img"}
+                        />
+                    }));
+                    setData(newData);
+                    setTotalCount(result.data.totalElements); // Mettez à jour en fonction de la structure de votre réponse API
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des données", error);
             }
-        })();
-        }, []);
+        }
 
-    const data = { nodes };
+        fetchData();
+    }, [page, rowsPerPage]);
+
+
+
+
 
     return (
         <div className='containerPage'>
             <h1>
                 {t('market.market')}
             </h1>
-            <StickyHeadTable data={nodes} columns={COLUMNS} keyInter={"market.table"}/>
+            <StickyHeadTable
+                columns={COLUMNS}
+                keyInter={"market.table"}
+                data={data}
+                totalCount={totalCount}
+                page={page}
+                setPage={setPage}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+            />
         </div>
     )
 }
