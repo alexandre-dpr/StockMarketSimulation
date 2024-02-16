@@ -27,6 +27,7 @@ class Interceptor {
             },
             (error) => Promise.reject(error)
         );
+
     }
 }
 

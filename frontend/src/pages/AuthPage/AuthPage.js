@@ -1,37 +1,71 @@
 import React, { useEffect, useState } from 'react'
 import './AuthPage.scss'
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import {useLocation, useNavigate, useRoutes} from 'react-router-dom';
 import InputLabel from "../../components/Input/InputLabel/InputLabel";
 import Button from "../../components/Buttons/Button/Button";
 import tablette from "../../assets/img/tablette.png";
 import route from "../../utils/routes.json";
 import {RequestAuth} from "../../request/RequestAuth";
-
-
+import {Auth} from "../../utils/Auth";
+import routes from "../../utils/routes.json";
+import {jwtDecode} from "jwt-decode";
 
 
 function AuthPage() {
+    const router = useNavigate();
     const { t } = useTranslation();
     const request = new RequestAuth();
     const [authType, setAuthType] = useState();
     const location = useLocation();
-    const[username, setUsername] = useState();
-    const[login,setLogin] = useState();
-    const[password, setPassword] = useState();
-
+    const[username, setUsername] = useState('');
+    const[login,setLogin] = useState('');
+    const[password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const auth = new Auth();
 
     useEffect(() => {
-        console.log(location.state)
+        async function verifierToken() {
+            const token = await auth.getJwtToken();
+            if (token !== null) {
+                const dcode = jwtDecode(token);
+                const currentTime = Math.floor(Date.now() / 1000);
+                const tokenValide = currentTime < dcode.exp;
+                if (tokenValide) {
+                    router(routes.home);
+                }
+            }
+        }
+        verifierToken();
+    }, []);
+
+    useEffect(() => {
         setAuthType(location.state)
     }, [location.state]);
 
-    function connected(){
-        const resp = request.login(login,password);
+
+
+    async function connected(){
+        try {
+            const resp = await request.login(login, password);
+            const token = resp.data
+            await auth.setJwtToken(token);
+            router(routes.home);
+        }catch (e) {
+            setError(e.message);
+        }
     }
 
-    function register(){
-        const resp = request.register(username,login,password);
+    async function register(){
+        try {
+            const resp = await request.register(username, login, password);
+            const token = resp.data
+            await auth.setJwtToken(token);
+            router(routes.home);
+        }catch (e) {
+            console.log(e.message)
+            setError(e.message);
+        }
     }
 
     return (
@@ -40,6 +74,7 @@ function AuthPage() {
                 <img src={tablette} className="w-80" alt="Image login" />
             </div>
             <div className="form-container">
+                <p>{error}</p>
                 <h2>{authType === route.register ? t('login.registration') : t('login.connection')}</h2>
                 <form className="w-100 d-flex flex-column align-center">
                     {

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import './HomePage.scss'
 import {useTranslation} from 'react-i18next';
-import bg_pc from "../../assets/img/bg-pc.svg"
+import bg_pc from "../../assets/img/bg-pc.png"
 import AnimatedLineChart from '../../containers/Charts/AnimatedLineChart';
 import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
