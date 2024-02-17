@@ -16,7 +16,7 @@ function Header() {
     useEffect(() => {
         if(location.pathname !== routes.home){
             const baliseHeader = document.getElementById("header");
-            baliseHeader.className = "header box-shadow"
+            baliseHeader.className = "header h-home"
         }
 
         return () => {

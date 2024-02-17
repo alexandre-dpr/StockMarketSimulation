@@ -5,9 +5,8 @@ import bg_pc from "../../assets/img/bg-pc.png"
 import AnimatedLineChart from '../../containers/Charts/AnimatedLineChart';
 import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
-import {getStocksList} from "../../request/RequestMarket";
-import {get} from "axios";
 import {Chart} from "react-chartjs-2";
+import styles from "../../index.scss"
 
 function HomePage() {
     const location = useLocation();
@@ -27,6 +26,14 @@ function HomePage() {
         }
     }, [location.pathname]);
 
+
+    useEffect(() => {
+        document.body.style.backgroundColor = styles.primaryColor;
+
+        return () => {
+            document.body.style.backgroundColor = '';
+        };
+    }, []);
 
     const {t} = useTranslation();
 
@@ -53,7 +60,7 @@ function HomePage() {
         labels: [
             'Red',
             'Blue',
-            'Yellow'
+            'Purple'
         ],
         datasets: [{
             data: [30, 140, 70],
@@ -78,7 +85,7 @@ function HomePage() {
 
 
     return (
-        <div>
+        <div className={"homePage"}>
 
             <div className="paper paper-1">
                 <AnimatedLineChart/>

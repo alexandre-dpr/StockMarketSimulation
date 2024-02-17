@@ -11,6 +11,7 @@ import About from './pages/About/About';
 import Stock from './pages/Action/Stock';
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import AuthWrapper from "./components/ProtectedRoute/ProtectedRoute";
+import {useEffect} from "react";
 
 function App() {
 
@@ -19,14 +20,16 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          {/*<Route element={<AuthWrapper/>}>
-            <Route path={routes.auth} element={<AuthPage  />} />
-          </Route>*/}
           <Route path={routes.home} element={<HomePage />} />
           <Route path={routes.auth} element={<AuthPage  />} />
-          <Route element={<AuthWrapper/>}>
+          {
+            /*
+              <Route element={<AuthWrapper/>}>
+            <Route path={routes.market} element={<Market />} />
+          </Route>
+             */
+          }
           <Route path={routes.market} element={<Market />} />
-          </Route>*/}
           <Route path={routes.leaderboard} element={<Leaderboard />} />
           <Route path={routes.about} element={<About />} />
           <Route path={routes.stock} element={<Stock />} />
