@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,8 +16,13 @@ public class TickerService {
     @Autowired
     TickerRepository tickerRepository;
 
-    public List<Ticker> findTickerByName(String name) {
-        return tickerRepository.findBySimilarName(name);
+    public Page<Ticker> findTickerByName(String name, int page) {
+        if (page >= 1) {
+            Pageable pageable = PageRequest.of(page - 1, 50);
+            return tickerRepository.findBySimilarName(name, pageable);
+        } else {
+            throw new IllegalArgumentException("Pagination must be superior to 1");
+        }
     }
 
     public Optional<Ticker> getTickerOpt(String ticker) {

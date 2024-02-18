@@ -41,8 +41,8 @@ public class BourseController {
     }
 
     @PostMapping("/tickerAutocomplete")
-    public ResponseEntity<List<Ticker>> findTickerByName(@RequestParam String name) {
-        return ResponseEntity.ok().body(tickerService.findTickerByName(name));
+    public ResponseEntity<Page<Ticker>> findTickerByName(@RequestParam String name, @RequestParam @NotNull Integer page) {
+        return ResponseEntity.ok().body(tickerService.findTickerByName(name, page));
     }
 
     @GetMapping("/stocksList")

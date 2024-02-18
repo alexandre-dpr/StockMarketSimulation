@@ -8,18 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useTranslation } from 'react-i18next';
-import './Table.scss'
+import './StickyHeadTable.scss'
 
-function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage, rowsPerPage, setRowsPerPage }) {
+function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage,rowsPerPage }) {
     const { t } = useTranslation();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
     };
 
     return (
@@ -33,7 +28,7 @@ function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage, r
                                     key={column.label}
                                     align={column.align || 'inherit'}
                                     style={{ minWidth: column.minWidth }}
-                                    className={"tableHeader"}
+                                    className={"tableHeader tableCell"}
                                 >
                                     {column.label !== "logo" && t(`${keyInter}.${column.label}`)}
                                 </TableCell>
@@ -46,7 +41,7 @@ function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage, r
                                 {columns.map((column) => {
                                     const value = row[column.label];
                                     return (
-                                        <TableCell key={column.label} align={column.align}>
+                                        <TableCell className={"tableCell"} key={column.label} align={column.align}>
                                             {value}
                                         </TableCell>
                                     );
@@ -57,13 +52,12 @@ function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage, r
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 50, 100]}
+                rowsPerPageOptions={[]} // Enlever l'option pour changer le nombre de lignes par page
                 component="div"
                 count={totalCount}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
     );

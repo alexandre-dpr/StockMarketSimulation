@@ -9,12 +9,12 @@ security:
     consul:
       discovery:
         register: true
-      host: ${CONSUL_HOST:localhost}
+      hostname: ${CONSUL_HOST:localhost}
       port: ${CONSUL_PORT:8500}
       ribbon:
         enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/your_database # TODO Changer pour la bonne base
+    url: jdbc:mysql://localhost:3306/your_database
     username: your_user
     password: your_user_password
     driver-class-name: com.mysql.cj.jdbc.Driver

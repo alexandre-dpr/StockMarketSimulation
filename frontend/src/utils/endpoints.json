@@ -1,3 +1,4 @@
 {
-  "stocksList": "/stocksList"
+  "stocksList": "/stocksList",
+  "tickerAutocomplete": "/tickerAutocomplete"
 }

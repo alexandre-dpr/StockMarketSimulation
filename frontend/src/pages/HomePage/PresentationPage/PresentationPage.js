@@ -1,14 +1,11 @@
-import React, {useState} from 'react'
-import './HomePage.scss'
-import {useTranslation} from 'react-i18next';
-import bg_pc from "../../assets/img/bg-pc.png"
-import AnimatedLineChart from '../../containers/Charts/AnimatedLineChart';
-import {useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
+import React, {useEffect} from 'react';
+import AnimatedLineChart from "../../../containers/Charts/AnimatedLineChart";
 import {Chart} from "react-chartjs-2";
-import styles from "../../index.scss"
+import bg_pc from "../../../assets/img/bg-pc.png";
+import {useTranslation} from "react-i18next";
+import {useLocation} from "react-router-dom";
 
-function HomePage() {
+function PresentationPage() {
     const location = useLocation();
 
     useEffect(() => {
@@ -25,14 +22,6 @@ function HomePage() {
             localStorage.removeItem('isReloaded');
         }
     }, [location.pathname]);
-
-
-    useEffect(() => {
-        document.body.style.backgroundColor = styles.primaryColor;
-        return () => {
-            document.body.style.backgroundColor = '';
-        };
-    }, []);
 
     const {t} = useTranslation();
 
@@ -59,7 +48,7 @@ function HomePage() {
         labels: [
             'Red',
             'Blue',
-            'Purple'
+            'Yellow'
         ],
         datasets: [{
             data: [30, 140, 70],
@@ -74,21 +63,20 @@ function HomePage() {
 
     const options = {
         responsive: true,
-            plugins: {
+        plugins: {
             legend: false,
-                tooltip: {
+            tooltip: {
                 enabled: false,
             },
         }
     }
-
-
     return (
-        <div className={"homePage"}>
+        <div>
 
             <div className="paper paper-1">
                 <AnimatedLineChart/>
             </div>
+
 
             <div className="paper paper-2">
                 <Chart  options={options} className={"doughnutChart"} type={"doughnut"} data={data} />
@@ -120,7 +108,7 @@ function HomePage() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default HomePage
+export default PresentationPage;
