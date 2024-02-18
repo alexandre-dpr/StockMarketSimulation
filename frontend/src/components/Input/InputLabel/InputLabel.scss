@@ -2,28 +2,30 @@
   position: relative;
   margin-block: 20px;
   width: 80%;
+
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -15px;
+    font-size: 12px;
+    color: #333;
+  }
+
+  label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    transition: top 0.3s, font-size 0.3s, color 0.3s;
+    pointer-events: none;
+  }
+
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  border-radius: 5px;
-}
-
-input:focus + label,
-input:not(:placeholder-shown) + label {
-  top: -15px;
-  font-size: 12px;
-  color: #333;
-}
-
-label {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  transition: top 0.3s, font-size 0.3s, color 0.3s;
-  pointer-events: none;
-}

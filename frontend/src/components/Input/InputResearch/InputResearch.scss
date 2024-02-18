@@ -1,0 +1,31 @@
+@import "../../../index";
+
+.input-research-container{
+  position: relative;
+
+  input{
+    width: 10vw;
+    min-width: 130px;
+    padding: 14px;
+    padding-left: 40px;
+    border-radius: 15px;
+    border: 1.5px solid $color-3;
+    transition: 0.3s
+  }
+
+  input:focus{
+    width: 20vw;
+  }
+
+
+
+  .iconLoupe{
+    width: 20px;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    transition: top 0.3s, font-size 0.3s, color 0.3s;
+    pointer-events: none;
+  }
+}

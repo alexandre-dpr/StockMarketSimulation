@@ -10,16 +10,11 @@ import TableRow from '@mui/material/TableRow';
 import { useTranslation } from 'react-i18next';
 import './Table.scss'
 
-function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage, rowsPerPage, setRowsPerPage }) {
+function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage,rowsPerPage }) {
     const { t } = useTranslation();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
     };
 
     return (
@@ -57,13 +52,12 @@ function StickyHeadTable({ columns, keyInter, data, totalCount, page, setPage, r
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[10, 50, 100]}
+                rowsPerPageOptions={[]} // Enlever l'option pour changer le nombre de lignes par page
                 component="div"
                 count={totalCount}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
             />
         </Paper>
     );

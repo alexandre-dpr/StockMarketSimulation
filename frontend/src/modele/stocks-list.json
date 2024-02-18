@@ -6,5 +6,6 @@
     {"label": "exchange"},
     {"label": "category"},
     {"label": "country"}
-  ]
+  ],
+  "rowsPerPage": 50
 }

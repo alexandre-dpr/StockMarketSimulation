@@ -11,7 +11,7 @@ import {jwtDecode} from "jwt-decode";
  */
 
 export class Auth {
-    static async getEmail() {
+    async getEmail() {
         try {
             return localStorage.getItem("email");
         } catch (error) {
@@ -20,7 +20,7 @@ export class Auth {
         }
     }
 
-    static async setEmail(email) {
+    async setEmail(email) {
         try {
             localStorage.setItem("email", email);
         } catch (error) {
@@ -29,7 +29,7 @@ export class Auth {
     }
 
 
-    static async getJwtToken() {
+    async getJwtToken() {
         try {
             return  localStorage.getItem("jwt");
         } catch (error) {
@@ -38,7 +38,7 @@ export class Auth {
         }
     }
 
-    static async setJwtToken(token) {
+    async setJwtToken(token) {
         try {
              localStorage.setItem("jwt", token);
         } catch (error) {
@@ -48,11 +48,11 @@ export class Auth {
 
 
 
-    static isLoggedIn() {
+     isLoggedIn() {
         return !!Auth.getJwtToken();
     }
 
-    static async decodeToken() {
+    async decodeToken() {
         const token = await Auth.getJwtToken();
         if (token) {
             return jwtDecode(token);
@@ -61,7 +61,7 @@ export class Auth {
         }
     }
 
-    static getUsername() {
+    getUsername() {
         if (Auth.isLoggedIn()) {
             const decodedToken = Auth.decodeToken();
             if (decodedToken) {
