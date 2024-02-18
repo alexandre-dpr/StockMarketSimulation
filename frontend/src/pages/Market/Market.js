@@ -22,6 +22,7 @@ function Market() {
 
     async function fetchData() {
         try {
+            setData([])
             var result = []
             if(fromResearchData){
                 result = await findTickerByName(nameResearch,page+1)
@@ -29,7 +30,7 @@ function Market() {
                 result = await getStocksList(page + 1);
             }
             if (result.data) {
-                setData(getFormatStocks(result.data.content));
+                setData(await getFormatStocks(result.data.content));
                 setTotalCount(result.data.totalElements);
             }
         } catch (error) {
@@ -46,6 +47,7 @@ function Market() {
 
     const handleSubmit = async (research) => {
         setName(research)
+        setPage(0)
         if(research.length ===0 ){
             setFromResearchData(false)
         }else {
@@ -56,24 +58,27 @@ function Market() {
 
     return (
         <div className='containerPage'>
-            <div className={"headerMarket"}>
-                <h1>
-                    {t('market.market')}
-                </h1>
-                <div>
-                    <InputResearch label={"Rechercher un actif"} onSubmit={handleSubmit}/>
-                </div>
-            </div>
 
-            <StickyHeadTable
-                columns={COLUMNS}
-                keyInter={"market.table"}
-                data={data}
-                totalCount={totalCount}
-                page={page}
-                setPage={setPage}
-                rowsPerPage={market.rowsPerPage}
-            />
+                <div className={"headerMarket"}>
+                    <h1>
+                        {t('market.market')}
+                    </h1>
+                    <div>
+                        <InputResearch label={"Rechercher un actif"} onSubmit={handleSubmit}/>
+                    </div>
+                </div>
+
+                <StickyHeadTable
+                    columns={COLUMNS}
+                    keyInter={"market.table"}
+                    data={data}
+                    totalCount={totalCount}
+                    page={page}
+                    setPage={setPage}
+                    rowsPerPage={market.rowsPerPage}
+                />
+
+
         </div>
     )
 }

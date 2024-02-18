@@ -29,7 +29,6 @@ function HomePage() {
 
     useEffect(() => {
         document.body.style.backgroundColor = styles.primaryColor;
-
         return () => {
             document.body.style.backgroundColor = '';
         };
@@ -90,7 +89,6 @@ function HomePage() {
             <div className="paper paper-1">
                 <AnimatedLineChart/>
             </div>
-
 
             <div className="paper paper-2">
                 <Chart  options={options} className={"doughnutChart"} type={"doughnut"} data={data} />
