@@ -13,11 +13,14 @@ import portefeuille.exceptions.InsufficientFundsException;
 import portefeuille.exceptions.NotEnoughStocksException;
 import portefeuille.exceptions.NotFoundException;
 import portefeuille.exceptions.WalletAlreadyCreatedException;
+import portefeuille.rabbitmq.RabbitMqSender;
 import portefeuille.service.PortefeuilleService;
 
 @RestController
 @RequestMapping("/portefeuille")
 public class PortefeuilleController {
+    @Autowired
+    private RabbitMqSender rabbitMqSender;
 
     @Autowired
     PortefeuilleService portefeuilleService;

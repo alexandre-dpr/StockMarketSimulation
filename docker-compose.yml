@@ -4,6 +4,15 @@ services:
     image: consul:1.9
     ports:
       - "8500:8500"
+      -
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: service
+      RABBITMQ_DEFAULT_PASS: service
 
   mysql_database:
     image: mysql:latest
@@ -63,6 +72,21 @@ services:
       - discovery
       - service-auth
       - mysql_database
+      - rabbitmq
+
+  service-portefeuille:
+    build:
+      context: ./portefeuille
+      dockerfile: ./Dockerfile
+    restart: always
+    environment:
+      - JAVA_TOOL_OPTIONS=
+        -DCONSUL_HOST=discovery -DCONSUL_PORT=8500
+    depends_on:
+      - discovery
+      - service-auth
+      - mysql_database
+      - rabbitmq
   gateway:
     build:
       context: ./gateway
