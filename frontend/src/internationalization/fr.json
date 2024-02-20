@@ -34,6 +34,9 @@
             "exchange":"Exchange",
             "category": "Catégorie",
             "country": "Pays"
-        }
-}
+        },
+        "research": "Rechercher un actif",
+        "trends": "Tendances"
+
+    }
 }

@@ -6,5 +6,6 @@
     "about": "/about",
     "market": "/market",
     "leaderboard": "/leaderboard",
-    "stock": "/stock/:ticker"
+    "stock": "/stock/:ticker",
+    "stock_nav": "/stock"
 }
