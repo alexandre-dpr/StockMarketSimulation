@@ -34,6 +34,8 @@
           "exchange":"Exchange",
           "Category": "Category",
           "Country": "Pays"
-      }
+      },
+      "research": "Search for an asset",
+      "trends": "Trends"
   }
 }

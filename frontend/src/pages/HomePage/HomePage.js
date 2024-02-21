@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import './HomePage.scss'
 import {useTranslation} from 'react-i18next';
-import bg_pc from "../../assets/img/bg-pc.png"
+import bg_pc from "../../assets/img/bg-pc-resize-tiny.png"
 import AnimatedLineChart from '../../containers/Charts/AnimatedLineChart';
 import {useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
@@ -14,11 +14,14 @@ function HomePage() {
     useEffect(() => {
         const isReloaded = localStorage.getItem('isReloaded');
         if (!isReloaded) {
+            /*
             const baliseBgPc = document.getElementById("bg-pc")
             const baliseFooter = document.getElementById("homePageFooter")
             baliseBgPc.classList.add('initial-load-animation');
             baliseFooter.classList.add('initial-load-animation');
             localStorage.setItem('isReloaded', true);
+            */
+
         }
 
         return () => {
@@ -29,7 +32,6 @@ function HomePage() {
 
     useEffect(() => {
         document.body.style.backgroundColor = styles.primaryColor;
-
         return () => {
             document.body.style.backgroundColor = '';
         };
@@ -91,7 +93,6 @@ function HomePage() {
                 <AnimatedLineChart/>
             </div>
 
-
             <div className="paper paper-2">
                 <Chart  options={options} className={"doughnutChart"} type={"doughnut"} data={data} />
                 <Chart options={options} className={"doughnutChart"} type={"doughnut"} data={data2} />
@@ -109,7 +110,7 @@ function HomePage() {
             </svg>
 
             <div id="bg-pc" className='bg-pc'>
-                <img className='imgTablette' src={bg_pc}/>
+                <img loading="lazy" className='imgTablette' src={bg_pc}/>
             </div>
 
 

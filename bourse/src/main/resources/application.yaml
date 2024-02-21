@@ -1,6 +1,14 @@
 spring:
   application:
     name: service-bourse
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: service
+    password: service
+    exchange: bourse.exchange
+    queue: bourse.queue.price
+    routingkey: bourse.routingkey
   cloud:
     consul:
       discovery:

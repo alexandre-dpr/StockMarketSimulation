@@ -3,11 +3,12 @@ import './Market.scss'
 import { useTranslation } from 'react-i18next';
 import market from "../../modele/stocks-list.json"
 import  "../../request/RequestMarket";
-import StickyHeadTable from "../../containers/Table/StickyHeadTable";
+import MarketTable from "../../containers/Table/MarketTable";
 import {findTickerByName, getStocksList} from "../../request/RequestMarket";
-import CustomImage from "../../components/CustomImage/CustomImage";
+import {getFormatStocks} from "../../utils/services";
+import routes from "../../utils/routes.json";
+import {useNavigate} from "react-router-dom";
 import InputResearch from "../../components/Input/InputResearch/InputResearch";
-import {getFormatStocks, getStockLogo} from "../../utils/services";
 
 
 function Market() {
@@ -19,9 +20,11 @@ function Market() {
     const [page, setPage] = useState(0);
     const [fromResearchData, setFromResearchData] = useState(false)
     const [nameResearch,setName] = useState('')
+    const navigate = useNavigate();
 
     async function fetchData() {
         try {
+            setData([])
             var result = []
             if(fromResearchData){
                 result = await findTickerByName(nameResearch,page+1)
@@ -29,7 +32,7 @@ function Market() {
                 result = await getStocksList(page + 1);
             }
             if (result.data) {
-                setData(getFormatStocks(result.data.content));
+                setData(await getFormatStocks(result.data.content));
                 setTotalCount(result.data.totalElements);
             }
         } catch (error) {
@@ -46,6 +49,7 @@ function Market() {
 
     const handleSubmit = async (research) => {
         setName(research)
+        setPage(0)
         if(research.length ===0 ){
             setFromResearchData(false)
         }else {
@@ -53,27 +57,52 @@ function Market() {
         }
     }
 
+    const handleClickTicker = (ticker) =>{
+        navigate(`${routes.stock_nav}/${ticker}`)
+    }
+
 
     return (
         <div className='containerPage'>
-            <div className={"headerMarket"}>
-                <h1>
-                    {t('market.market')}
-                </h1>
-                <div>
-                    <InputResearch label={"Rechercher un actif"} onSubmit={handleSubmit}/>
+            <div className={"pageMarket"}>
+
+                <div className={"headerMarket"}>
+                    <h1>
+                        {t('market.trends')}
+                    </h1>
                 </div>
+
+                <MarketTable
+                    columns={COLUMNS}
+                    keyInter={"market.table"}
+                    data={[]}
+
+                />
+
+                <div className={"headerMarket"}>
+                    <h1>
+                        {t('market.market')}
+                    </h1>
+                    <div>
+                        <InputResearch label={t('market.research')} onSubmit={handleSubmit}/>
+                    </div>
+                </div>
+
+                <MarketTable
+                    height={100}
+                    handleSubmit={handleSubmit}
+                    handleClickTicker={handleClickTicker}
+                    columns={COLUMNS}
+                    keyInter={"market.table"}
+                    data={data}
+                    totalCount={totalCount}
+                    page={page}
+                    setPage={setPage}
+                    rowsPerPage={market.rowsPerPage}
+                />
             </div>
 
-            <StickyHeadTable
-                columns={COLUMNS}
-                keyInter={"market.table"}
-                data={data}
-                totalCount={totalCount}
-                page={page}
-                setPage={setPage}
-                rowsPerPage={market.rowsPerPage}
-            />
+
         </div>
     )
 }
