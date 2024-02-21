@@ -2,6 +2,7 @@ package bourse.service;
 
 import bourse.modele.Ticker;
 import bourse.repository.TickerRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,5 +37,10 @@ public class TickerService {
         } else {
             throw new IllegalArgumentException("Pagination must be superior to 1");
         }
+    }
+
+    @Transactional
+    public void saveTicker(Ticker ticker) {
+        tickerRepository.save(ticker);
     }
 }

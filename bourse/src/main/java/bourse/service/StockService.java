@@ -2,11 +2,15 @@ package bourse.service;
 
 import bourse.dto.StockDto;
 import bourse.dto.StockListDto;
+import bourse.dto.StockTrendDto;
+import bourse.dto.StockTrendListDto;
 import bourse.enums.Range;
 import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Stock;
+import bourse.modele.StockTrendList;
 import bourse.modele.Ticker;
 import bourse.repository.StockRepository;
+import bourse.repository.StockTrendListRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -33,18 +37,27 @@ import java.util.Optional;
 public class StockService {
 
     @Autowired
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
 
     @Autowired
-    TickerService tickerService;
+    private StockTrendListRepository stockTrendListRepository;
+
+    @Autowired
+    private TickerService tickerService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${stocks.fetch.interval}")
+    @Value("${fetch.interval.stocks}")
     private Integer STOCKS_FETCH_INTERVAL;
+
+    @Value("${fetch.interval.trends}")
+    private Integer TRENDS_FETCH_INTERVAL;
 
     @Value("${api.token.fmi}")
     private String FMI_API_TOKEN;
+
+    @Value("${api.token.alphavantage}")
+    private String ALPHAVANTAGE_API_TOKEN;
 
     /**
      * Récupère l'historique de prix d'une action pour un interval donné. Si l'action n'a jamais été récupérée, récupère aussi les informations dessus.
@@ -141,6 +154,13 @@ public class StockService {
                         if (Objects.isNull(stock.getName())) {
                             stock.setName(t.getName());
                         }
+                    } else {
+                        Ticker newTicker = Ticker.builder()
+                                .ticker(ticker)
+                                .Name(stock.getName())
+                                .Category(stock.getCategory())
+                                .build();
+                        tickerService.saveTicker(newTicker);
                     }
 
                 }
@@ -201,6 +221,95 @@ public class StockService {
         }
     }
 
+    /**
+     * Appelle l'API ALPHAVANTAGE pour récupérer les actions en tendance.
+     */
+    public StockTrendListDto getTrends() throws UnauthorizedException, IOException {
+        Optional<StockTrendList> optStockTrendList = stockTrendListRepository.findAll().stream().findFirst();
+        if (optStockTrendList.isPresent()) {
+            StockTrendList trends = optStockTrendList.get();
+            LocalDateTime now = LocalDateTime.now();
+
+            if (Duration.between(trends.getLastUpdate(), now).toHours() < TRENDS_FETCH_INTERVAL) {
+                return StockTrendListDto.getStockTrendListDto(trends);
+            }
+        }
+
+        String ALPHAVANTAGE_API_URL = String.format("https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=%s", ALPHAVANTAGE_API_TOKEN);
+
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(ALPHAVANTAGE_API_URL);
+
+        try {
+            logger.debug("Calling ALPHAVANTAGE API");
+            HttpResponse response = httpClient.execute(httpGet);
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                String responseBody = EntityUtils.toString(response.getEntity());
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+                JsonNode gainers = jsonNode.path("top_gainers");
+                List<StockTrendDto> gains = new ArrayList<>();
+                JsonNode loosers = jsonNode.path("top_losers");
+                List<StockTrendDto> pertes = new ArrayList<>();
+
+                extractStockTrendDtoFromReq(gainers, gains);
+                extractStockTrendDtoFromReq(loosers, pertes);
+
+                StockTrendList stockTrendList = new StockTrendList(gains, pertes);
+                saveStockTrendList(stockTrendList);
+                return StockTrendListDto.getStockTrendListDto(stockTrendList);
+
+            } else {
+                throw new UnauthorizedException("Failed to fetch stock trends");
+            }
+        } catch (IOException e) {
+            throw new IOException("Failed to fetch stock trends");
+        }
+    }
+
+    private void extractStockTrendDtoFromReq(JsonNode nodes, List<StockTrendDto> outputList) throws IOException {
+        int MAX_TRENDS = 5;
+        for (JsonNode node : nodes) {
+
+            if (outputList.size() < MAX_TRENDS) {
+                String ticker = node.path("ticker").asText();
+                Optional<Stock> optStock = stockRepository.findById(ticker);
+                StockDto stock;
+                try {
+                    if (optStock.isEmpty()) {
+                        stock = getStock(ticker, Range.ONE_DAY);
+                    } else {
+                        stock = StockDto.oneDayDto(optStock.get());
+                    }
+
+                    outputList.add(
+                            new StockTrendDto(
+                                    ticker,
+                                    stock.getName(),
+                                    node.path("price").asDouble(),
+                                    stock.getCurrency(),
+                                    node.path("change_amount").asDouble(),
+                                    node.path("change_percentage").asText(),
+                                    node.path("volume").asInt()
+                            )
+                    );
+                } catch (Exception ignored) {
+                }
+            } else {
+                break;
+            }
+        }
+    }
+
+    /**
+     * Récupère l'historique de prix d'actions pour un interval donné. Si l'action n'a jamais été récupérée, récupère aussi les informations dessus.
+     *
+     * @param tickers Liste de tickers des actions à récupérer
+     * @param range   1d, 1y
+     * @return List<StockListDto>
+     */
     public List<StockListDto> getStocks(String[] tickers, Range range) throws IOException, UnauthorizedException {
         List<StockListDto> stocks = new ArrayList<>();
         for (String ticker : tickers) {
@@ -214,12 +323,34 @@ public class StockService {
         return stocks;
     }
 
+    /**
+     * Récupère en base les informations sur une action donnée
+     *
+     * @param ticker Ticker de l'action à récupérer
+     */
     private Optional<Stock> getSavedStock(String ticker) {
         return stockRepository.findById(ticker);
     }
 
+    /**
+     * Sauvegarde en base une action
+     *
+     * @param stock Action à sauvegarder
+     */
     @Transactional
     public void saveStock(Stock stock) {
         stockRepository.save(stock);
+    }
+
+    /**
+     * Sauvegarde en base une trend
+     * On veut toujours une seule trend, donc on supprime toutes les anciennes quand on en ajoute
+     *
+     * @param stockTrendList trend
+     */
+    @Transactional
+    public void saveStockTrendList(StockTrendList stockTrendList) {
+        stockTrendListRepository.deleteAll();
+        stockTrendListRepository.save(stockTrendList);
     }
 }

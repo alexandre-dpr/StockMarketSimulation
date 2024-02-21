@@ -2,6 +2,7 @@ package bourse.controller;
 
 import bourse.dto.StockDto;
 import bourse.dto.StockListDto;
+import bourse.dto.StockTrendListDto;
 import bourse.enums.Range;
 import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Ticker;
@@ -28,12 +29,12 @@ public class BourseController {
     TickerService tickerService;
 
     @GetMapping("/stock/{ticker}")
-    public ResponseEntity<StockDto> getStock(@PathVariable @NotBlank String ticker, @RequestParam @NotBlank Range range) throws IOException, UnauthorizedException {
+    public ResponseEntity<StockDto> getStock(@PathVariable @NotBlank String ticker, @RequestParam @NotNull Range range) throws IOException, UnauthorizedException {
         return ResponseEntity.ok().body(stockService.getStock(ticker, range));
     }
 
     @GetMapping("/stocks/{tickers}")
-    public ResponseEntity<List<StockListDto>> getStocks(@RequestParam @NotBlank Range range, @PathVariable @NotBlank String... tickers) throws IOException, UnauthorizedException {
+    public ResponseEntity<List<StockListDto>> getStocks(@RequestParam @NotNull Range range, @PathVariable @NotBlank String... tickers) throws IOException, UnauthorizedException {
         return ResponseEntity.ok().body(stockService.getStocks(tickers, range));
     }
 
@@ -45,5 +46,10 @@ public class BourseController {
     @GetMapping("/stocksList")
     public ResponseEntity<Page<Ticker>> getStocksList(@RequestParam @NotNull Integer page) {
         return ResponseEntity.ok().body(tickerService.getStocksList(page));
+    }
+
+    @GetMapping("/trends")
+    public ResponseEntity<StockTrendListDto> getTrends() throws UnauthorizedException, IOException {
+        return ResponseEntity.ok().body(stockService.getTrends());
     }
 }
