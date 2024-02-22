@@ -26,12 +26,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class StockService {
@@ -284,6 +283,8 @@ public class StockService {
                         stock = StockDto.oneDayDto(optStock.get());
                     }
 
+                    DecimalFormat decimalFormat = new DecimalFormat("0.00%", DecimalFormatSymbols.getInstance(Locale.US));
+
                     outputList.add(
                             new StockTrendDto(
                                     ticker,
@@ -291,7 +292,7 @@ public class StockService {
                                     node.path("price").asDouble(),
                                     stock.getCurrency(),
                                     node.path("change_amount").asDouble(),
-                                    node.path("change_percentage").asText(),
+                                    decimalFormat.format(Double.parseDouble(node.path("change_percentage").asText().replace("%", ""))),
                                     node.path("volume").asInt()
                             )
                     );
