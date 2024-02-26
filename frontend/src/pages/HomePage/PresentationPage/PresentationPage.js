@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
 import AnimatedLineChart from "../../../containers/Charts/AnimatedLineChart";
+import './PresentationPage.scss';
 import {Chart} from "react-chartjs-2";
-import bg_pc from "../../../assets/img/bg-pc.png";
+import bg_pc from "../../../assets/img/bg-pc-resize-tiny.png"
 import {useTranslation} from "react-i18next";
 import {useLocation} from "react-router-dom";
+import styles from "../../../index.scss";
 
 function PresentationPage() {
     const location = useLocation();
@@ -22,6 +24,14 @@ function PresentationPage() {
             localStorage.removeItem('isReloaded');
         }
     }, [location.pathname]);
+
+
+    useEffect(() => {
+        document.body.style.backgroundColor = styles.primaryColor;
+        return () => {
+            document.body.style.backgroundColor = '';
+        };
+    }, []);
 
     const {t} = useTranslation();
 
@@ -48,7 +58,7 @@ function PresentationPage() {
         labels: [
             'Red',
             'Blue',
-            'Yellow'
+            'Purple'
         ],
         datasets: [{
             data: [30, 140, 70],
@@ -70,13 +80,14 @@ function PresentationPage() {
             },
         }
     }
+
+
     return (
-        <div>
+        <div className="homePage">
 
             <div className="paper paper-1">
                 <AnimatedLineChart/>
             </div>
-
 
             <div className="paper paper-2">
                 <Chart  options={options} className={"doughnutChart"} type={"doughnut"} data={data} />
@@ -95,7 +106,7 @@ function PresentationPage() {
             </svg>
 
             <div id="bg-pc" className='bg-pc'>
-                <img className='imgTablette' src={bg_pc}/>
+                <img loading="lazy" className='imgTablette' src={bg_pc}/>
             </div>
 
 
@@ -108,7 +119,7 @@ function PresentationPage() {
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
 export default PresentationPage;

@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.actions-items {
+  display: grid;
+  grid-template-columns: 15% 1fr 15%;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  margin-block: 5px;
+}
+
+.content {
+  flex-grow: 1;
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  p {
+    margin-block: 2px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+.cards{
+    background-color: white;
+    padding-inline: 4vw;
+    padding-block: 4vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding-bottom: 5vh;border-radius: 15px;
+}

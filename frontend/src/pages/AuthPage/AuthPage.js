@@ -10,12 +10,14 @@ import {RequestAuth} from "../../request/RequestAuth";
 import {Auth} from "../../utils/Auth";
 import routes from "../../utils/routes.json";
 import {jwtDecode} from "jwt-decode";
+import {RequestWallet} from "../../request/RequestWallet";
 
 
 function AuthPage() {
     const router = useNavigate();
     const { t } = useTranslation();
-    const request = new RequestAuth();
+    const requestAuth = new RequestAuth();
+    const requestWallet = new RequestWallet();
     const [authType, setAuthType] = useState();
     const location = useLocation();
     const[username, setUsername] = useState('');
@@ -47,7 +49,7 @@ function AuthPage() {
 
     async function connected(){
         try {
-            const resp = await request.login(login, password);
+            const resp = await requestAuth.login(login, password);
             const token = resp.data
             await auth.setJwtToken(token);
             router(routes.home);
@@ -58,8 +60,10 @@ function AuthPage() {
 
     async function register(){
         try {
-            const resp = await request.register(username, login, password);
+            const resp = await requestAuth.register(username, login, password);
             const token = resp.data
+            console.log(token);
+            await requestWallet.createWallet(token.sub);
             await auth.setJwtToken(token);
             router(routes.home);
         }catch (e) {
