@@ -8,8 +8,20 @@ export class RequestWallet {
         try {
             return await this.axios.post(constants.url_api_portefeuille,
                 {
-                    "username": "alexandre"
+                    "username": username
                 });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getWallet(username) {
+        try {
+            return await this.axios.get(constants.url_api_portefeuille, {
+                body: {
+                    username: username
+                }
+            });
         } catch (error) {
             throw error;
         }

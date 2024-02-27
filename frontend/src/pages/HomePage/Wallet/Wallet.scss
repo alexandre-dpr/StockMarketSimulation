@@ -28,8 +28,14 @@
 }
 .cards{
     background-color: white;
-    padding-inline: 4vw;
-    padding-block: 4vh;
+    padding: 4vh;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding-bottom: 5vh;border-radius: 15px;
+    border-radius: 15px;
+    height: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+.green{
+  color: limegreen;
 }

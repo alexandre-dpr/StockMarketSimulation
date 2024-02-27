@@ -49,11 +49,11 @@ export class Auth {
 
 
      isLoggedIn() {
-        return !!Auth.getJwtToken();
+        return !!this.getJwtToken();
     }
 
     async decodeToken() {
-        const token = await Auth.getJwtToken();
+        const token = await this.getJwtToken();
         if (token) {
             return jwtDecode(token);
         } else {
@@ -61,9 +61,11 @@ export class Auth {
         }
     }
 
-    getUsername() {
-        if (Auth.isLoggedIn()) {
-            const decodedToken = Auth.decodeToken();
+    async getUsername() {
+        if (this.isLoggedIn()) {
+            console.log("oui")
+            const decodedToken =await this.decodeToken();
+            console.log(decodedToken)
             if (decodedToken) {
                 return decodedToken.sub;
             }

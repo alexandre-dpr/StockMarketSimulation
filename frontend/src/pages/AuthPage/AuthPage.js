@@ -50,8 +50,7 @@ function AuthPage() {
     async function connected(){
         try {
             const resp = await requestAuth.login(login, password);
-            const token = resp.data
-            await auth.setJwtToken(token);
+            await auth.setJwtToken(resp.data);
             router(routes.home);
         }catch (e) {
             setError(e.message);
@@ -61,10 +60,8 @@ function AuthPage() {
     async function register(){
         try {
             const resp = await requestAuth.register(username, login, password);
-            const token = resp.data
-            console.log(token);
-            await requestWallet.createWallet(token.sub);
-            await auth.setJwtToken(token);
+            await auth.setJwtToken(resp.data);
+            await requestWallet.createWallet(await auth.getUsername());
             router(routes.home);
         }catch (e) {
             console.log(e.message)
