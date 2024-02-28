@@ -32,10 +32,23 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     height: 100%;
+    max-height: 100%;
     box-sizing: border-box;
     justify-content: center;
+    display: flex;
     align-items: center;
+}
+
+@media (max-width: 768px) {
+  .cards{
+    flex-direction: column;
+    max-height: unset;
+    padding: 10px;
+    height: unset;
+    max-height: unset;
+  }
 }
 .green{
   color: limegreen;
 }
+

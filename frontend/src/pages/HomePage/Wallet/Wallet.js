@@ -26,6 +26,7 @@ function Wallet() {
     const requestWallet = new RequestWallet();
     const auth = new Auth();
     const navigate = useNavigate();
+    const [isPercent, setIsPercent] = useState();
 
 
     useEffect(()=>{
@@ -48,8 +49,8 @@ function Wallet() {
 
     return (
         <div className="containerPage">
-            <div className="cards d-flex">
-                <div className="d-flex flex-column h-100 w-65">
+            <div className="cards">
+                <div className="d-flex flex-column h-100 w-65 w-sm-100-p">
                         <h1>Portefeuille de {data.username}</h1>
                     <div className="d-flex align-center">
                         <h1>{data.solde} $ </h1>
@@ -57,10 +58,12 @@ function Wallet() {
                     </div>
                     <Graph/>
                 </div>
-                <div className="d-flex flex-column h-100 w-35">
+                <div className="d-flex flex-column h-100 w-35 w-sm-100-p">
                     <div className="h-50 d-flex flex-column">
                         <h3>Vous possédez {data.mouvements.length} actions :</h3>
-                        <div className="d-flex flex-column w-100 overflow-auto">
+                        <div className="d-flex flex-column w-100 overflow-scroll h-14-r">
+                            {
+                                data.mouvements.length > 0 ?<>
                             {
                                 data.mouvements.map((item,index)=>(
                                     <div className="actions-items " id={item.ticker} >
@@ -71,17 +74,21 @@ function Wallet() {
                                                 <p>{item.ticker}</p>
                                                 <p>{item.price * item.quantity} $</p>
                                             </div>
-                                        <div>
-                                            <p className="green">{item.price} $</p>
+                                        <div className="pointer" onClick={()=>{setIsPercent(!isPercent)}}>
+                                            <p className="green">{isPercent ? "4 %" : item.price + " $"}</p>
                                         </div>
                                     </div>
                                 ))
+                            }
+                            </>
+                            :
+                                    <p>Vous ne possédez aucune action</p>
                             }
                         </div>
                     </div>
                     <div className="h-50 w-100">
                         <h3>Mes Favoris</h3>
-                        <div className="d-flex flex-column w-100">
+                        <div className="d-flex flex-column w-100 overflow-scroll h-14-r">
                             <div className="actions-items">
                                 <div>
                                     <img src={logo} style={{width: 30}}/>
@@ -91,8 +98,8 @@ function Wallet() {
                                     <p>Apple</p>
                                     <p>432,5$</p>
                                 </div>
-                                <div>
-                                    <p className="green"> 1,42 %</p>
+                                <div className="pointer" onClick={()=>{setIsPercent(!isPercent)}}>
+                                    <p className="green" >{isPercent ? "1,42 %" : "4 $"}</p>
                                 </div>
                             </div>
                         </div>

@@ -4,19 +4,7 @@ import { Line } from "react-chartjs-2";
 const Graph = () => {
     const chartRef = useRef(null);
 
-    useEffect(() => {
-        const handleResize = () => {
-            if (chartRef.current && chartRef.current.chartInstance) {
-                chartRef.current.chartInstance.resize();
-            }
-        };
 
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     const chartData = {
         labels: ["1 Dec", "8 Dec", "16 Dec", "31 Dec"],
@@ -35,6 +23,13 @@ const Graph = () => {
     };
 
     const options = {
+
+        layout: {
+            padding: {
+                // Any unspecified dimensions are assumed to be 0
+                left: 0
+            }
+        },
         maintainAspectRatio : false,
         plugins:{
             legend: {
@@ -45,20 +40,21 @@ const Graph = () => {
             enabled: false
         },
         scales: {
+
             x: {
                 title: {
-                    display: true,
+                    display: false,
                 },
                 grid: {
-                    display: false
+                    display: false,
                 },
             },
             y: {
                 title: {
-                    display: true,
+                    display: false,
                 },
                 grid: {
-                    display: false
+                    display: false,
                 }
             },
         }
