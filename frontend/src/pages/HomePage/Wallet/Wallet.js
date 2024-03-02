@@ -6,9 +6,12 @@ import {RequestWallet} from "../../../request/RequestWallet";
 import {Auth} from "../../../utils/Auth";
 import routes from "../../../utils/routes.json";
 import {useNavigate} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 
 
 function Wallet() {
+    const { t } = useTranslation();
     const [data,setData] = useState({
         "username": "vincent",
         "solde": 640.0,
@@ -51,7 +54,7 @@ function Wallet() {
         <div className="containerPage">
             <div className="cards">
                 <div className="d-flex flex-column h-100 w-65 w-sm-100-p">
-                        <h1>Portefeuille de {data.username}</h1>
+                        <h1>{t('wallet.wallet')}</h1>
                     <div className="d-flex align-center">
                         <h1>{data.solde} $ </h1>
                         <p className="green ml-r-1"> 142 $ (1,78 %)</p>
@@ -60,7 +63,7 @@ function Wallet() {
                 </div>
                 <div className="d-flex flex-column h-100 w-35 w-sm-100-p">
                     <div className="h-50 d-flex flex-column">
-                        <h3>Vous possédez {data.mouvements.length} actions :</h3>
+                        <h3>{t('wallet.own')}{data.mouvements.length}{t('wallet.stocks')} :</h3>
                         <div className="d-flex flex-column w-100 overflow-scroll h-14-r">
                             {
                                 data.mouvements.length > 0 ?<>
@@ -82,12 +85,12 @@ function Wallet() {
                             }
                             </>
                             :
-                                    <p>Vous ne possédez aucune action</p>
+                                    <p>{t('wallet.own_nothing')}</p>
                             }
                         </div>
                     </div>
                     <div className="h-50 w-100">
-                        <h3>Mes Favoris</h3>
+                        <h3>{t('wallet.favorites')}</h3>
                         <div className="d-flex flex-column w-100 overflow-scroll h-14-r">
                             <div className="actions-items">
                                 <div>

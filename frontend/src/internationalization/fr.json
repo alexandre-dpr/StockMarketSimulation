@@ -38,5 +38,12 @@
         "research": "Rechercher un actif",
         "trends": "Tendances"
 
+    },
+    "wallet": {
+        "wallet" : "Portefeuille",
+        "own" : "Vous possédez ",
+        "stocks" : " action(s) ",
+        "own_nothing" : "Vous ne possédez aucune action.",
+        "favorites" : "Mes favoris"
     }
 }
