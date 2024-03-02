@@ -6,7 +6,7 @@
 }
 .actions-items {
   display: grid;
-  grid-template-columns: 15% 1fr 15%;
+  grid-template-columns: 15% 1fr minmax(15%, auto); /* Utilisation de minmax() */
   gap: 10px;
   align-items: center;
   width: 100%;
