@@ -26,7 +26,8 @@ const StocksChat = ({stocks,username}) => {
         if (addCommentaire.length > 0){
             await requestCommunity.addComment(username,addCommentaire,stocks);
             const response = await requestCommunity.getAllComment(stocks);
-            await setCommentaires([response.data]);
+
+            await setCommentaires(response.data);
         }
     }
 
