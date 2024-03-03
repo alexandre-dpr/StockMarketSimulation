@@ -1,0 +1,19 @@
+.card{
+  background-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-block: 10px;
+  p{
+
+  margin-block: 5px;
+  }
+}
+.like{
+  padding: 5px;
+  border-radius: 40px;
+
+}
+.like:hover{
+  background-color: lightgrey;
+}
