@@ -12,9 +12,9 @@
     "header": {
         "login": "Sign in!",
         "register": "Sign up!",
-        "about": "À propos",
-        "leaderboard": "Classement",
-        "market": "Marché"
+        "about": "About",
+        "leaderboard": "Leaderboard",
+        "market": "Market"
     },
     "login" : {
         "connection" : "Connection",
@@ -27,13 +27,21 @@
         "email-username" : "Email / Username"
     },
   "market": {
-    "market": "Market",
-      "marketTable": {
+    "market": "Market overview",
+      "table": {
           "ticker": "Ticker",
           "name": "Nom",
           "exchange":"Exchange",
           "Category": "Category",
           "Country": "Pays"
+      },"gainers_table": {
+          "ticker": "Ticker",
+          "name": "Name",
+          "price": "Price",
+          "currency": "Currency",
+          "changePercentage": "Change %",
+          "changeAmount": "Change",
+          "volume": "Volume"
       },
       "research": "Search for an asset",
       "trends": "Trends"

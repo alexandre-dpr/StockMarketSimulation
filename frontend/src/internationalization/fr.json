@@ -14,7 +14,7 @@
         "register": "Inscris-toi!",
         "about": "À propos",
         "leaderboard": "Classement",
-        "market": "Marché"
+        "market": "Marchés"
     },
     "login" : {
         "connection" : "Connexion",
@@ -27,13 +27,22 @@
         "email-username" : "Email/Nom d'utilisateur"
     },
     "market": {
-        "market": "Marché",
+        "market": "Apercu du marché",
         "table": {
             "ticker": "Ticker",
             "name": "Nom",
             "exchange":"Exchange",
             "category": "Catégorie",
             "country": "Pays"
+        },
+        "gainers_table": {
+            "ticker": "Ticker",
+            "name": "Nom",
+            "price": "Prix",
+            "currency": "Devise",
+            "changePercentage": "Variation %",
+            "changeAmount": "Variation",
+            "volume": "Volume"
         },
         "research": "Rechercher un actif",
         "trends": "Tendances"

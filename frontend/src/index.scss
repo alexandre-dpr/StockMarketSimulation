@@ -14,11 +14,11 @@ $color-3: #9f9f9f;
 
 
 html, body {
-  font-family: Gabarito;
+  font-family: Gabarito !important;
   height: 100%;
   margin: 0;
   padding: 0;
-  background: $secondary-color;
+
 }
 
 #root {

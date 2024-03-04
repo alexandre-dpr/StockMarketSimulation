@@ -14,7 +14,7 @@ function Header() {
     const { t } = useTranslation();
 
     useEffect(() => {
-        if(location.pathname !== routes.home){
+        if(location.pathname === routes.home){
             const baliseHeader = document.getElementById("header");
             baliseHeader.className = "header h-home"
         }

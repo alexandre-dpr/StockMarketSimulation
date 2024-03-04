@@ -1,5 +1,5 @@
 {
-  "table": [
+  "market_table": [
     {"label": "logo"},
     {"label": "ticker"},
     {"label": "name"},
@@ -7,5 +7,15 @@
     {"label": "category"},
     {"label": "country"}
   ],
+  "gainers": [
+    {"label": "logo"},
+    {"label": "ticker"},
+    {"label": "name"},
+    {"label": "price"},
+    {"label": "currency"},
+    {"label": "changePercentage"},
+    {"label": "changeAmount"},
+    {"label": "volume"}
+],
   "rowsPerPage": 50
 }

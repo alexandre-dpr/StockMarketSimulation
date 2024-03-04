@@ -1,4 +1,5 @@
 {
   "stocksList": "/stocksList",
-  "tickerAutocomplete": "/tickerAutocomplete"
+  "tickerAutocomplete": "/tickerAutocomplete",
+  "trends": "/trends"
 }

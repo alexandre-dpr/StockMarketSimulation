@@ -42,5 +42,17 @@ async function findTickerByName(name,page) {
     }
 }
 
+async function getTrends(){
+    const ENDPOINT = endpoints.trends;
 
-export { getStocksList, findTickerByName };
+    try {
+        const response = await axios.get(`${url_api}${ENDPOINT}`);
+        return { data: response.data };
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        return { error: error };
+    }
+}
+
+
+export { getStocksList, findTickerByName, getTrends };

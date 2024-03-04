@@ -12,9 +12,9 @@ async function getFormatStocks(data) {
         try {
             const response = await fetch(item.logoUrl);
             if (!response.ok) throw new Error('Failed to load');
-            return {...item, logo: <CustomImage style={{width: "35px"}} src={item.logoUrl} alt={"img"}/>};
+            return {...item, logo: <CustomImage style={{width: "35px", height:"35px"}} src={item.logoUrl} alt={"img"}/>};
         } catch (error) {
-            return {...item, logo: <CustomImage style={{width: "35px"}} src={""} alt={"img"}/>};
+            return {...item, logo: <CustomImage style={{width: "35px", height:"35px"}} src={""} alt={"img"}/>};
         }
     }))
 
