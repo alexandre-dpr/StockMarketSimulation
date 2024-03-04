@@ -27,5 +27,24 @@ export class RequestCommunity {
         }
     }
 
+    async likeComment(idComment,username){
+        try {
+            return await this.axios.post(constants.url_community + RequestCommunity.COMMENT + "/"+idComment ,
+                {
+                    "userId": username
+                });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteComment(idComment){
+        try {
+            return await this.axios.delete(constants.url_community + RequestCommunity.COMMENT + "/"+idComment);
+        } catch (error) {
+            throw error;
+        }
+    }
+
 
 }

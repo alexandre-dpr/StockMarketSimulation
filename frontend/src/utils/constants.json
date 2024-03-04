@@ -4,6 +4,7 @@
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "url_api": "http://localhost:8081",
+  "url_community" : "http://localhost:8082/community",
   "url_api_bourse": "http://localhost:8083/bourse",
   "url_api_portefeuille": "http://localhost:8084/portefeuille"
 }

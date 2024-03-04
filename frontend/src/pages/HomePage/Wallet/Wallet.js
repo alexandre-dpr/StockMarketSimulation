@@ -96,7 +96,7 @@ function Wallet() {
                                 <div>
                                     <img src={logo} style={{width: 30}}/>
                                 </div>
-                                <div className="content cursor" onClick={()=>{goTicker("Apple")}}>
+                                <div className="content pointer" onClick={()=>{goTicker("Test")}}>
 
                                     <p>Apple</p>
                                     <p>432,5$</p>
