@@ -9,13 +9,14 @@ import { getFormatStocks } from "../../utils/services";
 import routes from "../../utils/routes.json";
 import { useNavigate } from "react-router-dom";
 import InputResearch from "../../components/Input/InputResearch/InputResearch";
+import TrendsTable from "../../containers/Table/TrendsTable/TrendsTable";
 
 
 function Market() {
     const { t } = useTranslation();
     const market_cols = market.market_table
 
-    const labelsToExclude = ["variation", "name", "changeAmount"]; // Ajoutez les labels que vous voulez exclure
+    const labelsToExclude = ["variation", "name", "changeAmount","currency","volume"];
     const trends_cols = market.gainers.filter(gainer => !labelsToExclude.includes(gainer.label));
 
     const [gainers, setGainers] = useState([]);
@@ -94,9 +95,8 @@ function Market() {
 
                 <div className="d-flex containerTrends">
                     <div className={"tableTrends"}>
-                        <MarketTable
+                        <TrendsTable
                             colorPrice="rgb(54, 162, 235)"
-                            isTrends={true}
                             keyInter={"market.gainers_table"}
                             columns={trends_cols}
                             data={gainers}
@@ -105,9 +105,8 @@ function Market() {
                         />
                     </div>
                 <div  className={"tableTrends"}>
-                    <MarketTable
+                    <TrendsTable
                         colorPrice="rgb(255, 99, 132)"
-                        isTrends={true}
                         keyInter={"market.gainers_table"}
                         columns={trends_cols}
                         data={loosers}

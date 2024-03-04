@@ -9,10 +9,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useTranslation } from 'react-i18next';
 import '../Table.scss'
-import baissier from "../../../assets/img/baissier.png"
-import haussier from "../../../assets/img/haussier.png"
 
-function MarketTable({ sign, colorPrice, isTrends, pagination, columns, keyInter, data, totalCount, page, setPage, rowsPerPage, handleClickTicker }) {
+function MarketTable({ columns, keyInter, data, totalCount, page, setPage, rowsPerPage, handleClickTicker }) {
     const { t } = useTranslation();
 
     const handleChangePage = (event, newPage) => {
@@ -20,25 +18,13 @@ function MarketTable({ sign, colorPrice, isTrends, pagination, columns, keyInter
     };
 
     function renderContent(column) {
-        // Affichage basé sur la valeur de "sign"
-        if (column.label === "logo") {
-            if (sign === "+") {
-                return <img style={{width:"30px"}} src={haussier} alt="" />;
-            } else if (sign === "-") {
-                return <img style={{width:"30px"}} src={baissier} alt="" />;
-            }else{
-                return ""
-            }
-        }
-        // Retourner une valeur par défaut si aucun des cas ci-dessus n'est satisfait
-        return t(`${keyInter}.${column.label}`);
+        return column.label !== "logo" && t(`${keyInter}.${column.label}`);
     }
 
     return (
         <div className={"tableMarket"}>
 
-            <Paper sx={isTrends ? { width: '100%', overflow: 'hidden', boxShadow: 2, borderRadius: "15px" } : { width: '100%', overflow: 'hidden', boxShadow: 0 }}>
-                {pagination &&
+            <Paper sx={{ width: '100%', overflow: 'hidden', boxShadow: 0 }}>
                     <TablePagination
                         rowsPerPageOptions={[]} // Enlever l'option pour changer le nombre de lignes par page
                         component="div"
@@ -47,7 +33,6 @@ function MarketTable({ sign, colorPrice, isTrends, pagination, columns, keyInter
                         page={page}
                         onPageChange={handleChangePage}
                     />
-                }
                 <TableContainer className={"tableContainer"}>
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead >
@@ -59,6 +44,7 @@ function MarketTable({ sign, colorPrice, isTrends, pagination, columns, keyInter
                                         align={column.align || 'inherit'}
                                         style={{ minWidth: column.minWidth }}
                                         className={"tableHeader tableCell"}
+                                        id={column.label}
                                     >
                                         {renderContent(column)}
                                     </TableCell>
@@ -67,20 +53,17 @@ function MarketTable({ sign, colorPrice, isTrends, pagination, columns, keyInter
                         </TableHead>
                         <TableBody className={"tableRow"}>
                             {data.map((row, rowIndex) => (
-                                <TableRow sx={isTrends ? {} : null} onClick={() => handleClickTicker(row["ticker"])} hover role="checkbox" tabIndex={-1} key={row.id || rowIndex}>
+                                <TableRow onClick={() => handleClickTicker(row["ticker"])} hover role="checkbox" tabIndex={-1} key={row.id || rowIndex}>
                                     {columns.map((column) => {
                                         const value = row[column.label];
                                         return (
-
-                                            isTrends ?
-                                                <TableCell sx={column.label === "price" ? { border: "0", color: colorPrice, fontFamily: "Gabarito-Bold" } : { border: "0", padding: "7.5px" }} className={column.label === "ticker" ? "tableCell ticker" : "tableCell"} key={column.label} align={column.align}>
-                                                    {column.label === "price" ? `${sign}${value}` : value}
-                                                </TableCell>
-                                                :
-                                                <TableCell sx={{ padding: "10px" }} className={column.label === "ticker" ? "tableCell ticker" : "tableCell"} key={column.label} align={column.align}>
+                                                <TableCell
+                                                    sx={{ padding: "10px" }}
+                                                    className={column.label === "ticker" ? "tableCell ticker" : "tableCell"}
+                                                    key={column.label} align={column.align}
+                                                    id={column.label}>
                                                     {value}
                                                 </TableCell>
-
                                         );
                                     })}
                                 </TableRow>
@@ -88,17 +71,14 @@ function MarketTable({ sign, colorPrice, isTrends, pagination, columns, keyInter
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {pagination &&
                     <TablePagination
-                        rowsPerPageOptions={[]} // Enlever l'option pour changer le nombre de lignes par page
+                        rowsPerPageOptions={[]}
                         component="div"
                         count={totalCount}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                     />
-                }
-
             </Paper>
         </div>
 

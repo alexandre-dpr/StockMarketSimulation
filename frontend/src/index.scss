@@ -70,14 +70,14 @@ html, body {
     }
   }
 
-  @else if $breakpoint =='tablet' {
-    @media (min-width: 601px) and (max-width: 1399px) {
+  @else if $breakpoint =='small-tablet' {
+    @media (min-width: 601px) and (max-width: 1000px) {
       @content;
     }
   }
 
-  @else if $breakpoint =='small-tablet' {
-    @media (min-width: 601px) and (max-width: 1000px) {
+  @else if $breakpoint =='tablet' {
+    @media (min-width: 601px) and (max-width: 1399px) {
       @content;
     }
   }

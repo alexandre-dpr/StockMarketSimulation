@@ -16,6 +16,28 @@
   .ticker {
     font-family: Gabarito-Bold !important;
   }
+
+#volume,#price{
+  @include respond-to('phone') {
+  }
+
+
+  @include respond-to('tablet') {
+      display: none;
+  }
+
+  @include respond-to('desktop') {
+
+
+  }
+
+  @include respond-to('large-desktop') {
+
+
+  }
+}
+
+
 }
 
 //rgb(54, 162, 235); bleu
