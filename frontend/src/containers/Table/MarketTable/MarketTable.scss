@@ -1,4 +1,4 @@
-@import "../../index";
+@import "../../../index";
 
 .tableMarket {
 
@@ -17,25 +17,34 @@
     font-family: Gabarito-Bold !important;
   }
 
-#volume,#price{
-  @include respond-to('phone') {
-  }
-
-
-  @include respond-to('tablet') {
+  #exchange {
+    @include respond-to('phone') {
       display: none;
-  }
-
-  @include respond-to('desktop') {
-
+    }
 
   }
 
-  @include respond-to('large-desktop') {
+  #category {
+    @include respond-to('phone') {
+      display: none;
+    }
 
 
+    @include respond-to('small-tablet') {
+      display: none;
+    }
   }
-}
+
+  #country {
+    @include respond-to('phone') {
+      display: none;
+    }
+
+
+    @include respond-to('tablet') {
+      display: none;
+    }
+  }
 
 
 }

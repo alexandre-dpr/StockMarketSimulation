@@ -9,9 +9,6 @@ import Market from './pages/Market/Market';
 import Leaderboard from './pages/Leaderboard/Leaderboard';
 import About from './pages/About/About';
 import Stock from './pages/Action/Stock';
-import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-import AuthWrapper from "./components/ProtectedRoute/ProtectedRoute";
-import {useEffect} from "react";
 
 function App() {
 

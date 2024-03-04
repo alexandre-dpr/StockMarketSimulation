@@ -1,11 +1,11 @@
 {
-    "auth": "/auth",
-    "login": "login",
-    "register": "register",
-    "home": "/",
-    "about": "/about",
-    "market": "/market",
-    "leaderboard": "/leaderboard",
-    "stock": "/stock/:ticker",
-    "stock_nav": "/stock"
+  "auth": "/auth",
+  "login": "login",
+  "register": "register",
+  "home": "/",
+  "about": "/about",
+  "market": "/market",
+  "leaderboard": "/leaderboard",
+  "stock": "/stock/:ticker",
+  "stock_nav": "/stock"
 }

@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import './Market.scss'
-import { useTranslation } from 'react-i18next';
-import market from "../../modele/stocks-list.json"
+import {useTranslation} from 'react-i18next';
+import utils from "../../utils/utils.json"
 import "../../request/RequestMarket";
 import MarketTable from "../../containers/Table/MarketTable/MarketTable";
-import { findTickerByName, getStocksList, getTrends } from "../../request/RequestMarket";
-import { getFormatStocks } from "../../utils/services";
+import {findTickerByName, getStocksList, getTrends} from "../../request/RequestMarket";
+import {getFormatStocks} from "../../utils/services";
 import routes from "../../utils/routes.json";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import InputResearch from "../../components/Input/InputResearch/InputResearch";
 import TrendsTable from "../../containers/Table/TrendsTable/TrendsTable";
 
 
 function Market() {
-    const { t } = useTranslation();
-    const market_cols = market.market_table
+    const {t} = useTranslation();
+    const market_cols = utils.market_table
 
-    const labelsToExclude = ["variation", "name", "changeAmount","currency","volume"];
-    const trends_cols = market.gainers.filter(gainer => !labelsToExclude.includes(gainer.label));
+    const labelsToExclude = ["variation", "name", "changeAmount", "currency", "volume", "changePercentage"];
+    const trends_cols = utils.gainers.filter(gainer => !labelsToExclude.includes(gainer.label));
 
     const [gainers, setGainers] = useState([]);
     const [loosers, setLoosers] = useState([]);
@@ -67,7 +67,6 @@ function Market() {
     }, [page, nameResearch, fromResearchData]);
 
 
-
     const handleSubmit = async (research) => {
         setName(research)
         setPage(0)
@@ -86,60 +85,60 @@ function Market() {
     return (
         <div className='containerPage'>
             <div className={"pageMarket"}>
-
-                <div className={"headerMarket"}>
-                    <h1>
-                        {t('market.trends')}
-                    </h1>
-                </div>
-
-                <div className="d-flex containerTrends">
-                    <div className={"tableTrends"}>
-                        <TrendsTable
-                            colorPrice="rgb(54, 162, 235)"
-                            keyInter={"market.gainers_table"}
-                            columns={trends_cols}
-                            data={gainers}
-                            sign={"+"}
-                            handleClickTicker={handleClickTicker}
-                        />
+                <div className={"trends"}>
+                    <div className={"headerMarket"}>
+                        <h1>
+                            {t('market.trends')}
+                        </h1>
                     </div>
-                <div  className={"tableTrends"}>
-                    <TrendsTable
-                        colorPrice="rgb(255, 99, 132)"
-                        keyInter={"market.gainers_table"}
-                        columns={trends_cols}
-                        data={loosers}
-                        sign={"-"}
+
+                    <div className="d-flex containerTrends">
+                        <div className={"boxTrends"}>
+                            <TrendsTable
+                                colorPrice="rgb(54, 162, 235)"
+                                keyInter={"market.gainers_table"}
+                                columns={trends_cols}
+                                data={gainers}
+                                sign={utils.plus}
+                                handleClickTicker={handleClickTicker}
+                            />
+                        </div>
+                        <div className={"boxTrends"}>
+                            <TrendsTable
+                                colorPrice="rgb(255, 99, 132)"
+                                keyInter={"market.gainers_table"}
+                                columns={trends_cols}
+                                data={loosers}
+                                sign={utils.minus}
+                                handleClickTicker={handleClickTicker}
+                            />
+                        </div>
+
+                    </div>
+                </div>
+                <div className={"market"}>
+                    <div className={"headerMarket"}>
+                        <h1>
+                            {t('market.market')}
+                        </h1>
+                        <div>
+                            <InputResearch label={t('market.research')} onSubmit={handleSubmit}/>
+                        </div>
+                    </div>
+
+                    <MarketTable
+                        handleSubmit={handleSubmit}
                         handleClickTicker={handleClickTicker}
+                        columns={market_cols}
+                        keyInter={"market.table"}
+                        data={data}
+                        totalCount={totalCount}
+                        page={page}
+                        setPage={setPage}
+                        rowsPerPage={utils.rowsPerPage}
+                        pagination={true}
                     />
                 </div>
-
-                </div>
-
-
-                <div className={"headerMarket"}>
-                    <h1>
-                        {t('market.market')}
-                    </h1>
-                    <div>
-                        <InputResearch label={t('market.research')} onSubmit={handleSubmit} />
-                    </div>
-                </div>
-
-                <MarketTable
-                    height={100}
-                    handleSubmit={handleSubmit}
-                    handleClickTicker={handleClickTicker}
-                    columns={market_cols}
-                    keyInter={"market.table"}
-                    data={data}
-                    totalCount={totalCount}
-                    page={page}
-                    setPage={setPage}
-                    rowsPerPage={market.rowsPerPage}
-                    pagination={true}
-                />
             </div>
 
 

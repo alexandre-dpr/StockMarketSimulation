@@ -5,13 +5,15 @@
     padding-top: 100px;
     padding-inline: 10vw;
     height: 100%;
-}
-
-@media (max-width: 575px) {
-    .containerPage{
-        padding-inline: 3vw;
+    @include respond-to('phone') {
+        padding-top: 30px;
+        padding-inline: 0;
     }
 
+    @include respond-to('small-tablet') {
+        padding-top: 20px;
+        padding-inline: 0;
+    }
 }
 
 
