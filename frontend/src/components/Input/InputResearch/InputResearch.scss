@@ -14,8 +14,13 @@
   }
 
   input:focus{
-    width: 17vw;
-  }
+    width: 20vw;
+    @include respond-to('phone') {
+      width: 40vw;
+    }
+    @include respond-to('small-tablet') {
+      width: 35vw;
+    }}
 
 
 

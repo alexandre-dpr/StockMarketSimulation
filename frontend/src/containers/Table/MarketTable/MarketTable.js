@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useTranslation } from 'react-i18next';
-import '../Table.scss'
+import './MarketTable.scss'
 
 function MarketTable({ columns, keyInter, data, totalCount, page, setPage, rowsPerPage, handleClickTicker }) {
     const { t } = useTranslation();

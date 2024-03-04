@@ -1,0 +1,43 @@
+@import "../../../index";
+
+.tableTrends {
+  .tableHeader {
+    font-size: 16px !important;
+    font-family: Gabarito-SemiBold !important;
+  }
+
+  .tableCell {
+    cursor: default !important;
+    padding: 5px !important;
+    padding-left: 30px !important;
+  }
+
+  .ticker {
+    font-family: Gabarito-Bold !important;
+  }
+
+
+  #volume, #price {
+    @include respond-to('tablet') {
+      display: none;
+    }
+
+    @include respond-to('desktop') {
+    }
+
+    @include respond-to('large-desktop') {
+    }
+  }
+
+  #logo{
+
+    @include respond-to('small-tablet') {
+      display: none;
+    }
+  }
+
+
+}
+
+//rgb(54, 162, 235); bleu
+//rgb(255, 99, 132);
