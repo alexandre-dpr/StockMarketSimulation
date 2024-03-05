@@ -46,13 +46,13 @@ public class PortefeuilleController {
     }
 
     @PostMapping("/achat")
-    public ResponseEntity<Void> acheter(@RequestBody @Valid TransactionActionReqDto req) throws InsufficientFundsException, NotFoundException {
+    public ResponseEntity<Void> acheter(@RequestBody @Valid TransactionActionReqDto req) throws InsufficientFundsException, NotFoundException, InterruptedException {
         portefeuilleService.acheterAction(req.getUsername(), req.getTicker(), req.getQuantity());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/vente")
-    public ResponseEntity<Void> vendre(@RequestBody @Valid TransactionActionReqDto req) throws NotEnoughStocksException, NotFoundException {
+    public ResponseEntity<Void> vendre(@RequestBody @Valid TransactionActionReqDto req) throws NotEnoughStocksException, NotFoundException, InterruptedException {
         portefeuilleService.vendreAction(req.getUsername(), req.getTicker(), req.getQuantity());
         return ResponseEntity.ok().build();
     }

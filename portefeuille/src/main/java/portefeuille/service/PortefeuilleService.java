@@ -1,10 +1,12 @@
 package portefeuille.service;
 
+import com.rabbitmq.client.AMQP;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import portefeuille.dto.HistoryDto;
 import portefeuille.dto.PortefeuilleDto;
+import portefeuille.dto.rabbitMq.TickerInfoDto;
 import portefeuille.enums.TypeMouvement;
 import portefeuille.exceptions.InsufficientFundsException;
 import portefeuille.exceptions.NotEnoughStocksException;
@@ -12,11 +14,15 @@ import portefeuille.exceptions.NotFoundException;
 import portefeuille.exceptions.WalletAlreadyCreatedException;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.Portefeuille;
+import portefeuille.modele.TickerInfo;
+import portefeuille.rabbitmq.RabbitMqSender;
 import portefeuille.repository.MouvementRepository;
 import portefeuille.repository.PortefeuilleRepository;
+import portefeuille.repository.TickerInfoRepository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PortefeuilleService {
@@ -26,6 +32,11 @@ public class PortefeuilleService {
 
     @Autowired
     MouvementRepository mouvementRepository;
+
+    @Autowired
+    TickerInfoRepository tickerInfoRepository;
+    @Autowired
+    RabbitMqSender sender;
 
     @Transactional
     public PortefeuilleDto creerPortefeuille(String username) throws WalletAlreadyCreatedException {
@@ -65,11 +76,12 @@ public class PortefeuilleService {
     }
 
     @Transactional
-    public void acheterAction(String username, String ticker, int quantity) throws NotFoundException, InsufficientFundsException {
+    public void acheterAction(String username, String ticker, int quantity) throws NotFoundException, InsufficientFundsException, InterruptedException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
         if (p.isPresent()) {
             Portefeuille portefeuille = p.get();
-            double prixAction = 90.0; // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS ACHAT
+
+            double prixAction = getPrice(ticker); // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS ACHAT
 
             if (portefeuille.getSolde() >= prixAction * quantity) {
 
@@ -106,7 +118,7 @@ public class PortefeuilleService {
     }
 
     @Transactional
-    public void vendreAction(String username, String ticker, int quantity) throws NotFoundException, NotEnoughStocksException {
+    public void vendreAction(String username, String ticker, int quantity) throws NotFoundException, NotEnoughStocksException, InterruptedException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
 
         if (p.isPresent()) {
@@ -118,7 +130,7 @@ public class PortefeuilleService {
 
                 if (actionPossedee.getQuantity() >= quantity) {
 
-                    double prixAction = 90.0; // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS VENTE
+                    double prixAction = getPrice(ticker); // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS VENTE
                     Mouvement mouvementHistorique = Mouvement.builder()
                             .time(LocalDateTime.now())
                             .type(TypeMouvement.VENTE)
@@ -148,6 +160,15 @@ public class PortefeuilleService {
         } else {
             throw new NotFoundException("Personne non trouvée");
         }
+    }
+
+    private double getPrice(String ticker) throws InterruptedException {
+        String uuid = UUID.randomUUID().toString();
+        sender.send(new TickerInfoDto(uuid,ticker,-10.0));
+        while (tickerInfoRepository.findById(ticker).isEmpty());{
+            Thread.sleep(2000);
+        }
+        return tickerInfoRepository.findById(ticker).get().getPrice();
     }
 
 }

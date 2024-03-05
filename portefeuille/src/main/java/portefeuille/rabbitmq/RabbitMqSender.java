@@ -4,7 +4,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import portefeuille.dto.rabbitMq.TickerInfo;
+import portefeuille.dto.rabbitMq.TickerInfoDto;
 
 @Service
 public class RabbitMqSender {
@@ -21,7 +21,7 @@ public class RabbitMqSender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void send(TickerInfo ticker){
+    public void send(TickerInfoDto ticker){
         rabbitTemplate.convertAndSend(exchange,routingkey, ticker);
     }
 }
