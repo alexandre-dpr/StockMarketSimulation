@@ -52,5 +52,8 @@
         "stocks" : " stock(s) ",
         "own_nothing" : "You do not have any stocks.",
         "favorites" : "Favorites"
+    },
+    "stock": {
+        "about": "About"
     }
 }

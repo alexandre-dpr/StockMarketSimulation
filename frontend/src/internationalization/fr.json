@@ -54,5 +54,8 @@
         "stocks" : " action(s) ",
         "own_nothing" : "Vous ne possédez aucune action.",
         "favorites" : "Mes favoris"
-    }
+    },
+    "stock": {
+    "about": "À propos de"
+}
 }

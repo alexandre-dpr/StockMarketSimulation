@@ -50,5 +50,9 @@
   ],
   "rowsPerPage": 50,
   "plus": "+",
-  "minus": "-"
+  "minus": "-",
+  "rangeHistoryStock": {
+    "ONE_DAY": "ONE_DAY",
+    "ONE_YEAR": "ONE_YEAR"
+  }
 }

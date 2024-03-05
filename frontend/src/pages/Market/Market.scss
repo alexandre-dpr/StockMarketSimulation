@@ -22,10 +22,6 @@
     padding-bottom: 5vh;
     border-radius: 15px;
 
-    h1 {
-      margin-right: 40px;
-    }
-
     .trends{
 
       @include respond-to('phone') {
