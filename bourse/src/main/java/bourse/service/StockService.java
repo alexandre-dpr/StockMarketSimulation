@@ -5,6 +5,7 @@ import bourse.dto.StockListDto;
 import bourse.dto.StockTrendDto;
 import bourse.dto.StockTrendListDto;
 import bourse.enums.Range;
+import bourse.exceptions.NotFoundException;
 import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Stock;
 import bourse.modele.StockTrendList;
@@ -65,7 +66,7 @@ public class StockService {
      * @param range  1d, 1y
      * @return StockDto
      */
-    public StockDto getStock(String ticker, Range range) throws IOException, UnauthorizedException {
+    public StockDto getStock(String ticker, Range range) throws IOException, UnauthorizedException, NotFoundException {
         // On vérifie si on n'a pas déjà fetch les infos très récemment
         Optional<Stock> optStock = getSavedStock(ticker);
         Stock stock = null;
@@ -182,6 +183,8 @@ public class StockService {
                     default -> throw new IllegalArgumentException("Invalid range");
                 }
 
+            } else if (response.getStatusLine().getStatusCode() == 404) {
+                throw new NotFoundException();
             } else {
                 throw new UnauthorizedException(String.format("Failed to get stock price for ticker '%s'", ticker));
             }
@@ -200,7 +203,7 @@ public class StockService {
         HttpGet httpGet = new HttpGet(FMI_API_URL);
 
         try {
-            logger.debug("Calling FMI API");
+            logger.info("Calling FMI API");
             HttpResponse response = httpClient.execute(httpGet);
 
             if (response.getStatusLine().getStatusCode() == 200) {
@@ -208,7 +211,7 @@ public class StockService {
                 ObjectMapper objectMapper = new ObjectMapper();
                 return Optional.of(objectMapper.readTree(responseBody).path(0));
 
-            } else if (response.getStatusLine().getStatusCode() == 404) {
+            } else if (response.getStatusLine().getStatusCode() == 404 || response.getStatusLine().getStatusCode() == 403) {
                 return Optional.empty();
 
             } else {
@@ -311,7 +314,7 @@ public class StockService {
      * @param range   1d, 1y
      * @return List<StockListDto>
      */
-    public List<StockListDto> getStocks(String[] tickers, Range range) throws IOException, UnauthorizedException {
+    public List<StockListDto> getStocks(String[] tickers, Range range) throws IOException, UnauthorizedException, NotFoundException {
         List<StockListDto> stocks = new ArrayList<>();
         for (String ticker : tickers) {
             stocks.add(

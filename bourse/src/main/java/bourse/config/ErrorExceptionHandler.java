@@ -1,6 +1,7 @@
 package bourse.config;
 
 import bourse.dto.ExceptionDto;
+import bourse.exceptions.NotFoundException;
 import bourse.exceptions.UnauthorizedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,16 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getDescription(false).replaceFirst("uri=", "")
         );
         return handleExceptionInternal(ex, dto, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    protected ResponseEntity<Object> NotFoundException(NotFoundException ex, WebRequest request) {
+        ExceptionDto dto = new ExceptionDto(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                "Not found",
+                request.getDescription(false).replaceFirst("uri=", "")
+        );
+        return handleExceptionInternal(ex, dto, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }
