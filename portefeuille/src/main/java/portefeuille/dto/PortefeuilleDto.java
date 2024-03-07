@@ -2,8 +2,6 @@ package portefeuille.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import portefeuille.modele.Mouvement;
-import portefeuille.modele.Portefeuille;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +9,15 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class PortefeuilleDto {
-    private String username;
     private Double solde;
-    private List<Mouvement> mouvements;
+    private List<StockPerformanceDto> actions;
+    private PerformanceDto performance;
 
-    public static PortefeuilleDto createPortefeuilleDto(Portefeuille p) {
+    public static PortefeuilleDto createPortefeuilleDto(double solde, List<StockPerformanceDto> actions, PerformanceDto performance) {
         return new PortefeuilleDto(
-                p.getUsername(),
-                p.getSolde(),
-                p.getActions() == null ? new ArrayList<>() : p.getActions()
+                solde,
+                actions == null ? new ArrayList<>() : actions,
+                performance == null ? PerformanceDto.createPerformanceDto(0, 0) : performance
         );
     }
 }

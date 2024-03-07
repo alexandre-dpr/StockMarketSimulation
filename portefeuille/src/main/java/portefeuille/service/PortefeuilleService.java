@@ -1,11 +1,12 @@
 package portefeuille.service;
 
-import com.rabbitmq.client.AMQP;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import portefeuille.dto.HistoryDto;
+import portefeuille.dto.PerformanceDto;
 import portefeuille.dto.PortefeuilleDto;
+import portefeuille.dto.StockPerformanceDto;
 import portefeuille.dto.rabbitMq.TickerInfoDto;
 import portefeuille.enums.TypeMouvement;
 import portefeuille.exceptions.InsufficientFundsException;
@@ -14,13 +15,14 @@ import portefeuille.exceptions.NotFoundException;
 import portefeuille.exceptions.WalletAlreadyCreatedException;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.Portefeuille;
-import portefeuille.modele.TickerInfo;
 import portefeuille.rabbitmq.RabbitMqSender;
 import portefeuille.repository.MouvementRepository;
 import portefeuille.repository.PortefeuilleRepository;
 import portefeuille.repository.TickerInfoRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,6 +37,7 @@ public class PortefeuilleService {
 
     @Autowired
     TickerInfoRepository tickerInfoRepository;
+
     @Autowired
     RabbitMqSender sender;
 
@@ -49,18 +52,34 @@ public class PortefeuilleService {
                     .build();
 
             portefeuilleRepository.save(p);
-            return PortefeuilleDto.createPortefeuilleDto(p);
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null);
 
         } else {
             throw new WalletAlreadyCreatedException("Portefeuille déjà existant");
         }
     }
 
-    // TODO Récupérer les prix actuels pour donner le bénéfice
-    public PortefeuilleDto getPortefeuille(String username) throws NotFoundException {
-        Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
-        if (p.isPresent()) {
-            return PortefeuilleDto.createPortefeuilleDto(p.get());
+    public PortefeuilleDto getPortefeuille(String username) throws NotFoundException, InterruptedException {
+        Optional<Portefeuille> portefeuilleOptional = portefeuilleRepository.getPortefeuille(username);
+        if (portefeuilleOptional.isPresent()) {
+            Portefeuille p = portefeuilleOptional.get();
+            double totalAchats = 0;
+            double totalCourant = 0;
+            List<StockPerformanceDto> performanceActions = new ArrayList<>();
+
+            for (Mouvement action : p.getActions()) {
+                double prixAchat = action.getQuantity() * action.getPrice();
+                totalAchats += prixAchat;
+                double currentPrice = getPrice(action.getTicker());
+                double prixActuel = action.getQuantity() * currentPrice;
+                totalCourant += prixActuel;
+                PerformanceDto perf = PerformanceDto.createPerformanceDto(prixAchat, prixActuel);
+                StockPerformanceDto stockPerf = new StockPerformanceDto(action.getTicker(), currentPrice, action.getQuantity(), perf);
+                performanceActions.add(stockPerf);
+            }
+
+            PerformanceDto perf = PerformanceDto.createPerformanceDto(totalAchats, totalCourant);
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf);
         } else {
             throw new NotFoundException("Personne non trouvée");
         }
@@ -164,11 +183,11 @@ public class PortefeuilleService {
 
     private double getPrice(String ticker) throws InterruptedException {
         String uuid = UUID.randomUUID().toString();
-        sender.send(new TickerInfoDto(uuid,ticker,-10.0));
-        while (tickerInfoRepository.findById(ticker).isEmpty());{
+        sender.send(new TickerInfoDto(uuid, ticker, null));
+        while (tickerInfoRepository.findById(uuid).isEmpty()) {
             Thread.sleep(2000);
         }
-        return tickerInfoRepository.findById(ticker).get().getPrice();
+        return tickerInfoRepository.findById(uuid).get().getPrice();
     }
 
 }
