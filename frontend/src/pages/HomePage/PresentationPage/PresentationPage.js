@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import AnimatedLineChart from "../../../containers/Charts/AnimatedLineChart";
+import AnimatedLineChart from "../../../components/Charts/AnimatedLineChart";
 import './PresentationPage.scss';
 import {Chart} from "react-chartjs-2";
 import bg_pc from "../../../assets/img/bg-pc-resize-tiny.png"

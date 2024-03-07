@@ -1,59 +1,62 @@
 {
-    "home": {
-        "bourse": "BOURSE",
-        "play": "PLAY",
-        "welcomeMessage": "Welcome to our site!",
-        "slogan": "Your first experience on the stock market, without risk.",
-        "trigger": "Trade for free, learn by playing. Take on the challenge, dominate the leaderboard. Your stock market adventure begins now."
-    },
-    "contact": {
-        "contactUs": "Contact Us"
-    },
-    "header": {
-        "login": "Sign in!",
-        "register": "Sign up!",
-        "about": "About",
-        "leaderboard": "Leaderboard",
-        "market": "Market"
-    },
-    "login" : {
-        "connection" : "Connection",
-        "registration" : "Registration",
-        "password" :  "Password",
-        "connect" : "Log in ",
-        "register" : "Register",
-        "email" : "Email",
-        "username" : "Username",
-        "email-username" : "Email / Username"
-    },
+  "home": {
+    "bourse": "BOURSE",
+    "play": "PLAY",
+    "welcomeMessage": "Welcome to our site!",
+    "slogan": "Your first experience on the stock market, without risk.",
+    "trigger": "Trade for free, learn by playing. Take on the challenge, dominate the leaderboard. Your stock market adventure begins now."
+  },
+  "contact": {
+    "contactUs": "Contact Us"
+  },
+  "header": {
+    "login": "Sign in!",
+    "register": "Sign up!",
+    "about": "About",
+    "leaderboard": "Leaderboard",
+    "market": "Market"
+  },
+  "login": {
+    "connection": "Connection",
+    "registration": "Registration",
+    "password": "Password",
+    "connect": "Log in ",
+    "register": "Register",
+    "email": "Email",
+    "username": "Username",
+    "email-username": "Email / Username"
+  },
   "market": {
     "market": "Market overview",
-      "table": {
-          "ticker": "Ticker",
-          "name": "Nom",
-          "exchange":"Exchange",
-          "Category": "Category",
-          "Country": "Pays"
-      },"gainers_table": {
-          "ticker": "Ticker",
-          "name": "Name",
-          "price": "Price",
-          "currency": "Currency",
-          "changePercentage": "Change %",
-          "changeAmount": "Change",
-          "volume": "Volume"
-      },
-      "research": "Search for an asset",
-      "trends": "Trends"
-  },
-    "wallet": {
-        "wallet" : "Wallet",
-        "own" : "You own ",
-        "stocks" : " stock(s) ",
-        "own_nothing" : "You do not have any stocks.",
-        "favorites" : "Favorites"
+    "table": {
+      "ticker": "Ticker",
+      "name": "Nom",
+      "exchange": "Exchange",
+      "Category": "Category",
+      "Country": "Pays"
     },
-    "stock": {
-        "about": "About"
-    }
+    "gainers_table": {
+      "ticker": "Ticker",
+      "name": "Name",
+      "price": "Price",
+      "currency": "Currency",
+      "changePercentage": "Change %",
+      "changeAmount": "Change",
+      "volume": "Volume"
+    },
+    "research": "Search for an asset",
+    "trends": "Trends"
+  },
+  "wallet": {
+    "wallet": "Wallet",
+    "own": "You own ",
+    "stocks": " stock(s) ",
+    "own_nothing": "You do not have any stocks.",
+    "favorites": "Favorites"
+  },
+  "stock": {
+    "about": "About",
+    "statistics": "Statistics",
+    "marketCap": "Market capitalization"
+  }
 }

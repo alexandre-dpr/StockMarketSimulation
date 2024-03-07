@@ -22,9 +22,9 @@ function CustomImage({ src, alt, style }) {
                 for (let i = 0; i < data.length; i += 4) {
                     // Change les pixels blancs en noirs
                     if (data[i] === 255 && data[i + 1] === 255 && data[i + 2] === 255) {
-                        data[i] = 0; // rouge
-                        data[i + 1] = 0; // vert
-                        data[i + 2] = 0; // bleu
+                        data[i] = 0;
+                        data[i + 1] = 0;
+                        data[i + 2] = 0;
                     }
                 }
 

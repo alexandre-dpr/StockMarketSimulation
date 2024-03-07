@@ -52,7 +52,7 @@
   "plus": "+",
   "minus": "-",
   "rangeHistoryStock": {
-    "ONE_DAY": "ONE_DAY",
-    "ONE_YEAR": "ONE_YEAR"
+    "ONE_DAY": ["ONE_DAY","1d"],
+    "ONE_YEAR": ["ONE_YEAR","1y"]
   }
 }

@@ -112,7 +112,7 @@ function Market() {
                         <h1>
                             {t('market.market')}
                         </h1>
-                        <div>
+                        <div className="ml-2">
                             <InputResearch label={t('market.research')} onSubmit={handleSubmit}/>
                         </div>
                     </div>
@@ -131,8 +131,7 @@ function Market() {
                     />
                 </div>
             </div>
-
-
+            <div className="h-5"></div>
         </div>
     )
 }

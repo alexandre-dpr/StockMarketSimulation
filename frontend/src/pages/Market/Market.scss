@@ -1,7 +1,6 @@
 @import '../../index.scss';
 
 .containerPage {
-  padding-bottom: 100px;
   /*background: rgb(255,99,132);
   background: radial-gradient(circle, rgba(255,99,132,0.5) 0%, rgba(54,162,235,0.2) 100%);*/
 
@@ -19,9 +18,11 @@
     padding-inline: 4vw;
     padding-block: 4vh;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    padding-bottom: 5vh;
     border-radius: 15px;
 
+
+    .market{
+    }
     .trends{
 
       @include respond-to('phone') {
