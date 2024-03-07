@@ -1,9 +1,9 @@
 package portefeuille.service;
 
+import com.rabbitmq.client.AMQP;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 import portefeuille.dto.HistoryDto;
 import portefeuille.dto.PortefeuilleDto;
 import portefeuille.dto.rabbitMq.TickerInfoDto;
@@ -14,6 +14,7 @@ import portefeuille.exceptions.NotFoundException;
 import portefeuille.exceptions.WalletAlreadyCreatedException;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.Portefeuille;
+import portefeuille.modele.TickerInfo;
 import portefeuille.rabbitmq.RabbitMqSender;
 import portefeuille.repository.MouvementRepository;
 import portefeuille.repository.PortefeuilleRepository;
@@ -22,8 +23,6 @@ import portefeuille.repository.TickerInfoRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-
-import static java.lang.Thread.sleep;
 
 @Service
 public class PortefeuilleService {
@@ -34,14 +33,10 @@ public class PortefeuilleService {
     @Autowired
     MouvementRepository mouvementRepository;
 
-
-    @Autowired
-    CacheService cacheService;
-    @Autowired
-    RabbitMqSender sender;
-
     @Autowired
     TickerInfoRepository tickerInfoRepository;
+    @Autowired
+    RabbitMqSender sender;
 
     @Transactional
     public PortefeuilleDto creerPortefeuille(String username) throws WalletAlreadyCreatedException {
@@ -80,14 +75,14 @@ public class PortefeuilleService {
         }
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional
     public void acheterAction(String username, String ticker, int quantity) throws NotFoundException, InsufficientFundsException, InterruptedException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
         if (p.isPresent()) {
             Portefeuille portefeuille = p.get();
 
             double prixAction = getPrice(ticker); // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS ACHAT
-            System.out.println("qizn");
+
             if (portefeuille.getSolde() >= prixAction * quantity) {
 
                 Mouvement achatHistorique = Mouvement.builder()
@@ -166,22 +161,14 @@ public class PortefeuilleService {
             throw new NotFoundException("Personne non trouvée");
         }
     }
-    @Transactional(isolation = Isolation.READ_COMMITTED)
-    double getPrice(String ticker) throws InterruptedException {
+
+    private double getPrice(String ticker) throws InterruptedException {
         String uuid = UUID.randomUUID().toString();
         sender.send(new TickerInfoDto(uuid,ticker,-10.0));
-      //  while (!cacheService.isPresentTickerInfo(uuid)){
-     //       sleep(2000);
-     //   }
-     //   double price = cacheService.getTickerInfo(uuid).price();
-     //   cacheService.removeTickerInfo(uuid);
-
-        while (tickerInfoRepository.findById(uuid).isEmpty()){
-            sleep(2000);
+        while (tickerInfoRepository.findById(ticker).isEmpty());{
+            Thread.sleep(2000);
         }
-        double price = tickerInfoRepository.findById(uuid).get().getPrice();
-        tickerInfoRepository.deleteById(uuid);
-        return price;
+        return tickerInfoRepository.findById(ticker).get().getPrice();
     }
 
 }

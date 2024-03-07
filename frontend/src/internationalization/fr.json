@@ -1,61 +1,62 @@
 {
-    "home": {
-        "bourse": "BOURSE",
-        "play": "PLAY",
-        "welcomeMessage": "Bienvenue sur notre site !",
-        "slogan": "Votre première expérience en bourse, sans risque.",
-        "trigger": "Tradez gratuitement, apprenez en jouant. Relevez le défi, dominez le leaderboard. Votre aventure boursière commence maintenant."
+  "home": {
+    "bourse": "BOURSE",
+    "play": "PLAY",
+    "welcomeMessage": "Bienvenue sur notre site !",
+    "slogan": "Votre première expérience en bourse, sans risque.",
+    "trigger": "Tradez gratuitement, apprenez en jouant. Relevez le défi, dominez le leaderboard. Votre aventure boursière commence maintenant."
+  },
+  "contact": {
+    "contactUs": "Contactez-nous"
+  },
+  "header": {
+    "login": "Connecte toi!",
+    "register": "Inscris-toi!",
+    "about": "À propos",
+    "leaderboard": "Classement",
+    "market": "Marchés"
+  },
+  "login": {
+    "connection": "Connexion",
+    "registration": "Inscription",
+    "password": "Mot de passe",
+    "connect": "Se connecter",
+    "register": "S'inscrire",
+    "email": "Email",
+    "username": "Nom d'utilisateur",
+    "email-username": "Email/Nom d'utilisateur"
+  },
+  "market": {
+    "market": "Apercu du marché",
+    "table": {
+      "ticker": "Ticker",
+      "name": "Nom",
+      "exchange": "Exchange",
+      "category": "Catégorie",
+      "country": "Pays"
     },
-    "contact": {
-        "contactUs": "Contactez-nous"
+    "gainers_table": {
+      "ticker": "Ticker",
+      "name": "Nom",
+      "price": "Prix",
+      "currency": "Devise",
+      "changePercentage": "Variation %",
+      "changeAmount": "Variation",
+      "volume": "Volume"
     },
-    "header": {
-        "login": "Connecte toi!",
-        "register": "Inscris-toi!",
-        "about": "À propos",
-        "leaderboard": "Classement",
-        "market": "Marchés"
-    },
-    "login" : {
-        "connection" : "Connexion",
-        "registration" : "Inscription",
-        "password" :  "Mot de passe",
-        "connect" : "Se connecter",
-        "register" : "S'inscrire",
-        "email" : "Email",
-        "username" : "Nom d'utilisateur",
-        "email-username" : "Email/Nom d'utilisateur"
-    },
-    "market": {
-        "market": "Apercu du marché",
-        "table": {
-            "ticker": "Ticker",
-            "name": "Nom",
-            "exchange":"Exchange",
-            "category": "Catégorie",
-            "country": "Pays"
-        },
-        "gainers_table": {
-            "ticker": "Ticker",
-            "name": "Nom",
-            "price": "Prix",
-            "currency": "Devise",
-            "changePercentage": "Variation %",
-            "changeAmount": "Variation",
-            "volume": "Volume"
-        },
-        "research": "Rechercher un actif",
-        "trends": "Tendances"
-
-    },
-    "wallet": {
-        "wallet" : "Portefeuille",
-        "own" : "Vous possédez ",
-        "stocks" : " action(s) ",
-        "own_nothing" : "Vous ne possédez aucune action.",
-        "favorites" : "Mes favoris"
-    },
-    "stock": {
-    "about": "À propos de"
-}
+    "research": "Rechercher un actif",
+    "trends": "Tendances"
+  },
+  "wallet": {
+    "wallet": "Portefeuille",
+    "own": "Vous possédez ",
+    "stocks": " action(s) ",
+    "own_nothing": "Vous ne possédez aucune action.",
+    "favorites": "Mes favoris"
+  },
+  "stock": {
+    "about": "À propos de",
+    "statistics": "Statistiques",
+    "marketCap": "Capitalisation boursière"
+  }
 }

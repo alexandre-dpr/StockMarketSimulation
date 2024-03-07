@@ -16,9 +16,32 @@
     padding-inline: 5%;
   }
 
-
   .stockDescription{
     text-align: justify;
+  }
+
+  .containerLineChart{
+      height: 500px;
+  }
+
+  .boxRange{
+    cursor: pointer;
+    padding-block: 5px;
+    width: 60px;
+    background-color: #dedede;
+    text-align: center;
+    border-radius: 10px;
+
+  }
+  .focus{
+    background-color: #b4b4b4;
+
+  }
+
+  .marketCap{
+    .label{
+      font-family: Gabarito-Bold;
+    }
   }
 
 }
