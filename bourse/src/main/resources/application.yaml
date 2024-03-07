@@ -2,7 +2,7 @@ spring:
   application:
     name: service-bourse
   rabbitmq:
-    host: localhost
+    host: rabbitmq
     port: 5672
     username: service
     password: service
@@ -18,7 +18,7 @@ spring:
       ribbon:
         enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/your_database # TODO Changer pour la bonne base
+    url: jdbc:mysql://mysql_database_bourse:3306/your_database # TODO Changer pour la bonne base
     username: your_user
     password: your_user_password
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -36,5 +36,5 @@ fetch:
     trends: 2 # en heures
 api:
   token:
-    fmi: <TOKEN_API_FMI> # https://site.financialmodelingprep.com/developer --> Compte gratuit
-    alphavantage: <TOKEN_API_ALPHAVANTAGE> # https://www.alphavantage.co/support/#api-key --> Compte gratuit
+    fmi: 82680867c4c63e6c5d93c8460679934b # https://site.financialmodelingprep.com/developer --> Compte gratuit
+    alphavantage: RV6BMFOFUOC3MHX9 # https://www.alphavantage.co/support/#api-key --> Compte gratuit

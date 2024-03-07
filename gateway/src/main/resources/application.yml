@@ -19,9 +19,10 @@ spring:
       discovery:
         locator:
           enabled: true
+          lowerCaseServiceId: true
 
       routes:
-        - id: auth
+        - id: service-auth
           uri: lb://service-auth
           predicates:
             - Path=/api/auth/**
@@ -41,4 +42,11 @@ spring:
             - Path=/api/bourse/**
           filters:
             - RewritePath=/api/bourse(?<segment>/?.*), /bourse$\{segment}
+            - PreserveHostHeader=true
+        - id: portefeuille
+          uri: lb://service-portefeuille
+          predicates:
+            - Path=/api/portefeuille/**
+          filters:
+            - RewritePath=/api/portefeuille(?<segment>/?.*), /portefeuille$\{segment}
             - PreserveHostHeader=true
