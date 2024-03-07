@@ -31,33 +31,24 @@ function Market() {
     const navigate = useNavigate();
 
     async function fetchData() {
-        try {
-            setData([])
-            var result = []
-            if (fromResearchData) {
-                result = await findTickerByName(nameResearch, page + 1)
-            } else {
-                result = await getStocksList(page + 1);
-            }
-            if (result.data) {
-                setData(await getFormatStocks(result.data.content));
-                setTotalCount(result.data.totalElements);
-            }
-        } catch (error) {
-            console.error("Erreur lors de la récupération des données", error);
+        setData([])
+        var result = []
+        if (fromResearchData) {
+            result = await findTickerByName(nameResearch, page + 1)
+        } else {
+            result = await getStocksList(page + 1);
+        }
+        if (result.data) {
+            setData(await getFormatStocks(result.data.content));
+            setTotalCount(result.data.totalElements);
         }
     }
 
     async function fetchTrends() {
-        try {
-            const gainers_result = await getTrends()
-            setGainers(await getFormatStocks(gainers_result.data.gainersJson));
-            const loosers_result = await getTrends()
-            setLoosers(await getFormatStocks(loosers_result.data.loosersJson));
-
-        } catch (error) {
-            console.error("Erreur lors de la récupération des tendances", error);
-        }
+        const gainers_result = await getTrends()
+        setGainers(await getFormatStocks(gainers_result.data.gainersJson));
+        const loosers_result = await getTrends()
+        setLoosers(await getFormatStocks(loosers_result.data.loosersJson));
     }
 
 

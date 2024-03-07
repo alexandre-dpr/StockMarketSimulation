@@ -32,7 +32,7 @@ public class FacadeImpl implements Facade{
     }
     @Override
     public List<CommentaireDTO> getAllCommentaire(String action) throws CommentaireInexistantException {
-        Optional <List<Commentaire>> commentaires = commentaireRepository.findAllByAction(action);
+        Optional <List<Commentaire>> commentaires = commentaireRepository.findAllByActionOrderByDateDesc(action);
         if(commentaires.isEmpty()) {
             throw new CommentaireInexistantException("Comment not found ");
         }

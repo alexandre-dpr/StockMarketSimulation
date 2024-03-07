@@ -13,9 +13,7 @@ function PresentationPage() {
     useEffect(() => {
         const isReloaded = localStorage.getItem('isReloaded');
         if (!isReloaded) {
-            const baliseBgPc = document.getElementById("bg-pc")
             const baliseFooter = document.getElementById("homePageFooter")
-            baliseBgPc.classList.add('initial-load-animation');
             baliseFooter.classList.add('initial-load-animation');
             localStorage.setItem('isReloaded', true);
         }

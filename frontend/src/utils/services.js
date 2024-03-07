@@ -1,11 +1,15 @@
 import CustomImage from "../components/CustomImage/CustomImage";
 import React from "react";
 
+const getStockLogo = (ticker)=>{
+    return `https://financialmodelingprep.com/image-stock/${ticker}.png`
+}
+
 
 async function getFormatStocks(data) {
     const stocksData = data.map(item => ({
         ...item,
-        logoUrl: `https://financialmodelingprep.com/image-stock/${item.ticker}.png`
+        logoUrl: getStockLogo(item.ticker)
     }));
 
     return await Promise.all(stocksData.map(async item => {
@@ -24,4 +28,4 @@ async function getFormatStocks(data) {
 
 
 
-export {getFormatStocks}
+export {getFormatStocks,getStockLogo}

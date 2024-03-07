@@ -55,4 +55,22 @@ async function getTrends(){
 }
 
 
-export { getStocksList, findTickerByName, getTrends };
+async function getStock(ticker,range){
+    const ENDPOINT = endpoints.stock;
+
+    try {
+        const response = await axios.get(`${url_api}${ENDPOINT}/${ticker}`, {
+            params: {
+                range: range
+            },
+        });
+        return { data: response.data };
+    } catch (error) {
+        console.error('Erreur lors de la requête :', error);
+        return { error: error };
+    }
+}
+
+
+
+export { getStocksList, findTickerByName, getTrends, getStock };

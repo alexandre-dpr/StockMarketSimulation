@@ -8,7 +8,7 @@ import routes from './utils/routes.json'
 import Market from './pages/Market/Market';
 import Leaderboard from './pages/Leaderboard/Leaderboard';
 import About from './pages/About/About';
-import Stock from './pages/Action/Stock';
+import Stock from './pages/Stock/Stock';
 
 function App() {
 

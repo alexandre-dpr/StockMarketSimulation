@@ -1,6 +1,7 @@
 package bourse.dto;
 
 import bourse.modele.Stock;
+import bourse.util.JsonUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -53,5 +54,9 @@ public class StockDto {
                 stock.getCeo(),
                 stock.getOneYearHistory()
         );
+    }
+
+    public Object getHistory() {
+        return JsonUtils.fromJson(history, Object.class);
     }
 }
