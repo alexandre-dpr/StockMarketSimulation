@@ -16,7 +16,7 @@ public class StockDto {
     private String category;
     private String description;
     private Double price;
-    private Integer marketCap;
+    private Long marketCap;
     private String currency;
     private String website;
     private String ceo;

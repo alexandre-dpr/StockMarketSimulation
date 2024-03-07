@@ -130,7 +130,7 @@ public class StockService {
                                 .exchangeShortName(stockDesc.path("exchangeShortName").asText())
                                 .category(stockDesc.path("sector").asText())
                                 .description(stockDesc.path("description").asText())
-                                .marketCap(stockDesc.path("mktCap").asInt())
+                                .marketCap(stockDesc.path("mktCap").asLong())
                                 .currency(metaData.path("currency").asText())
                                 .website(stockDesc.path("website").asText())
                                 .ceo(stockDesc.path("ceo").asText())
@@ -203,7 +203,7 @@ public class StockService {
         HttpGet httpGet = new HttpGet(FMI_API_URL);
 
         try {
-            logger.info("Calling FMI API");
+            logger.info(String.format("Calling FMI API for ticker %s", ticker));
             HttpResponse response = httpClient.execute(httpGet);
 
             if (response.getStatusLine().getStatusCode() == 200) {

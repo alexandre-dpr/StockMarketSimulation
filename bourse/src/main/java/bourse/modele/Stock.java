@@ -31,7 +31,7 @@ public class Stock {
 
     private Double price;
 
-    private Integer marketCap;
+    private Long marketCap;
 
     private String currency;
 

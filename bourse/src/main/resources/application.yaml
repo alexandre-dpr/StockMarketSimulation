@@ -36,5 +36,5 @@ fetch:
     trends: 2 # en heures
 api:
   token:
-    fmi: 82680867c4c63e6c5d93c8460679934b # https://site.financialmodelingprep.com/developer --> Compte gratuit
-    alphavantage: RV6BMFOFUOC3MHX9 # https://www.alphavantage.co/support/#api-key --> Compte gratuit
+    fmi: <TOKEN_API_FMI> # https://site.financialmodelingprep.com/developer --> Compte gratuit
+    alphavantage: <TOKEN_API_ALPHAVANTAGE> # https://www.alphavantage.co/support/#api-key --> Compte gratuit
