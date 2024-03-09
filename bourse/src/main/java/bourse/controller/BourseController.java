@@ -7,7 +7,6 @@ import bourse.enums.Range;
 import bourse.exceptions.NotFoundException;
 import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Ticker;
-import bourse.rabbitMq.RabbitMqSender;
 import bourse.service.StockService;
 import bourse.service.TickerService;
 import jakarta.validation.constraints.NotBlank;
@@ -24,8 +23,6 @@ import java.util.List;
 @RequestMapping("/bourse")
 public class BourseController {
 
-    @Autowired
-    RabbitMqSender sender;
     @Autowired
     StockService stockService;
 

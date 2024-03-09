@@ -9,6 +9,8 @@ public class StockPerformanceDto {
 
     private String ticker;
 
+    private double buyPrice;
+
     private Double price;
 
     private Integer quantity;

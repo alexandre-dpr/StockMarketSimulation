@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import portefeuille.config.Constants;
 import portefeuille.dto.HistoryDto;
 import portefeuille.dto.PerformanceDto;
 import portefeuille.dto.PortefeuilleDto;
@@ -51,11 +52,11 @@ public class PortefeuilleService {
         if (optPortefeuille.isEmpty()) {
             Portefeuille p = Portefeuille.builder()
                     .username(username)
-                    .solde(1000.0)
+                    .solde(Constants.STARTING_BALANCE)
                     .build();
 
             portefeuilleRepository.save(p);
-            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null);
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null, p.getSolde());
 
         } else {
             throw new WalletAlreadyCreatedException("Portefeuille déjà existant");
@@ -77,12 +78,12 @@ public class PortefeuilleService {
                 double prixActuel = action.getQuantity() * currentPrice;
                 totalCourant += prixActuel;
                 PerformanceDto perf = PerformanceDto.createPerformanceDto(prixAchat, prixActuel);
-                StockPerformanceDto stockPerf = new StockPerformanceDto(action.getTicker(), currentPrice, action.getQuantity(), perf);
+                StockPerformanceDto stockPerf = new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
                 performanceActions.add(stockPerf);
             }
 
             PerformanceDto perf = PerformanceDto.createPerformanceDto(totalAchats, totalCourant);
-            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf);
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant);
         } else {
             throw new NotFoundException("Personne non trouvée");
         }
@@ -139,7 +140,7 @@ public class PortefeuilleService {
         }
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void vendreAction(String username, String ticker, int quantity) throws NotFoundException, NotEnoughStocksException, InterruptedException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
 

@@ -21,7 +21,7 @@ public class PerformanceDto {
     public static PerformanceDto createPerformanceDto(double prixAchat, double prixActuel) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00%", DecimalFormatSymbols.getInstance(Locale.US));
         return new PerformanceDto(
-                decimalFormat.format(prixActuel / prixAchat),
+                prixAchat == 0 ? decimalFormat.format(0) : decimalFormat.format(prixActuel / prixAchat - 1),
                 prixActuel - prixAchat
         );
     }
