@@ -36,7 +36,7 @@ public class PortefeuilleController {
     }
 
     @GetMapping
-    public ResponseEntity<PortefeuilleDto> getPortefeuille(@RequestBody @Valid UsernameReqDto req) throws NotFoundException {
+    public ResponseEntity<PortefeuilleDto> getPortefeuille(@RequestBody @Valid UsernameReqDto req) throws NotFoundException, InterruptedException {
         return ResponseEntity.ok().body(portefeuilleService.getPortefeuille(req.getUsername()));
     }
 
