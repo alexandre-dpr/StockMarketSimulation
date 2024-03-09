@@ -1,4 +1,4 @@
-package bourse.rabbitMq;
+package bourse.rabbitmq;
 
 import bourse.dto.rabbitMq.TickerInfo;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -21,7 +21,7 @@ public class RabbitMqSender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void send(TickerInfo ticker){
-        rabbitTemplate.convertAndSend(exchange,routingkey, ticker);
+    public void send(TickerInfo ticker) {
+        rabbitTemplate.convertAndSend(exchange, routingkey, ticker);
     }
 }
