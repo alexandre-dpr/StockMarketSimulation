@@ -13,8 +13,5 @@ Générer les clés RSA :
 
 ### Installation service Bourse
 
-Générer la table ticker en exécutant le script ticker.sql
-> bourse/src/main/resources/ticker.sql
-
-Définir le token pour accéder à l'API FMI dans application.properties \
+Définir le token pour accéder aux api dans application.properties \
 /!\ Attention à ne pas push le token

@@ -1,8 +1,9 @@
 package portefeuille.service;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import portefeuille.dto.HistoryDto;
 import portefeuille.dto.PerformanceDto;
 import portefeuille.dto.PortefeuilleDto;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.lang.Thread.sleep;
 
 @Service
 public class PortefeuilleService {
@@ -94,7 +97,7 @@ public class PortefeuilleService {
         }
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void acheterAction(String username, String ticker, int quantity) throws NotFoundException, InsufficientFundsException, InterruptedException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
         if (p.isPresent()) {
@@ -181,13 +184,16 @@ public class PortefeuilleService {
         }
     }
 
-    private double getPrice(String ticker) throws InterruptedException {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public double getPrice(String ticker) throws InterruptedException {
         String uuid = UUID.randomUUID().toString();
         sender.send(new TickerInfoDto(uuid, ticker, null));
         while (tickerInfoRepository.findById(uuid).isEmpty()) {
-            Thread.sleep(2000);
+            sleep(2000);
         }
-        return tickerInfoRepository.findById(uuid).get().getPrice();
+        double price = tickerInfoRepository.findById(uuid).get().getPrice();
+        tickerInfoRepository.deleteById(uuid);
+        return price;
     }
 
 }
