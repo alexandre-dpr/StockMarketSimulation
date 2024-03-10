@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.Portefeuille;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,4 +26,10 @@ public interface PortefeuilleRepository extends JpaRepository<Portefeuille, Stri
      */
     @Query("SELECT m FROM Portefeuille p LEFT JOIN p.actions m WHERE p.username=:username AND m.ticker=:ticker")
     Optional<Mouvement> getActionPossedee(@Param("username") String username, @Param("ticker") String ticker);
+
+    @Query(value = "SELECT count(*) FROM favoris WHERE username=:username", nativeQuery = true)
+    int getNbFavoris(@Param("username") String username);
+
+    @Query(value = "SELECT favori FROM favoris WHERE username=:username", nativeQuery = true)
+    List<String> getFavoris(@Param("username") String username);
 }

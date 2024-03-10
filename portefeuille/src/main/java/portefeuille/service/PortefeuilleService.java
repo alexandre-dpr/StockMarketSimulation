@@ -11,10 +11,7 @@ import portefeuille.dto.PortefeuilleDto;
 import portefeuille.dto.StockPerformanceDto;
 import portefeuille.dto.rabbitMq.TickerInfoDto;
 import portefeuille.enums.TypeMouvement;
-import portefeuille.exceptions.InsufficientFundsException;
-import portefeuille.exceptions.NotEnoughStocksException;
-import portefeuille.exceptions.NotFoundException;
-import portefeuille.exceptions.WalletAlreadyCreatedException;
+import portefeuille.exceptions.*;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.Portefeuille;
 import portefeuille.rabbitmq.RabbitMqSender;
@@ -104,7 +101,7 @@ public class PortefeuilleService {
         if (p.isPresent()) {
             Portefeuille portefeuille = p.get();
 
-            double prixAction = getPrice(ticker); // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS ACHAT
+            double prixAction = getPrice(ticker); // TODO VOIR POUR FRAIS ACHAT
 
             if (portefeuille.getSolde() >= prixAction * quantity) {
 
@@ -153,7 +150,7 @@ public class PortefeuilleService {
 
                 if (actionPossedee.getQuantity() >= quantity) {
 
-                    double prixAction = getPrice(ticker); // TODO APPELER SERVICE BOURSE POUR RECUP PRIX, VOIR AUSSI POUR FRAIS VENTE
+                    double prixAction = getPrice(ticker); // TODO VOIR POUR FRAIS VENTE
                     Mouvement mouvementHistorique = Mouvement.builder()
                             .time(LocalDateTime.now())
                             .type(TypeMouvement.VENTE)
@@ -197,4 +194,25 @@ public class PortefeuilleService {
         return price;
     }
 
+    public void ajouterFavori(String ticker, String username) throws TooManyFavorites {
+        if (portefeuilleRepository.getNbFavoris(username) < Constants.MAX_FAVORITE_STOCKS) {
+            Portefeuille p = portefeuilleRepository.getPortefeuille(username).orElseThrow();
+            if (!p.getFavoris().contains(ticker)) {
+                p.getFavoris().add(ticker);
+                portefeuilleRepository.save(p);
+            }
+        } else {
+            throw new TooManyFavorites("User already has the maximum favorites number");
+        }
+    }
+
+    public void supprimerFavori(String ticker, String username) {
+        Portefeuille p = portefeuilleRepository.getPortefeuille(username).orElseThrow();
+        p.getFavoris().remove(ticker);
+        portefeuilleRepository.save(p);
+    }
+
+    public List<String> getFavoris(String username) {
+        return portefeuilleRepository.getFavoris(username);
+    }
 }

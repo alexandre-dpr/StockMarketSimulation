@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import portefeuille.dto.ExceptionDto;
-import portefeuille.exceptions.InsufficientFundsException;
-import portefeuille.exceptions.NotEnoughStocksException;
-import portefeuille.exceptions.NotFoundException;
-import portefeuille.exceptions.WalletAlreadyCreatedException;
+import portefeuille.exceptions.*;
 
 import java.time.LocalDateTime;
 
@@ -71,6 +68,17 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getDescription(false).replaceFirst("uri=", "")
         );
         return handleExceptionInternal(ex, dto, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(TooManyFavorites.class)
+    protected ResponseEntity<Object> tooManyFavorites(TooManyFavorites ex, WebRequest request) {
+        ExceptionDto dto = new ExceptionDto(
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                "Nombre maximum de favoris atteint",
+                request.getDescription(false).replaceFirst("uri=", "")
+        );
+        return handleExceptionInternal(ex, dto, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 }
 

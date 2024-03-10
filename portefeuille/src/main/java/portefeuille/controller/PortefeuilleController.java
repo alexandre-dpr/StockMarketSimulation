@@ -7,20 +7,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import portefeuille.dto.HistoryDto;
 import portefeuille.dto.PortefeuilleDto;
+import portefeuille.dto.request.FavoriteReqDto;
 import portefeuille.dto.request.TransactionActionReqDto;
 import portefeuille.dto.request.UsernameReqDto;
-import portefeuille.exceptions.InsufficientFundsException;
-import portefeuille.exceptions.NotEnoughStocksException;
-import portefeuille.exceptions.NotFoundException;
-import portefeuille.exceptions.WalletAlreadyCreatedException;
-import portefeuille.rabbitmq.RabbitMqSender;
+import portefeuille.exceptions.*;
 import portefeuille.service.PortefeuilleService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/portefeuille")
 public class PortefeuilleController {
-    @Autowired
-    private RabbitMqSender rabbitMqSender;
 
     @Autowired
     PortefeuilleService portefeuilleService;
@@ -55,5 +52,26 @@ public class PortefeuilleController {
     public ResponseEntity<Void> vendre(@RequestBody @Valid TransactionActionReqDto req) throws NotEnoughStocksException, NotFoundException, InterruptedException {
         portefeuilleService.vendreAction(req.getUsername(), req.getTicker(), req.getQuantity());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/favori")
+    public ResponseEntity<List<String>> getFavoris(@RequestBody @Valid UsernameReqDto req) {
+        return ResponseEntity.ok(portefeuilleService.getFavoris(req.getUsername()));
+    }
+
+    @PostMapping("/favori")
+    public ResponseEntity<Void> ajouterFavori(@RequestBody @Valid FavoriteReqDto req) throws TooManyFavorites {
+        portefeuilleService.ajouterFavori(req.getTicker(), req.getUsername());
+        return ResponseEntity.created(
+                ServletUriComponentsBuilder
+                        .fromCurrentRequest().build().toUri()
+                        .resolve(String.format("favori/%s", req.getTicker()))
+        ).build();
+    }
+
+    @DeleteMapping("/favori")
+    public ResponseEntity<Void> supprimerFavori(@RequestBody @Valid FavoriteReqDto req) {
+        portefeuilleService.supprimerFavori(req.getTicker(), req.getUsername());
+        return ResponseEntity.noContent().build();
     }
 }

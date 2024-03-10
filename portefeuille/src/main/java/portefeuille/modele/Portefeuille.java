@@ -1,9 +1,6 @@
 package portefeuille.modele;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -26,4 +23,9 @@ public class Portefeuille {
 
     @OneToMany(cascade = CascadeType.ALL)
     List<Mouvement> historique;
+
+    @ElementCollection
+    @CollectionTable(name = "favoris", joinColumns = @JoinColumn(name = "username"))
+    @Column(name = "favori")
+    List<String> favoris;
 }
