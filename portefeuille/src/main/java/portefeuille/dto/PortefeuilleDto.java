@@ -2,6 +2,7 @@ package portefeuille.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import portefeuille.modele.PerformanceHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +14,15 @@ public class PortefeuilleDto {
     private List<StockPerformanceDto> actions;
     private PerformanceDto performance;
     private Double totalValue;
+    List<PerformanceHistory> performanceHistory;
 
-    public static PortefeuilleDto createPortefeuilleDto(double solde, List<StockPerformanceDto> actions, PerformanceDto performance, Double totalValue) {
+    public static PortefeuilleDto createPortefeuilleDto(double solde, List<StockPerformanceDto> actions, PerformanceDto performance, Double totalValue, List<PerformanceHistory> performanceHistory) {
         return new PortefeuilleDto(
                 solde,
                 actions == null ? new ArrayList<>() : actions,
                 performance == null ? PerformanceDto.createPerformanceDto(0, 0) : performance,
-                totalValue
+                totalValue,
+                performanceHistory == null ? new ArrayList<>() : performanceHistory
         );
     }
 }

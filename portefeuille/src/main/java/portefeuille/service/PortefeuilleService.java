@@ -13,6 +13,7 @@ import portefeuille.dto.rabbitMq.TickerInfoDto;
 import portefeuille.enums.TypeMouvement;
 import portefeuille.exceptions.*;
 import portefeuille.modele.Mouvement;
+import portefeuille.modele.PerformanceHistory;
 import portefeuille.modele.Portefeuille;
 import portefeuille.rabbitmq.RabbitMqSender;
 import portefeuille.repository.MouvementRepository;
@@ -40,6 +41,9 @@ public class PortefeuilleService {
     TickerInfoRepository tickerInfoRepository;
 
     @Autowired
+    PerformanceHistoryService performanceHistoryService;
+
+    @Autowired
     RabbitMqSender sender;
 
     @Transactional
@@ -53,7 +57,7 @@ public class PortefeuilleService {
                     .build();
 
             portefeuilleRepository.save(p);
-            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null, p.getSolde());
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null, p.getSolde(), null);
 
         } else {
             throw new WalletAlreadyCreatedException("Portefeuille déjà existant");
@@ -80,7 +84,9 @@ public class PortefeuilleService {
             }
 
             PerformanceDto perf = PerformanceDto.createPerformanceDto(totalAchats, totalCourant);
-            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant);
+            performanceHistoryService.savePerformance(perf, username);
+            List<PerformanceHistory> performanceHistory = performanceHistoryService.getPerformanceHistory(username);
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory);
         } else {
             throw new NotFoundException("Personne non trouvée");
         }
@@ -194,6 +200,7 @@ public class PortefeuilleService {
         return price;
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void ajouterFavori(String ticker, String username) throws TooManyFavorites {
         if (portefeuilleRepository.getNbFavoris(username) < Constants.MAX_FAVORITE_STOCKS) {
             Portefeuille p = portefeuilleRepository.getPortefeuille(username).orElseThrow();
@@ -206,6 +213,7 @@ public class PortefeuilleService {
         }
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void supprimerFavori(String ticker, String username) {
         Portefeuille p = portefeuilleRepository.getPortefeuille(username).orElseThrow();
         p.getFavoris().remove(ticker);
