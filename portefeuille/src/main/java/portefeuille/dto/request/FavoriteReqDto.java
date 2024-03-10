@@ -9,5 +9,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FavoriteReqDto {
     private String ticker;
-    private String username;
 }

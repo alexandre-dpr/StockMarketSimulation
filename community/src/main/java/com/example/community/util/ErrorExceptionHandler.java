@@ -1,6 +1,7 @@
 package com.example.community.util;
 
 import com.example.community.dto.response.ErrorDTO;
+import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,11 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDTO errorDTO = createDTO("Commentaire inexistant", HttpStatus.NOT_FOUND, ex, request);
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.valueOf(errorDTO.getStatus()), request);
     }
-
+    @ExceptionHandler(AuteurNonReconnueException.class)
+    public ResponseEntity<Object> handleUnrecognisedAuthorException(Exception ex, WebRequest request) {
+        ErrorDTO errorDTO = createDTO("Seul l'auteur peut supprimer le commentaire", HttpStatus.FORBIDDEN, ex, request);
+        return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.valueOf(errorDTO.getStatus()), request);
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
         System.out.println(ex.getStackTrace()[0].getFileName());

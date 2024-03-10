@@ -77,13 +77,13 @@ public class FacadeImplTest {
         Commentaire commentaire = new Commentaire("user1", "content1", "action1");
         when(commentaireRepository.findById(1)).thenReturn(Optional.of(commentaire));
 
-        assertDoesNotThrow(() -> facade.deleteCommentaire(1));
+        assertDoesNotThrow(() -> facade.deleteCommentaire("user1",1));
     }
 
     @Test
     public void testDeleteCommentaire_NotFound() {
         when(commentaireRepository.findById(1)).thenReturn(Optional.empty());
 
-        assertThrows(CommentaireInexistantException.class, () -> facade.deleteCommentaire(1));
+        assertThrows(CommentaireInexistantException.class, () -> facade.deleteCommentaire("user1",1));
     }
 }

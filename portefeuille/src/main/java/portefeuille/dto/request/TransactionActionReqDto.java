@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class TransactionActionReqDto {
-    @NotBlank
-    private String username;
 
     @NotBlank
     private String ticker;
