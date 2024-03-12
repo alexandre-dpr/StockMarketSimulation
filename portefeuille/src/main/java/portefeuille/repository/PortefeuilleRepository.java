@@ -32,4 +32,7 @@ public interface PortefeuilleRepository extends JpaRepository<Portefeuille, Stri
 
     @Query(value = "SELECT favori FROM favoris WHERE username=:username", nativeQuery = true)
     List<String> getFavoris(@Param("username") String username);
+
+    @Query("SELECT m FROM Portefeuille p LEFT JOIN p.actions as m WHERE p.username=:username AND m.ticker=:ticker")
+    Mouvement getStockForUser(@Param("ticker") String ticker, @Param("username") String username);
 }

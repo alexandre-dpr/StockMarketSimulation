@@ -9,9 +9,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import portefeuille.dto.HistoryDto;
 import portefeuille.dto.LeaderboardDto;
 import portefeuille.dto.PortefeuilleDto;
-import portefeuille.dto.request.FavoriteReqDto;
+import portefeuille.dto.StockPerformanceDto;
+import portefeuille.dto.request.TickerReqDto;
 import portefeuille.dto.request.TransactionActionReqDto;
-import portefeuille.dto.request.UsernameReqDto;
 import portefeuille.exceptions.*;
 import portefeuille.service.PortefeuilleService;
 import portefeuille.service.RankService;
@@ -50,7 +50,7 @@ public class PortefeuilleController {
     }
 
     @PostMapping("/achat")
-    public ResponseEntity<Void> acheter(Authentication authentication,@RequestBody @Valid TransactionActionReqDto req) throws InsufficientFundsException, NotFoundException, InterruptedException {
+    public ResponseEntity<Void> acheter(Authentication authentication, @RequestBody @Valid TransactionActionReqDto req) throws InsufficientFundsException, NotFoundException, InterruptedException {
         portefeuilleService.acheterAction(authentication.getName(), req.getTicker(), req.getQuantity());
         return ResponseEntity.ok().build();
     }
@@ -67,7 +67,7 @@ public class PortefeuilleController {
     }
 
     @PostMapping("/favori")
-    public ResponseEntity<Void> ajouterFavori(Authentication authentication,@RequestBody @Valid FavoriteReqDto req) throws TooManyFavorites {
+    public ResponseEntity<Void> ajouterFavori(Authentication authentication, @RequestBody @Valid TickerReqDto req) throws TooManyFavorites {
         portefeuilleService.ajouterFavori(req.getTicker(), authentication.getName());
         return ResponseEntity.created(
                 ServletUriComponentsBuilder
@@ -77,13 +77,18 @@ public class PortefeuilleController {
     }
 
     @DeleteMapping("/favori")
-    public ResponseEntity<Void> supprimerFavori(Authentication authentication, @RequestBody @Valid FavoriteReqDto req) {
+    public ResponseEntity<Void> supprimerFavori(Authentication authentication, @RequestBody @Valid TickerReqDto req) {
         portefeuilleService.supprimerFavori(req.getTicker(), authentication.getName());
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/leaderboard")
-    public ResponseEntity<LeaderboardDto> getLeaderboard(@RequestBody @Valid UsernameReqDto req) {
-        return ResponseEntity.ok(rankService.getLeaderboard(req.getUsername()));
+    public ResponseEntity<LeaderboardDto> getLeaderboard(Authentication authentication) {
+        return ResponseEntity.ok(rankService.getLeaderboard(authentication.getName()));
+    }
+
+    @GetMapping("/stock/{ticker}")
+    public ResponseEntity<StockPerformanceDto> getStockPerformance(Authentication authentication, @PathVariable String ticker) throws InterruptedException {
+        return ResponseEntity.ok(portefeuilleService.getStockPerformance(ticker, authentication.getName()));
     }
 }

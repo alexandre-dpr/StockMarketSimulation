@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigInteger;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class Rank {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "portefeuille_rank_gen")
     @TableGenerator(name = "portefeuille_rank_gen", table = "portefeuille_rank_seq", allocationSize = 1)
-    private Long id;
+    private BigInteger id;
 
     @Column(name = "rank_number")
     private Long rank;

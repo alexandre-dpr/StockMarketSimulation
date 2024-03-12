@@ -96,13 +96,9 @@ public class PortefeuilleService {
         List<StockPerformanceDto> performanceActions = new ArrayList<>();
 
         for (Mouvement action : p.getActions()) {
-            double prixAchat = action.getQuantity() * action.getPrice();
-            totalAchats += prixAchat;
-            double currentPrice = priceService.getPrice(action.getTicker());
-            double prixActuel = action.getQuantity() * currentPrice;
-            totalCourant += prixActuel;
-            PerformanceDto perf = PerformanceDto.createPerformanceDto(prixAchat, prixActuel);
-            StockPerformanceDto stockPerf = new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
+            StockPerformanceDto stockPerf = getStockPerformance(action, priceService);
+            totalAchats += action.getQuantity() * action.getPrice();
+            totalCourant += action.getQuantity() * stockPerf.getPrice();
             performanceActions.add(stockPerf);
         }
 
@@ -110,6 +106,19 @@ public class PortefeuilleService {
         performanceHistoryService.savePerformance(perf, p.getUsername());
         List<PerformanceHistory> performanceHistory = performanceHistoryService.getPerformanceHistory(p.getUsername());
         return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory, p.getRank().getRank());
+    }
+
+    public StockPerformanceDto getStockPerformance(Mouvement action, PriceService priceService) throws InterruptedException {
+        double prixAchat = action.getQuantity() * action.getPrice();
+        double currentPrice = priceService.getPrice(action.getTicker());
+        double prixActuel = action.getQuantity() * currentPrice;
+        PerformanceDto perf = PerformanceDto.createPerformanceDto(prixAchat, prixActuel);
+        return new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
+    }
+
+    public StockPerformanceDto getStockPerformance(String ticker, String username) throws InterruptedException {
+        Mouvement mouvement = portefeuilleRepository.getStockForUser(ticker, username);
+        return getStockPerformance(mouvement, directPriceService);
     }
 
     public HistoryDto getHistorique(String username) throws NotFoundException {
