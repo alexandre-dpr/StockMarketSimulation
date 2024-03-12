@@ -7,12 +7,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import portefeuille.dto.HistoryDto;
+import portefeuille.dto.LeaderboardDto;
 import portefeuille.dto.PortefeuilleDto;
 import portefeuille.dto.request.FavoriteReqDto;
 import portefeuille.dto.request.TransactionActionReqDto;
 import portefeuille.dto.request.UsernameReqDto;
 import portefeuille.exceptions.*;
 import portefeuille.service.PortefeuilleService;
+import portefeuille.service.RankService;
 
 import java.util.List;
 
@@ -21,7 +23,10 @@ import java.util.List;
 public class PortefeuilleController {
 
     @Autowired
-    PortefeuilleService portefeuilleService;
+    private PortefeuilleService portefeuilleService;
+
+    @Autowired
+    private RankService rankService;
 
     // TODO Une fois Spring Sec rajouté, ne plus prendre le username dans rq body mais dans Principal
     @PostMapping
@@ -36,7 +41,7 @@ public class PortefeuilleController {
 
     @GetMapping
     public ResponseEntity<PortefeuilleDto> getPortefeuille(Authentication authentication) throws NotFoundException, InterruptedException {
-        return ResponseEntity.ok().body(portefeuilleService.getPortefeuille(authentication.getName()));
+        return ResponseEntity.ok().body(portefeuilleService.getPortefeuilleDto(authentication.getName()));
     }
 
     @GetMapping("/historique")
@@ -75,5 +80,10 @@ public class PortefeuilleController {
     public ResponseEntity<Void> supprimerFavori(Authentication authentication, @RequestBody @Valid FavoriteReqDto req) {
         portefeuilleService.supprimerFavori(req.getTicker(), authentication.getName());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/leaderboard")
+    public ResponseEntity<LeaderboardDto> getLeaderboard(@RequestBody @Valid UsernameReqDto req) {
+        return ResponseEntity.ok(rankService.getLeaderboard(req.getUsername()));
     }
 }

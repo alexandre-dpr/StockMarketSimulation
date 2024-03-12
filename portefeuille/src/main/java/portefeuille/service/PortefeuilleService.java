@@ -1,6 +1,7 @@
 package portefeuille.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,42 +10,41 @@ import portefeuille.dto.HistoryDto;
 import portefeuille.dto.PerformanceDto;
 import portefeuille.dto.PortefeuilleDto;
 import portefeuille.dto.StockPerformanceDto;
-import portefeuille.dto.rabbitMq.TickerInfoDto;
 import portefeuille.enums.TypeMouvement;
 import portefeuille.exceptions.*;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.PerformanceHistory;
 import portefeuille.modele.Portefeuille;
-import portefeuille.rabbitmq.RabbitMqSender;
 import portefeuille.repository.MouvementRepository;
 import portefeuille.repository.PortefeuilleRepository;
-import portefeuille.repository.TickerInfoRepository;
+import portefeuille.service.interfaces.PriceService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-
-import static java.lang.Thread.sleep;
 
 @Service
 public class PortefeuilleService {
 
-    @Autowired
-    PortefeuilleRepository portefeuilleRepository;
+    private final PortefeuilleRepository portefeuilleRepository;
+
+    private final MouvementRepository mouvementRepository;
+
+    private final PerformanceHistoryService performanceHistoryService;
+
+    private final DirectPriceService directPriceService;
+
+    private final RankService rankService;
 
     @Autowired
-    MouvementRepository mouvementRepository;
-
-    @Autowired
-    TickerInfoRepository tickerInfoRepository;
-
-    @Autowired
-    PerformanceHistoryService performanceHistoryService;
-
-    @Autowired
-    RabbitMqSender sender;
+    public PortefeuilleService(PortefeuilleRepository portefeuilleRepository, MouvementRepository mouvementRepository, PerformanceHistoryService performanceHistoryService, DirectPriceService directPriceService, @Lazy RankService rankService) {
+        this.portefeuilleRepository = portefeuilleRepository;
+        this.mouvementRepository = mouvementRepository;
+        this.performanceHistoryService = performanceHistoryService;
+        this.directPriceService = directPriceService;
+        this.rankService = rankService;
+    }
 
     @Transactional
     public PortefeuilleDto creerPortefeuille(String username) throws WalletAlreadyCreatedException {
@@ -54,42 +54,62 @@ public class PortefeuilleService {
             Portefeuille p = Portefeuille.builder()
                     .username(username)
                     .solde(Constants.STARTING_BALANCE)
+                    .rank(rankService.getDefaultRank())
                     .build();
 
             portefeuilleRepository.save(p);
-            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null, p.getSolde(), null);
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null, p.getSolde(), null, p.getRank().getRank());
 
         } else {
             throw new WalletAlreadyCreatedException("Portefeuille déjà existant");
         }
     }
 
-    public PortefeuilleDto getPortefeuille(String username) throws NotFoundException, InterruptedException {
+    /**
+     * Retourne les informations calculées du portefeuille pour l'utilisateur donné
+     *
+     * @param username Username associé au portefeuille
+     * @return PortefeuilleDto
+     * @throws NotFoundException    Si l'utilisateur n'est pas trouvé
+     * @throws InterruptedException Si la connexion est perdue avec le service en charge de la récupération du prix
+     */
+    public PortefeuilleDto getPortefeuilleDto(String username) throws NotFoundException, InterruptedException {
         Optional<Portefeuille> portefeuilleOptional = portefeuilleRepository.getPortefeuille(username);
         if (portefeuilleOptional.isPresent()) {
-            Portefeuille p = portefeuilleOptional.get();
-            double totalAchats = 0;
-            double totalCourant = 0;
-            List<StockPerformanceDto> performanceActions = new ArrayList<>();
-
-            for (Mouvement action : p.getActions()) {
-                double prixAchat = action.getQuantity() * action.getPrice();
-                totalAchats += prixAchat;
-                double currentPrice = getPrice(action.getTicker());
-                double prixActuel = action.getQuantity() * currentPrice;
-                totalCourant += prixActuel;
-                PerformanceDto perf = PerformanceDto.createPerformanceDto(prixAchat, prixActuel);
-                StockPerformanceDto stockPerf = new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
-                performanceActions.add(stockPerf);
-            }
-
-            PerformanceDto perf = PerformanceDto.createPerformanceDto(totalAchats, totalCourant);
-            performanceHistoryService.savePerformance(perf, username);
-            List<PerformanceHistory> performanceHistory = performanceHistoryService.getPerformanceHistory(username);
-            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory);
+            return getPortefeuilleDto(portefeuilleOptional.get(), directPriceService);
         } else {
             throw new NotFoundException("Personne non trouvée");
         }
+    }
+
+    /**
+     * Retourne les informations calculées du portefeuille pour l'utilisateur donné
+     *
+     * @param p            Portefeuille à utiliser pour les calculs
+     * @param priceService Service utilisé pour la récupération du prix des actions
+     * @return PortefeuilleDto
+     * @throws InterruptedException Si la connexion est perdue avec le service en charge de la récupération du prix
+     */
+    public PortefeuilleDto getPortefeuilleDto(Portefeuille p, PriceService priceService) throws InterruptedException {
+        double totalAchats = 0;
+        double totalCourant = 0;
+        List<StockPerformanceDto> performanceActions = new ArrayList<>();
+
+        for (Mouvement action : p.getActions()) {
+            double prixAchat = action.getQuantity() * action.getPrice();
+            totalAchats += prixAchat;
+            double currentPrice = priceService.getPrice(action.getTicker());
+            double prixActuel = action.getQuantity() * currentPrice;
+            totalCourant += prixActuel;
+            PerformanceDto perf = PerformanceDto.createPerformanceDto(prixAchat, prixActuel);
+            StockPerformanceDto stockPerf = new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
+            performanceActions.add(stockPerf);
+        }
+
+        PerformanceDto perf = PerformanceDto.createPerformanceDto(totalAchats, totalCourant);
+        performanceHistoryService.savePerformance(perf, p.getUsername());
+        List<PerformanceHistory> performanceHistory = performanceHistoryService.getPerformanceHistory(p.getUsername());
+        return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory, p.getRank().getRank());
     }
 
     public HistoryDto getHistorique(String username) throws NotFoundException {
@@ -107,7 +127,7 @@ public class PortefeuilleService {
         if (p.isPresent()) {
             Portefeuille portefeuille = p.get();
 
-            double prixAction = getPrice(ticker); // TODO VOIR POUR FRAIS ACHAT
+            double prixAction = directPriceService.getPrice(ticker); // TODO VOIR POUR FRAIS ACHAT
 
             if (portefeuille.getSolde() >= prixAction * quantity) {
 
@@ -156,7 +176,7 @@ public class PortefeuilleService {
 
                 if (actionPossedee.getQuantity() >= quantity) {
 
-                    double prixAction = getPrice(ticker); // TODO VOIR POUR FRAIS VENTE
+                    double prixAction = directPriceService.getPrice(ticker); // TODO VOIR POUR FRAIS VENTE
                     Mouvement mouvementHistorique = Mouvement.builder()
                             .time(LocalDateTime.now())
                             .type(TypeMouvement.VENTE)
@@ -189,18 +209,6 @@ public class PortefeuilleService {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public double getPrice(String ticker) throws InterruptedException {
-        String uuid = UUID.randomUUID().toString();
-        sender.send(new TickerInfoDto(uuid, ticker, null));
-        while (tickerInfoRepository.findById(uuid).isEmpty()) {
-            sleep(2000);
-        }
-        double price = tickerInfoRepository.findById(uuid).get().getPrice();
-        tickerInfoRepository.deleteById(uuid);
-        return price;
-    }
-
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void ajouterFavori(String ticker, String username) throws TooManyFavorites {
         if (portefeuilleRepository.getNbFavoris(username) < Constants.MAX_FAVORITE_STOCKS) {
             Portefeuille p = portefeuilleRepository.getPortefeuille(username).orElseThrow();
@@ -222,5 +230,14 @@ public class PortefeuilleService {
 
     public List<String> getFavoris(String username) {
         return portefeuilleRepository.getFavoris(username);
+    }
+
+    public List<Portefeuille> getAllPortefeuilles() {
+        return portefeuilleRepository.findAll();
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void savePortefeuille(Portefeuille p) {
+        portefeuilleRepository.save(p);
     }
 }

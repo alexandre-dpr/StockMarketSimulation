@@ -19,7 +19,7 @@ public class PerformanceHistoryService {
 
     @Transactional
     public void savePerformance(PerformanceDto performanceDto, String username) {
-        if (!performanceHistoryRepository.isPerformanceSavedSinceDate(LocalDateTime.now().minusHours(Constants.HISTORY_SAVE_INTERVAL))) {
+        if (!performanceHistoryRepository.isPerformanceSavedSinceDate(LocalDateTime.now().minusHours(Constants.HISTORY_SAVE_INTERVAL), username)) {
             PerformanceHistory performance = new PerformanceHistory(performanceDto.getPercentage(), performanceDto.getValue(), username);
             performanceHistoryRepository.save(performance);
         }
