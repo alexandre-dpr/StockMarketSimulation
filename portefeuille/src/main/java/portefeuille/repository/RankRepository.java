@@ -17,13 +17,14 @@ public interface RankRepository extends JpaRepository<Rank, Long> {
      * Retourne (rank + 1) du dernier qui a un profit > 0
      * S'il n'existe pas, retourne 1
      */
-    @Query(value = "SELECT " +
-            "    CASE " +
-            "        WHEN r.wallet_value = " + Constants.STARTING_BALANCE + " THEN r.rank_number" +
-            "        ELSE COALESCE((SELECT MAX(r2.rank_number) + 1 FROM portefeuille_rank r2 WHERE r2.wallet_value > " + Constants.STARTING_BALANCE + "), 1)" +
-            "        END AS result " +
+    @Query(value = "SELECT COALESCE((SELECT CASE " +
+            "           WHEN r.wallet_value = " + Constants.STARTING_BALANCE + " THEN r.rank_number " +
+            "           ELSE r.rank_number + 1 " +
+            "           END " +
             "FROM portefeuille_rank r " +
-            "WHERE r.wallet_value >= " + Constants.STARTING_BALANCE + " LIMIT 1;", nativeQuery = true)
+            "WHERE r.wallet_value >= " + Constants.STARTING_BALANCE +
+            " ORDER BY r.wallet_value" +
+            " LIMIT 1), 1) AS rank_number", nativeQuery = true)
     Long getDefaultRank();
 
     /**
