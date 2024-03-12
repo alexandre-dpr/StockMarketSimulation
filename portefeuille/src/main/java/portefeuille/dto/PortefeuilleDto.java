@@ -15,14 +15,16 @@ public class PortefeuilleDto {
     private PerformanceDto performance;
     private Double totalValue;
     List<PerformanceHistory> performanceHistory;
+    Long rank;
 
-    public static PortefeuilleDto createPortefeuilleDto(double solde, List<StockPerformanceDto> actions, PerformanceDto performance, Double totalValue, List<PerformanceHistory> performanceHistory) {
+    public static PortefeuilleDto createPortefeuilleDto(double solde, List<StockPerformanceDto> actions, PerformanceDto performance, Double totalValue, List<PerformanceHistory> performanceHistory, Long rank) {
         return new PortefeuilleDto(
                 solde,
                 actions == null ? new ArrayList<>() : actions,
                 performance == null ? PerformanceDto.createPerformanceDto(0, 0) : performance,
                 totalValue,
-                performanceHistory == null ? new ArrayList<>() : performanceHistory
+                performanceHistory == null ? new ArrayList<>() : performanceHistory,
+                rank
         );
     }
 }

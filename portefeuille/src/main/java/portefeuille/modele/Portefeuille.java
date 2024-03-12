@@ -19,13 +19,16 @@ public class Portefeuille {
     private Double solde;
 
     @OneToMany(cascade = CascadeType.ALL)
-    List<Mouvement> actions;
+    private List<Mouvement> actions;
 
     @OneToMany(cascade = CascadeType.ALL)
-    List<Mouvement> historique;
+    private List<Mouvement> historique;
 
     @ElementCollection
     @CollectionTable(name = "favoris", joinColumns = @JoinColumn(name = "username"))
     @Column(name = "favori")
-    List<String> favoris;
+    private List<String> favoris;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Rank rank;
 }

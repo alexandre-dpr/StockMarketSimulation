@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface PerformanceHistoryRepository extends JpaRepository<PerformanceHistory, Integer> {
 
-    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END FROM PerformanceHistory p WHERE p.date > :date")
-    boolean isPerformanceSavedSinceDate(@Param("date") LocalDateTime date);
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END FROM PerformanceHistory p WHERE p.date > :date AND p.username=:username")
+    boolean isPerformanceSavedSinceDate(@Param("date") LocalDateTime date, @Param("username") String username);
 
     List<PerformanceHistory> findPerformanceHistoryByUsername(String username);
 }
