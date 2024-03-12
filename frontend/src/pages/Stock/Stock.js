@@ -12,6 +12,7 @@ import logoCeo from "../../assets/img/user.png"
 import logoWeb from "../../assets/img/web.png"
 import logoExchange from "../../assets/img/exchange.png"
 import LineChart from "../../components/Charts/LineChart/LineChart";
+import TransactionWidget from "../../containers/TransactionWidget/TransactionWidget";
 
 
 function Stock() {
@@ -59,35 +60,42 @@ function Stock() {
 
     return (<div className='containerPage'>
         <div className="pageStock">
-            <div className={"d-flex align-center"}>
-                <CustomImage src={getStockLogo(ticker)} alt={""} style={{width: "50px", height: "50px"}}/>
-                <div className="d-flex w-80 align-end">
-                    <h1 className="ml-2">{data?.name} </h1>
-                    <h1 className="ml-1 ticker"> {ticker}</h1>
+            <div className="d-flex w-100">
+                <div className="leftSide w-70">
+                    <div className={"d-flex align-center"}>
+                        <CustomImage src={getStockLogo(ticker)} alt={""} style={{width: "50px", height: "50px"}}/>
+                        <div className="d-flex align-end w-100">
+                            <h1 className="ml-2">{data?.name} </h1>
+                            <h1 className="ml-1 ticker"> {ticker}</h1>
+                        </div>
+
+                    </div>
+                    <div className="d-flex w-100">
+                        <div className="lineChart w-100">
+                            <div className="d-flex justify-between align-center headerLineChart">
+                                <div className="d-flex align-center w-100">
+                                    <h1> {`${data?.price} ${data?.currency}`}</h1>
+                                    <h3 className="ml-3"> {percentageDiff(history[0], history[history.length - 1])}</h3>
+                                </div>
+                                <div className="justify-end d-flex w-50">
+                                    <div onClick={() => handleChangeRange(ONE_DAY[0])}
+                                         className={range === ONE_DAY[0] ? "focus boxRange mr-2" : "boxRange mr-2"}> {ONE_DAY[1]} </div>
+                                    <div onClick={() => handleChangeRange(ONE_YEAR[0])}
+                                         className={range === ONE_YEAR[0] ? "focus boxRange" : "" + ` boxRange`}> {ONE_YEAR[1]} </div>
+                                </div>
+                            </div>
+                            {<div className="mb-5 containerLineChart w-100">
+                                <LineChart style={{height: "500px"}} data={history} labels={timeStamp}
+                                           intervalLabelsCount={10}/>
+                            </div>}
+                        </div>
+
+                    </div>
                 </div>
 
-            </div>
-
-            <div className="lineChart">
-                <div className="d-flex justify-between align-center w-70 headerLineChart">
-                    <div className="d-flex align-center w-100">
-                        <h1> {`${data?.price} ${data?.currency}`}</h1>
-                        <h3 className="ml-3"> {percentageDiff(history[0],history[history.length-1]) }</h3>
-                    </div>
-                    <div className="justify-end d-flex w-50">
-                        <div onClick={() => handleChangeRange(ONE_DAY[0])}
-                             className={range === ONE_DAY[0] ? "focus boxRange mr-2" : "boxRange mr-2"}> {ONE_DAY[1]} </div>
-                        <div onClick={() => handleChangeRange(ONE_YEAR[0])}
-                             className={range === ONE_YEAR[0] ? "focus boxRange" : "" + ` boxRange`}> {ONE_YEAR[1]} </div>
-                    </div>
+                <div className="rightSide ml-10 w-25">
+                    <TransactionWidget ticker={ticker}/>
                 </div>
-                {
-                    <div className="mb-5 containerLineChart w-70">
-                        <LineChart style={{height: "500px"}} data={history} labels={timeStamp}
-                                   intervalLabelsCount={10}/>
-                    </div>
-                }
-
             </div>
 
             <div className="statistics">
@@ -122,10 +130,9 @@ function Stock() {
                             </div>}
 
                     </div>
-                    {data?.description !== null && data?.description !== "" &&
-                        <div className="stockDescription w-70">
-                            {data?.description}
-                        </div>}
+                    {data?.description !== null && data?.description !== "" && <div className="stockDescription w-70">
+                        {data?.description}
+                    </div>}
                 </div>
             </div>
             {username ? <StocksChat stocks={ticker} username={username}/> : <></>}

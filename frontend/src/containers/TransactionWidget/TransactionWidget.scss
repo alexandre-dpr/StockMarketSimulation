@@ -1,0 +1,40 @@
+@import '../../index.scss';
+
+.rightSide{
+  margin-top: 25px;
+}
+.buyCell, .sellCell{
+  flex: 1;
+  cursor: pointer;
+  height: 40px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.headerTransactionWidget {
+  position: relative;
+  border-bottom: 2px solid transparent;
+}
+
+.indicator {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 45%;
+  height: 2px;
+  background-color: black;
+  transition: transform 0.3s ease;
+}
+
+.containerInput{
+  margin-top: 30px;
+
+
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -8px;
+    font-size: 12px;
+    color: #333;
+  }
+}

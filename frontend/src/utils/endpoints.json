@@ -2,5 +2,8 @@
   "stocksList": "/stocksList",
   "tickerAutocomplete": "/tickerAutocomplete",
   "trends": "/trends",
-  "stock": "/stock"
+  "stock": "/stock",
+  "achat": "/achat",
+  "vente": "/vente"
+
 }
