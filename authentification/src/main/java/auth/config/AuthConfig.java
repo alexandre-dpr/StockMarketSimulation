@@ -61,6 +61,7 @@ public class AuthConfig {
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors->cors.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 .exceptionHandling((exceptions) -> exceptions
@@ -112,19 +113,5 @@ public class AuthConfig {
 
             return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
         };
-    }
-
-    @Bean
-    public FilterRegistrationBean<CorsFilter> initCorsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-        config.addAllowedMethod("*");
-        config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return bean;
     }
 }
