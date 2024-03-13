@@ -47,7 +47,7 @@ spring:
           predicates:
             - Path=/api/community/**
           filters:
-            - RewritePath=/api/community(?<segment>/?.*), /community/v1$\{segment}
+            - RewritePath=/api/community(?<segment>/?.*), /community$\{segment}
             - PreserveHostHeader
         - id: bourse
           uri: lb://service-bourse
