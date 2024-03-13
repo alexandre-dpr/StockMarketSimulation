@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("SpringTransactionalMethodCallsInspection")
 @Service
 public class PortefeuilleService {
 
@@ -70,15 +71,14 @@ public class PortefeuilleService {
      *
      * @param username Username associé au portefeuille
      * @return PortefeuilleDto
-     * @throws NotFoundException    Si l'utilisateur n'est pas trouvé
      * @throws InterruptedException Si la connexion est perdue avec le service en charge de la récupération du prix
      */
-    public PortefeuilleDto getPortefeuilleDto(String username) throws NotFoundException, InterruptedException {
+    public PortefeuilleDto getPortefeuilleDto(String username) throws InterruptedException, WalletAlreadyCreatedException {
         Optional<Portefeuille> portefeuilleOptional = portefeuilleRepository.getPortefeuille(username);
         if (portefeuilleOptional.isPresent()) {
             return getPortefeuilleDto(portefeuilleOptional.get(), directPriceService);
         } else {
-            throw new NotFoundException("Personne non trouvée");
+            return creerPortefeuille(username);
         }
     }
 
@@ -116,8 +116,11 @@ public class PortefeuilleService {
         return new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
     }
 
-    public StockPerformanceDto getStockPerformance(String ticker, String username) throws InterruptedException {
+    public StockPerformanceDto getStockPerformance(String ticker, String username) throws InterruptedException, NotFoundException {
         Mouvement mouvement = portefeuilleRepository.getStockForUser(ticker, username);
+        if (mouvement == null) {
+            throw new NotFoundException("L'utilisateur ne possède pas d'action de ce type");
+        }
         return getStockPerformance(mouvement, directPriceService);
     }
 

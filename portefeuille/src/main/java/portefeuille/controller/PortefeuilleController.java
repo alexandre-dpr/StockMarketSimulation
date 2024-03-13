@@ -28,19 +28,8 @@ public class PortefeuilleController {
     @Autowired
     private RankService rankService;
 
-    // TODO Une fois Spring Sec rajouté, ne plus prendre le username dans rq body mais dans Principal
-    @PostMapping
-    public ResponseEntity<PortefeuilleDto> createPortefeuille(Authentication authentication) throws WalletAlreadyCreatedException {
-        String username = authentication.getName();
-        return ResponseEntity.created(
-                ServletUriComponentsBuilder
-                        .fromCurrentRequest().build().toUri()
-                        .resolve(String.format("/%s", username))
-        ).body(portefeuilleService.creerPortefeuille(username));
-    }
-
     @GetMapping
-    public ResponseEntity<PortefeuilleDto> getPortefeuille(Authentication authentication) throws NotFoundException, InterruptedException {
+    public ResponseEntity<PortefeuilleDto> getPortefeuille(Authentication authentication) throws InterruptedException, WalletAlreadyCreatedException {
         return ResponseEntity.ok().body(portefeuilleService.getPortefeuilleDto(authentication.getName()));
     }
 
@@ -88,7 +77,7 @@ public class PortefeuilleController {
     }
 
     @GetMapping("/stock/{ticker}")
-    public ResponseEntity<StockPerformanceDto> getStockPerformance(Authentication authentication, @PathVariable String ticker) throws InterruptedException {
+    public ResponseEntity<StockPerformanceDto> getStockPerformance(Authentication authentication, @PathVariable String ticker) throws InterruptedException, NotFoundException {
         return ResponseEntity.ok(portefeuilleService.getStockPerformance(ticker, authentication.getName()));
     }
 }
