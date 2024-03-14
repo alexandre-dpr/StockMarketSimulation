@@ -16,13 +16,17 @@ export class RequestWallet {
         }
     }
 
-    async getWallet(username) {
+    async getWallet() {
         try {
-            return await this.axios.get(constants.url_api_portefeuille, {
-                body: {
-                    username: username
-                }
-            });
+            return await this.axios.get(constants.url_api_portefeuille);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getFav() {
+        try {
+            return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.favori}`);
         } catch (error) {
             throw error;
         }
@@ -51,6 +55,14 @@ export class RequestWallet {
                     quantity: quantity
                 }
             });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getClassement(){
+        try {
+            return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.leaderboard}`);
         } catch (error) {
             throw error;
         }

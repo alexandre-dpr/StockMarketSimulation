@@ -4,7 +4,6 @@
 .containerPage {
     padding-block: 100px;
     padding-inline: 10vw;
-    height: 100%;
     @include respond-to('phone') {
         padding-top: 30px;
         padding-inline: 0;

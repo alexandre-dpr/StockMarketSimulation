@@ -18,12 +18,12 @@ import java.util.Objects;
 public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CommentaireInexistantException.class)
-    public ResponseEntity<Object> handleLoginAlreadyUsedException(Exception ex, WebRequest request) {
+    public ResponseEntity<Object> commentaireInexistantException(CommentaireInexistantException ex, WebRequest request) {
         ErrorDTO errorDTO = createDTO("Commentaire inexistant", HttpStatus.NOT_FOUND, ex, request);
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.valueOf(errorDTO.getStatus()), request);
     }
     @ExceptionHandler(AuteurNonReconnueException.class)
-    public ResponseEntity<Object> handleUnrecognisedAuthorException(Exception ex, WebRequest request) {
+    public ResponseEntity<Object> auteurNonReconnueExceptionv(AuteurNonReconnueException ex, WebRequest request) {
         ErrorDTO errorDTO = createDTO("Seul l'auteur peut supprimer le commentaire", HttpStatus.FORBIDDEN, ex, request);
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.valueOf(errorDTO.getStatus()), request);
     }

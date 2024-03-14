@@ -14,7 +14,7 @@ public interface Facade {
     List<CommentaireDTO> getAllCommentaire(String action) throws CommentaireInexistantException;
 
     @Transactional
-    CommentaireDTO addComentaire(AddCommentDTO commentaireDTO);
+    CommentaireDTO addComentaire(String name, AddCommentDTO commentaireDTO,String id);
 
     @Transactional
     CommentaireDTO addInteraction(String userId, Integer idCommentaire) throws CommentaireInexistantException;

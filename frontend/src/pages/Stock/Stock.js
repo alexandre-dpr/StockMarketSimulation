@@ -24,7 +24,7 @@ function Stock() {
     const ONE_YEAR = utils.rangeHistoryStock.ONE_YEAR
     const [range, setRange] = useState(ONE_DAY[0]);
     const [history, setHistory] = useState([])
-    const [timeStamp, setTimeStamp] = useState([])
+    const [timeStamp, setTimeStamp] = useState([] )
 
     async function fetchData() {
         const result = await getStock(ticker, range);

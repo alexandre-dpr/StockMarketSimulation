@@ -3,12 +3,11 @@ import Interceptor from "./Interceptor";
 
 export class RequestCommunity {
     static COMMENT = "/comment";
-    static ACTION = "/action";
     axios = Interceptor.getInstance();
 
     async getAllComment(tickers) {
         try {
-            return await this.axios.get(constants.url_community + RequestCommunity.ACTION + "/"+tickers);
+            return await this.axios.get(constants.url_community  + "/"+tickers);
         } catch (error) {
             throw error;
         }
@@ -16,11 +15,9 @@ export class RequestCommunity {
 
     async addComment(username,comment,tickers) {
         try {
-            return await this.axios.post(constants.url_community + RequestCommunity.COMMENT ,
+            return await this.axios.post(constants.url_community + "/"+tickers ,
                 {
-                    "userId": username,
-                    "content": comment,
-                    "action" : tickers
+                    "content": comment
                 });
         } catch (error) {
             throw error;
@@ -29,10 +26,7 @@ export class RequestCommunity {
 
     async likeComment(idComment,username){
         try {
-            return await this.axios.post(constants.url_community + RequestCommunity.COMMENT + "/"+idComment ,
-                {
-                    "userId": username
-                });
+            return await this.axios.post(constants.url_community + RequestCommunity.COMMENT + "/"+idComment);
         } catch (error) {
             throw error;
         }

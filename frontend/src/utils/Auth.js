@@ -63,9 +63,7 @@ export class Auth {
 
     async getUsername() {
         if (this.isLoggedIn()) {
-            console.log("oui")
             const decodedToken =await this.decodeToken();
-            console.log(decodedToken)
             if (decodedToken) {
                 return decodedToken.sub;
             }

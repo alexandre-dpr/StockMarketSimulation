@@ -18,29 +18,23 @@ import java.util.List;
 @RestController()
 @RequestMapping(value = "/community", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CommentaireController {
-    private final FacadeImpl facade;
-
     @Autowired
-    public CommentaireController(FacadeImpl facade) {
-        this.facade = facade;
-    }
+    private FacadeImpl facade;
 
-    @GetMapping(value = "/action/{id}")
-    public ResponseEntity<List<CommentaireDTO>> getAllComentaire(Authentication authentication) throws CommentaireInexistantException {
-        return ResponseEntity.ok(facade.getAllCommentaire(authentication.getName()));
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<List<CommentaireDTO>> getAllComentaire(@PathVariable String id, Authentication authentication)  {
+        return ResponseEntity.ok(facade.getAllCommentaire(id));
     }
 
     @DeleteMapping(value = "/comment/{id}")
     public ResponseEntity<Void> deleteComment(Authentication authentication, @PathVariable Integer id) throws CommentaireInexistantException, AuteurNonReconnueException {
-
         facade.deleteCommentaire(authentication.getName(),id);
          return ResponseEntity.noContent().build();
     }
 
-    @PostMapping(value = "/comment")
-    public ResponseEntity<CommentaireDTO> addComment(Authentication authentication ,@RequestBody AddCommentDTO commentaireDTO){
-
-        return ResponseEntity.ok(facade.addComentaire(new AddCommentDTO(authentication.getName(), commentaireDTO.content(), commentaireDTO.action())));
+    @PostMapping(value = "/{id}")
+    public ResponseEntity<CommentaireDTO> addComment(Authentication authentication ,@PathVariable String id, @RequestBody AddCommentDTO commentaireDTO){
+        return ResponseEntity.ok(facade.addComentaire(authentication.getName(),commentaireDTO,id));
     }
     @PostMapping(value = "/comment/{id}")
     public ResponseEntity<CommentaireDTO> addInteraction(Authentication authentication,@PathVariable Integer id) throws CommentaireInexistantException {
