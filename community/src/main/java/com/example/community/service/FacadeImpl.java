@@ -17,25 +17,14 @@ import java.util.Optional;
 @Component("CommunityService")
 public class FacadeImpl implements Facade{
 
-    private static FacadeImpl facade;
-
     @Autowired
     CommentaireRepository commentaireRepository;
 
-    /**
-     * @return singeleton facade
-     */
-    public static FacadeImpl getFacade() {
-        if (facade == null) {
-            facade = new FacadeImpl();
-        }
-        return facade;
-    }
     @Override
-    public List<CommentaireDTO> getAllCommentaire(String action) throws CommentaireInexistantException {
+    public List<CommentaireDTO> getAllCommentaire(String action) {
         Optional <List<Commentaire>> commentaires = commentaireRepository.findAllByActionOrderByDateDesc(action);
         if(commentaires.isEmpty()) {
-            throw new CommentaireInexistantException("Comment not found ");
+            return new ArrayList<>();
         }
         List<CommentaireDTO> commentaireDTOS = new ArrayList<>();
         commentaires.get().forEach(e -> {
@@ -46,8 +35,8 @@ public class FacadeImpl implements Facade{
 
     @Override
     @Transactional
-    public CommentaireDTO addComentaire(AddCommentDTO commentaireDTO) {
-        Commentaire commentaire = new Commentaire(commentaireDTO.userId(), commentaireDTO.content(), commentaireDTO.action());
+    public CommentaireDTO addComentaire(String name, AddCommentDTO commentaireDTO,String id) {
+        Commentaire commentaire = new Commentaire(name, commentaireDTO.content(), id);
         commentaireRepository.save(commentaire);
         return commentaire.toDTO();
     }
@@ -57,7 +46,7 @@ public class FacadeImpl implements Facade{
     public CommentaireDTO addInteraction(String userId, Integer idCommentaire) throws CommentaireInexistantException {
         Optional<Commentaire> commentaire = commentaireRepository.findById(idCommentaire);
         if(commentaire.isEmpty()) {
-            throw new CommentaireInexistantException("Comment not found ");
+            throw new CommentaireInexistantException("Commentaire non trouvée");
         }
         commentaire.get().addInteraction(userId);
         commentaireRepository.save(commentaire.get());
@@ -71,14 +60,13 @@ public class FacadeImpl implements Facade{
         Optional<Commentaire> commentaire = commentaireRepository.findById(idCommentaire);
 
         if(commentaire.isEmpty()) {
-            throw new CommentaireInexistantException("Comment not found ");
+            throw new CommentaireInexistantException("Commentaire non trouvée");
         }
         Commentaire comm = commentaire.get();
-        if(username.equals(comm.getUser())){
-            commentaireRepository.delete(commentaire.get());
+        if(!username.equals(comm.getUser())){
+            throw new AuteurNonReconnueException("Seul l'auteur du commentaire peut le supprimer");
         }
-        throw new AuteurNonReconnueException("Seul l'auteur du commentaire peut le supprimer");
-
+        commentaireRepository.delete(commentaire.get());
     }
 
 }
