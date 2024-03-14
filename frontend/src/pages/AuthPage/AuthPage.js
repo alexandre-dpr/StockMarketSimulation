@@ -61,7 +61,6 @@ function AuthPage() {
         try {
             const resp = await requestAuth.register(username, login, password);
             await auth.setJwtToken(resp.data);
-            await requestWallet.createWallet(await auth.getUsername());
             router(routes.home);
         }catch (e) {
             console.log(e.message)

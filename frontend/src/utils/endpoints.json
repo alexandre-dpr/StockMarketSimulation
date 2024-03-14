@@ -4,6 +4,8 @@
   "trends": "/trends",
   "stock": "/stock",
   "achat": "/achat",
-  "vente": "/vente"
+  "vente": "/vente",
+  "favori" : "/favori",
+  "leaderboard": "/leaderboard"
 
 }
