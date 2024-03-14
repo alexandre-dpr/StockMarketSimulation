@@ -16,8 +16,6 @@ import portefeuille.exceptions.*;
 import portefeuille.service.PortefeuilleService;
 import portefeuille.service.RankService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/portefeuille")
 public class PortefeuilleController {
@@ -48,11 +46,6 @@ public class PortefeuilleController {
     public ResponseEntity<Void> vendre(Authentication authentication, @RequestBody @Valid TransactionActionReqDto req) throws NotEnoughStocksException, NotFoundException, InterruptedException {
         portefeuilleService.vendreAction(authentication.getName(), req.getTicker(), req.getQuantity());
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/favori")
-    public ResponseEntity<List<String>> getFavoris(Authentication authentication) {
-        return ResponseEntity.ok(portefeuilleService.getFavoris(authentication.getName()));
     }
 
     @PostMapping("/favori")

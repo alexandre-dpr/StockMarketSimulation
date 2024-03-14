@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import portefeuille.config.Constants;
-import portefeuille.dto.HistoryDto;
-import portefeuille.dto.PerformanceDto;
-import portefeuille.dto.PortefeuilleDto;
-import portefeuille.dto.StockPerformanceDto;
+import portefeuille.dto.*;
 import portefeuille.enums.TypeMouvement;
 import portefeuille.exceptions.*;
 import portefeuille.modele.Mouvement;
@@ -59,7 +56,7 @@ public class PortefeuilleService {
                     .build();
 
             portefeuilleRepository.save(p);
-            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null, p.getSolde(), null, p.getRank().getRank());
+            return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), null, null, p.getSolde(), null, p.getRank().getRank(), null);
 
         } else {
             throw new WalletAlreadyCreatedException("Portefeuille déjà existant");
@@ -105,7 +102,18 @@ public class PortefeuilleService {
         PerformanceDto perf = PerformanceDto.createPerformanceDto(totalAchats, totalCourant);
         performanceHistoryService.savePerformance(perf, p.getUsername());
         List<PerformanceHistory> performanceHistory = performanceHistoryService.getPerformanceHistory(p.getUsername());
-        return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory, p.getRank().getRank());
+
+        List<FavoriteStockDto> favoriteStockDto = new ArrayList<>();
+        for (String ticker : p.getFavoris()) {
+            favoriteStockDto.add(
+                    new FavoriteStockDto(
+                            ticker,
+                            priceService.getPrice(ticker)
+                    )
+            );
+        }
+
+        return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory, p.getRank().getRank(), favoriteStockDto);
     }
 
     public StockPerformanceDto getStockPerformance(Mouvement action, PriceService priceService) throws InterruptedException {
@@ -238,10 +246,6 @@ public class PortefeuilleService {
         Portefeuille p = portefeuilleRepository.getPortefeuille(username).orElseThrow();
         p.getFavoris().remove(ticker);
         portefeuilleRepository.save(p);
-    }
-
-    public List<String> getFavoris(String username) {
-        return portefeuilleRepository.getFavoris(username);
     }
 
     public List<Portefeuille> getAllPortefeuilles() {
