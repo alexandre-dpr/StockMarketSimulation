@@ -5,7 +5,6 @@ import "./LineChart.scss";
 const LineChart = ({ data, labels, intervalLabelsCount,style }) => {
     const chartRef = useRef(null);
     const skipInterval = Math.ceil(labels.length / intervalLabelsCount);
-
     const chartData = {
         labels: labels,
         datasets: [
