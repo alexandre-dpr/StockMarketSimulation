@@ -63,6 +63,13 @@
     "buy": "Buy",
     "sell": "Sell",
     "quantity": "Quantity",
-    "reviewOrder": "Review order"
+    "reviewOrder": "Review order",
+    "amount": "Amount:",
+    "available": "available",
+    "sharesOwned": "shares owned",
+    "position": "Position",
+    "total": "Total",
+    "performance": "Performance",
+    "buyIn": "Buy in"
   }
 }

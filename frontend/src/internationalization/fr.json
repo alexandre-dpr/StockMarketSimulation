@@ -63,6 +63,13 @@
     "buy": "Acheter",
     "sell": "Vendre",
     "quantity": "Quantité",
-    "reviewOrder": "Valider l'ordre"
+    "reviewOrder": "Valider l'ordre",
+    "amount": "Montant:",
+    "available": "disponible(s)",
+    "sharesOwned": "action(s) possédée(s)",
+    "position": "Position",
+    "total": "Total",
+    "performance": "Performance",
+    "buyIn": "Prix d'achat"
   }
 }

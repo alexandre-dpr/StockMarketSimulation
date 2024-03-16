@@ -11,7 +11,7 @@ import {jwtDecode} from "jwt-decode";
  */
 
 export class Auth {
-    async getEmail() {
+    getEmail() {
         try {
             return localStorage.getItem("email");
         } catch (error) {
@@ -20,7 +20,7 @@ export class Auth {
         }
     }
 
-    async setEmail(email) {
+    setEmail(email) {
         try {
             localStorage.setItem("email", email);
         } catch (error) {
@@ -29,7 +29,7 @@ export class Auth {
     }
 
 
-    async getJwtToken() {
+    getJwtToken() {
         try {
             return  localStorage.getItem("jwt");
         } catch (error) {
@@ -38,7 +38,7 @@ export class Auth {
         }
     }
 
-    async setJwtToken(token) {
+    setJwtToken(token) {
         try {
              localStorage.setItem("jwt", token);
         } catch (error) {
@@ -46,14 +46,20 @@ export class Auth {
         }
     }
 
-
-
      isLoggedIn() {
         return !!this.getJwtToken();
     }
 
-    async decodeToken() {
-        const token = await this.getJwtToken();
+    signOut() {
+        try {
+            localStorage.removeItem("jwt")
+        } catch (error) {
+            console.error("Error clearing JWT token:", error);
+        }
+    }
+
+    decodeToken() {
+        const token = this.getJwtToken();
         if (token) {
             return jwtDecode(token);
         } else {
@@ -61,13 +67,15 @@ export class Auth {
         }
     }
 
-    async getUsername() {
+    getUsername() {
         if (this.isLoggedIn()) {
-            const decodedToken =await this.decodeToken();
+            const decodedToken = this.decodeToken();
             if (decodedToken) {
                 return decodedToken.sub;
             }
         }
         return undefined;
     }
+
+
 }

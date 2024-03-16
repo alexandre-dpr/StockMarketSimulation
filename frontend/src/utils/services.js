@@ -56,7 +56,7 @@ function percentageDiff(val1, val2) {
     }
 
     let difference = ((val2 - val1) / val1) * 100;
-    let value = difference.toFixed(2) + '%';
+    let value = round(difference,2) + '%';
     if(difference >= 0){
         return [difference,<h3 style={{color:"rgb(54, 162, 235)"}}>+{value}</h3>]
     }else{
@@ -65,4 +65,13 @@ function percentageDiff(val1, val2) {
 
 }
 
-export {getFormatStocks, getStockLogo, timestampToHHMM, timestampToDDMMYY,percentageDiff}
+function round(value,toFixed){
+    if(value !== undefined){
+        return parseFloat(value.toFixed(toFixed));
+    }
+    return 0
+}
+
+
+
+export {getFormatStocks, getStockLogo, timestampToHHMM, timestampToDDMMYY,percentageDiff,round}

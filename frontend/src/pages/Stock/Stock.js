@@ -54,7 +54,7 @@ function Stock() {
 
     useEffect(() => {
         setPerformance(percentageDiff(history[0], history[history.length - 1]))
-    }, [history,range]);
+    }, [history, range]);
 
 
     const handleChangeRange = (newRange) => {
@@ -94,7 +94,7 @@ function Stock() {
                                     data={history}
                                     labels={timeStamp}
                                     intervalLabelsCount={10}
-                                    lineColor={performance[0]>0 ? "rgb(54, 162, 235)" : "rgb(255, 99, 132)"}
+                                    lineColor={performance[0] > 0 ? "rgb(54, 162, 235)" : "rgb(255, 99, 132)"}
                                 />
                             </div>}
                         </div>
@@ -103,12 +103,12 @@ function Stock() {
                 </div>
 
                 <div className="rightSide ml-10 w-25">
-                    <TransactionWidget ticker={ticker}/>
+                    <TransactionWidget price={data?.price} ticker={ticker}/>
                 </div>
             </div>
 
-            <div className="statistics">
-                <h1> {t('stock.statistics')}</h1>
+            <div className="statistics mt-5">
+                <h3> {t('stock.statistics')}</h3>
                 <div className="d-flex w-100">
                     <div className="marketCap d-flex w-50">
                         <div className="label">{`${t('stock.marketCap')}:`}</div>
@@ -118,8 +118,8 @@ function Stock() {
 
             </div>
 
-            <div className="about">
-                <h1>{`${t('stock.about')} ${data?.name}`}</h1>
+            <div className="about mt-5">
+                <h3>{`${t('stock.about')} ${data?.name}`}</h3>
                 <div className="d-flex p">
                     <div className="infos w-30 d-flex justify-evenly flex-column">
                         {data?.ceo !== null && data?.ceo !== "" && <div className="ceo d-flex align-center">
