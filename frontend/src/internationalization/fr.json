@@ -61,6 +61,8 @@
   },
   "transactionWidget": {
     "buy": "Acheter",
-    "sell": "Vendre"
+    "sell": "Vendre",
+    "quantity": "Quantité",
+    "reviewOrder": "Valider l'ordre"
   }
 }

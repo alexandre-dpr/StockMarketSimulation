@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Line } from "react-chartjs-2";
 import "./LineChart.scss";
 
-const LineChart = ({ data, labels, intervalLabelsCount,style }) => {
+const LineChart = ({ data, labels, intervalLabelsCount,style, lineColor }) => {
     const chartRef = useRef(null);
     const skipInterval = Math.ceil(labels.length / intervalLabelsCount);
     const chartData = {
@@ -10,7 +10,7 @@ const LineChart = ({ data, labels, intervalLabelsCount,style }) => {
         datasets: [
             {
                 data: data,
-                borderColor: "black",
+                borderColor: lineColor,
                 spanGaps: true,
                 pointRadius: 0,
                 pointHitRadius: 10,

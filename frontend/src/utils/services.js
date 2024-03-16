@@ -58,9 +58,9 @@ function percentageDiff(val1, val2) {
     let difference = ((val2 - val1) / val1) * 100;
     let value = difference.toFixed(2) + '%';
     if(difference >= 0){
-        return <h3 style={{color:"rgb(54, 162, 235)"}}>+{value}</h3>
+        return [difference,<h3 style={{color:"rgb(54, 162, 235)"}}>+{value}</h3>]
     }else{
-        return <h3 style={{color:"rgb(255, 99, 132)"}}>{value}</h3>
+        return [difference,<h3 style={{color:"rgb(255, 99, 132)"}}>{value}</h3>]
     }
 
 }

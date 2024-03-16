@@ -24,12 +24,12 @@ function Stock() {
     const ONE_YEAR = utils.rangeHistoryStock.ONE_YEAR
     const [range, setRange] = useState(ONE_DAY[0]);
     const [history, setHistory] = useState([])
-    const [timeStamp, setTimeStamp] = useState([] )
+    const [timeStamp, setTimeStamp] = useState([])
+    const [performance, setPerformance] = useState(0);
 
     async function fetchData() {
         const result = await getStock(ticker, range);
         setData(result.data)
-        console.log(result.data)
         if (result.data.history.chart.result[0].timestamp !== undefined && result.data.history.chart.result[0].indicators.quote[0].high !== undefined) {
             if (range === ONE_DAY[0]) {
                 setTimeStamp(timestampToHHMM(result.data.history.chart.result[0].timestamp))
@@ -51,6 +51,10 @@ function Stock() {
         fetchUsername();
         fetchData()
     }, [range]);
+
+    useEffect(() => {
+        setPerformance(percentageDiff(history[0], history[history.length - 1]))
+    }, [history,range]);
 
 
     const handleChangeRange = (newRange) => {
@@ -75,7 +79,7 @@ function Stock() {
                             <div className="d-flex justify-between align-center headerLineChart">
                                 <div className="d-flex align-center w-100">
                                     <h1> {`${data?.price} ${data?.currency}`}</h1>
-                                    <h3 className="ml-3"> {percentageDiff(history[0], history[history.length - 1])}</h3>
+                                    <h3 className="ml-3"> {performance[1]}</h3>
                                 </div>
                                 <div className="justify-end d-flex w-50">
                                     <div onClick={() => handleChangeRange(ONE_DAY[0])}
@@ -85,8 +89,13 @@ function Stock() {
                                 </div>
                             </div>
                             {<div className="mb-5 containerLineChart w-100">
-                                <LineChart style={{height: "500px"}} data={history} labels={timeStamp}
-                                           intervalLabelsCount={10}/>
+                                <LineChart
+                                    style={{height: "500px"}}
+                                    data={history}
+                                    labels={timeStamp}
+                                    intervalLabelsCount={10}
+                                    lineColor={performance[0]>0 ? "rgb(54, 162, 235)" : "rgb(255, 99, 132)"}
+                                />
                             </div>}
                         </div>
 
