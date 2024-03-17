@@ -74,6 +74,9 @@ public class RankService {
                 .limit(15)
                 .sorted((u1, u2) -> Double.compare(u2.getTotalValue(), u1.getTotalValue()))
                 .toList();
+        if("".equals(username)){
+            return new LeaderboardDto(leaderboard, new LeaderboardUserDto(-1l,"no user sent","-999",-99990.99));
+        }
         LeaderboardUserDto user = rankRepository.getLeaderboardPosition(username);
         return new LeaderboardDto(leaderboard, user);
     }
