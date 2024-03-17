@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import LineChart from "../../../components/Charts/LineChart/LineChart";
 import {timestampToDDMMYY} from "../../../utils/services";
+import Spinner from "../../../components/Spinner/Spinner";
 
 
 function Wallet() {
@@ -21,6 +22,7 @@ function Wallet() {
     const [isPercent, setIsPercent] = useState();
     const [dataGraph, setDataGraph] = useState(null);
     const [dateGraph, setDateGraph] = useState(null);
+    const [isLoading, setIsLoading] = useState(true)
 
 
     useEffect(()=>{
@@ -31,6 +33,7 @@ function Wallet() {
         const resp = await requestWallet.getWallet();
         await setData(resp.data);
         await initGraph(resp.data);
+        setIsLoading(false)
     }
 
 
@@ -70,8 +73,9 @@ function Wallet() {
     return (
         <div className="containerPage">
             {
-                data !== null?
-
+                isLoading?
+                    <div className="mt-10"><Spinner/></div>
+                    :
                     <div className="cards">
                         <div className="d-flex flex-column h-100 w-65 w-sm-100-p">
                             <div className="d-flex align-center">
@@ -85,7 +89,7 @@ function Wallet() {
                             </div>
                             {
                                 dataGraph && dateGraph && <LineChart style={{height: "500px"}} data={dataGraph} labels={dateGraph}
-                                           intervalLabelsCount={10}/>
+                                                                     intervalLabelsCount={10}/>
                             }
                         </div>
                         <div className="d-flex flex-column h-100 w-35 w-sm-100-p">
@@ -144,8 +148,6 @@ function Wallet() {
                             </div>
                         </div>
                     </div>
-                    :
-                    <></>
             }
         </div>
 

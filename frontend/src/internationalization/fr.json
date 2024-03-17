@@ -70,6 +70,7 @@
     "position": "Position",
     "total": "Total",
     "performance": "Performance",
-    "buyIn": "Prix d'achat"
+    "buyIn": "Prix d'achat",
+    "logInSentence": "Connectez-vous ou inscrivez-vous pour réaliser vos transactions et placer vos ordres en toute simplicité."
   }
 }

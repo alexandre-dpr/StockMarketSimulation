@@ -6,13 +6,15 @@ import {Auth} from "../../utils/Auth";
 import {getStock} from "../../request/RequestMarket";
 import utils from "../../utils/utils.json"
 import CustomImage from "../../components/CustomImage/CustomImage";
-import {getStockLogo, percentageDiff, timestampToDDMMYY, timestampToHHMM} from "../../utils/services";
+import {formatCurrency, getStockLogo, percentageDiff, timestampToDDMMYY, timestampToHHMM} from "../../utils/services";
 import {useTranslation} from 'react-i18next';
 import logoCeo from "../../assets/img/user.png"
 import logoWeb from "../../assets/img/web.png"
 import logoExchange from "../../assets/img/exchange.png"
 import LineChart from "../../components/Charts/LineChart/LineChart";
 import TransactionWidget from "../../containers/TransactionWidget/TransactionWidget";
+import Spinner from "../../components/Spinner/Spinner";
+import constants from "../../utils/constants.json"
 
 
 function Stock() {
@@ -26,6 +28,7 @@ function Stock() {
     const [history, setHistory] = useState([])
     const [timeStamp, setTimeStamp] = useState([])
     const [performance, setPerformance] = useState(0);
+    const [isLoading, setIsLoading] = useState(true)
 
     async function fetchData() {
         const result = await getStock(ticker, range);
@@ -38,10 +41,10 @@ function Stock() {
             }
             setHistory(result.data.history.chart.result[0].indicators.quote[0].high)
         }
+        setIsLoading(false)
     }
 
     useEffect(() => {
-
         async function fetchUsername() {
             const auth = new Auth();
             const name = await auth.getUsername();
@@ -63,90 +66,100 @@ function Stock() {
 
 
     return (<div className='containerPage'>
-        <div className="pageStock">
-            <div className="d-flex w-100">
-                <div className="leftSide w-70">
-                    <div className={"d-flex align-center"}>
-                        <CustomImage src={getStockLogo(ticker)} alt={""} style={{width: "50px", height: "50px"}}/>
-                        <div className="d-flex align-end w-100">
-                            <h1 className="ml-2">{data?.name} </h1>
-                            <h1 className="ml-1 ticker"> {ticker}</h1>
-                        </div>
+        {
+            isLoading ?
+                <div className="mt-10">
+                    <Spinner/>
+                </div>
 
-                    </div>
+                :
+                <div className="pageStock">
                     <div className="d-flex w-100">
-                        <div className="lineChart w-100">
-                            <div className="d-flex justify-between align-center headerLineChart">
-                                <div className="d-flex align-center w-100">
-                                    <h1> {`${data?.price} ${data?.currency}`}</h1>
-                                    <h3 className="ml-3"> {performance[1]}</h3>
+                        <div className="leftSide w-70">
+                            <div className={"d-flex align-center"}>
+                                <CustomImage src={getStockLogo(ticker)} alt={""}
+                                             style={{width: "50px", height: "50px"}}/>
+                                <div className="d-flex align-end w-100">
+                                    <h1 className="ml-2">{data?.name} </h1>
+                                    <h1 className="ml-1 ticker"> {ticker}</h1>
                                 </div>
-                                <div className="justify-end d-flex w-50">
-                                    <div onClick={() => handleChangeRange(ONE_DAY[0])}
-                                         className={range === ONE_DAY[0] ? "focus boxRange mr-2" : "boxRange mr-2"}> {ONE_DAY[1]} </div>
-                                    <div onClick={() => handleChangeRange(ONE_YEAR[0])}
-                                         className={range === ONE_YEAR[0] ? "focus boxRange" : "" + ` boxRange`}> {ONE_YEAR[1]} </div>
-                                </div>
+
                             </div>
-                            {<div className="mb-5 containerLineChart w-100">
-                                <LineChart
-                                    style={{height: "500px"}}
-                                    data={history}
-                                    labels={timeStamp}
-                                    intervalLabelsCount={10}
-                                    lineColor={performance[0] > 0 ? "rgb(54, 162, 235)" : "rgb(255, 99, 132)"}
-                                />
-                            </div>}
+                            <div className="d-flex w-100">
+                                <div className="lineChart w-100">
+                                    <div className="d-flex justify-between align-center headerLineChart">
+                                        <div className="d-flex align-center w-100">
+                                            <h1> {`${data?.price} ${data?.currency}`}</h1>
+                                            <h3 className="ml-3"> {performance[1]}</h3>
+                                        </div>
+                                        <div className="justify-end d-flex w-50">
+                                            <div onClick={() => handleChangeRange(ONE_DAY[0])}
+                                                 className={range === ONE_DAY[0] ? "focus boxRange mr-2" : "boxRange mr-2"}> {ONE_DAY[1]} </div>
+                                            <div onClick={() => handleChangeRange(ONE_YEAR[0])}
+                                                 className={range === ONE_YEAR[0] ? "focus boxRange" : "" + ` boxRange`}> {ONE_YEAR[1]} </div>
+                                        </div>
+                                    </div>
+                                    {<div className="mb-5 containerLineChart w-100">
+                                        <LineChart
+                                            style={{height: "500px"}}
+                                            data={history}
+                                            labels={timeStamp}
+                                            intervalLabelsCount={10}
+                                            lineColor={performance[0] > 0 ? constants.green : constants.red}
+                                        />
+                                    </div>}
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div className="rightSide ml-10 w-25">
+                            <TransactionWidget price={data?.price} ticker={ticker}/>
+                        </div>
+                    </div>
+
+                    <div className="statistics mt-5">
+                        <h3> {t('stock.statistics')}</h3>
+                        <div className="d-flex w-100">
+                            <div className="marketCap d-flex w-50">
+                                <div className="label">{`${t('stock.marketCap')}:`}</div>
+                                <div className="ml-3"> {`${formatCurrency(data?.marketCap)} ${data?.currency}`} </div>
+                            </div>
                         </div>
 
                     </div>
-                </div>
 
-                <div className="rightSide ml-10 w-25">
-                    <TransactionWidget price={data?.price} ticker={ticker}/>
-                </div>
-            </div>
+                    <div className="about mt-5">
+                        <h3>{`${t('stock.about')} ${data?.name}`}</h3>
+                        <div className="d-flex p">
+                            <div className="infos w-30 d-flex flex-column">
+                                {data?.ceo !== null && data?.ceo !== "" && <div className="ceo d-flex align-center">
+                                    <img src={logoCeo} style={{width: "40px"}}/>
+                                    <div className="ml-3">{data?.ceo}</div>
+                                </div>}
+                                {data?.website !== null && data?.website !== "" &&
+                                    <div className="website d-flex  align-center mt-3">
+                                        <img src={logoWeb} style={{width: "40px"}}/>
+                                        <a href={data?.website} target="_blank" rel="noopener noreferrer"
+                                           className="ml-3">{data?.website}</a>
+                                    </div>}
+                                {data?.exchange !== null && data?.exchange !== "" &&
+                                    <div className="exchange d-flex align-center mt-3">
+                                        <img src={logoExchange} style={{width: "40px"}}/>
+                                        <div className="ml-3">{data?.exchange}</div>
+                                    </div>}
 
-            <div className="statistics mt-5">
-                <h3> {t('stock.statistics')}</h3>
-                <div className="d-flex w-100">
-                    <div className="marketCap d-flex w-50">
-                        <div className="label">{`${t('stock.marketCap')}:`}</div>
-                        <div className="ml-3"> {`${data?.marketCap} ${data?.currency}`} </div>
+                            </div>
+                            {data?.description !== null && data?.description !== "" &&
+                                <div className="stockDescription w-70">
+                                    {data?.description}
+                                </div>}
+                        </div>
                     </div>
+                    {username ? <StocksChat stocks={ticker} username={username}/> : <></>}
                 </div>
+        }
 
-            </div>
-
-            <div className="about mt-5">
-                <h3>{`${t('stock.about')} ${data?.name}`}</h3>
-                <div className="d-flex p">
-                    <div className="infos w-30 d-flex justify-evenly flex-column">
-                        {data?.ceo !== null && data?.ceo !== "" && <div className="ceo d-flex align-center">
-                            <img src={logoCeo} style={{width: "40px"}}/>
-                            <div className="ml-3">{data?.ceo}</div>
-                        </div>}
-                        {data?.website !== null && data?.website !== "" &&
-                            <div className="website d-flex  align-center">
-                                <img src={logoWeb} style={{width: "40px"}}/>
-                                <a href={data?.website} target="_blank" rel="noopener noreferrer"
-                                   className="ml-3">{data?.website}</a>
-                            </div>}
-                        {data?.exchange !== null && data?.exchange !== "" &&
-                            <div className="exchange d-flex align-center">
-                                <img src={logoExchange} style={{width: "40px"}}/>
-                                <div className="ml-3">{data?.exchange}</div>
-                            </div>}
-
-                    </div>
-                    {data?.description !== null && data?.description !== "" && <div className="stockDescription w-70">
-                        {data?.description}
-                    </div>}
-                </div>
-            </div>
-            {username ? <StocksChat stocks={ticker} username={username}/> : <></>}
-        </div>
-        <div className="h-5"></div>
 
     </div>)
 }

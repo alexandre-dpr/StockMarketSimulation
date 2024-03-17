@@ -5,11 +5,14 @@ import InputLabel from "../../components/Input/InputLabel/InputLabel";
 import Button from "../../components/Buttons/Button/Button";
 import {RequestWallet} from "../../request/RequestWallet";
 import {Auth} from "../../utils/Auth";
-import {round} from "../../utils/services";
+import {isValidNumber, round} from "../../utils/services";
+import routes from "../../utils/routes.json"
+import {useNavigate} from "react-router-dom";
 
 
 const TransactionWidget = ({ticker, price}) => {
     const {t} = useTranslation();
+    const navigate = useNavigate()
     const requestWallet = new RequestWallet();
     const [dataStock, setDataStock] = useState({})
     const [wallet, setWallet] = useState({})
@@ -61,7 +64,7 @@ const TransactionWidget = ({ticker, price}) => {
 
     async function transaction() {
         if (transactionType === transactionTypes.BUY) {
-            await requestWallet.acheter(ticker, quantity);
+            isValidNumber(quantity) ? await requestWallet.acheter(ticker, quantity) : alert("Quantité invalide")
         } else {
             await requestWallet.vendre(ticker, quantity);
         }
@@ -76,7 +79,7 @@ const TransactionWidget = ({ticker, price}) => {
 
     return (
         <div className="w-100 containerTransactionWidget">
-            {isAuth &&
+            {isAuth ?
                 <>
                     <div className="headerTransactionWidget d-flex position-relative w-100">
                         <div className="buyCell"
@@ -110,22 +113,30 @@ const TransactionWidget = ({ticker, price}) => {
                                 children={t('transactionWidget.reviewOrder')}/>
                     </div>
 
-                    <div className={"containerPosition mt-30"}>
-                        <h2>{t('transactionWidget.position')} </h2>
-                        <div className="d-flex">
-                            <div className="flex-item-1 Gabarito-Bold">{t('transactionWidget.total')}</div>
-                            <div className="flex-item-1 Gabarito-Bold">{t('transactionWidget.performance')}</div>
+                    {
+                        ownedQuantity !== 0 &&
+                        <div className={"containerPosition mt-30"}>
+                            <h2>{t('transactionWidget.position')} </h2>
+                            <div className="d-flex">
+                                <div className="flex-item-1 Gabarito-Bold">{t('transactionWidget.total')}</div>
+                                <div className="flex-item-1 Gabarito-Bold">{t('transactionWidget.performance')}</div>
+                            </div>
+                            <div className="d-flex">
+                                <div className="flex-item-1 mt-4">{dataStock.buyPrice * dataStock.quantity}</div>
+                                <div
+                                    className="flex-item-1 mt-4">{dataStock.performance !== undefined && dataStock.performance.percentage}</div>
+                            </div>
+                            <div className="mt-4 Gabarito-Bold">{t('transactionWidget.quantity')}</div>
+                            <div className="mt-4">{dataStock.quantity}</div>
+                            <div className="mt-4 Gabarito-Bold">{t('transactionWidget.buyIn')}</div>
+                            <div className="mt-4">{`${dataStock.buyPrice}$`}</div>
                         </div>
-                        <div className="d-flex">
-                            <div className="flex-item-1 mt-4">{dataStock.buyPrice * dataStock.quantity}</div>
-                            <div className="flex-item-1 mt-4">{dataStock.performance !== undefined && dataStock.performance.percentage}</div>
-                        </div>
-                        <div className="mt-4 Gabarito-Bold">{t('transactionWidget.quantity')}</div>
-                        <div className="mt-4">{dataStock.quantity}</div>
-                        <div className="mt-4 Gabarito-Bold">{t('transactionWidget.buyIn')}</div>
-                        <div className="mt-4">{`${dataStock.buyPrice}$`}</div>
-                    </div>
-                </>
+                    }
+
+                </> :
+                <div className="mt-30 logInSentence">
+                    <h1 onClick={() => navigate(routes.auth)}>{t('transactionWidget.logInSentence')}</h1>
+                </div>
             }
 
         </div>

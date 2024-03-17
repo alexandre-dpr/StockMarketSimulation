@@ -44,10 +44,15 @@ const LineChart = ({ data, labels, intervalLabelsCount,style, lineColor }) => {
                 },
             },
             y: {
+                position: 'right',
                 grid: {
-                    display: false,
+                    display: true,
+                    color: "rgba(0, 0, 0, 0.1)",
+                },
+                ticks: {
+
                 }
-            },
+            }
         },
         interaction: {
             mode: 'nearest',
@@ -58,6 +63,7 @@ const LineChart = ({ data, labels, intervalLabelsCount,style, lineColor }) => {
             duration: 0,
         },
     };
+
 
     return (
         <div>

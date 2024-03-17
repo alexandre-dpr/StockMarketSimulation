@@ -1,5 +1,5 @@
 import './App.scss';
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom';
 import HomePage from './pages/HomePage/HomePage';
 import AuthPage from './pages/AuthPage/AuthPage';
 import NotFound from './pages/NotFound/NotFound'
@@ -17,10 +17,10 @@ function App() {
 
     const [isAuth, setIsAuth] = useState(false);
     const auth = new Auth();
-
     const signOut = () => {
         auth.signOut()
         setIsAuth(false)
+        window.location.reload()
     }
 
     useEffect(() => {

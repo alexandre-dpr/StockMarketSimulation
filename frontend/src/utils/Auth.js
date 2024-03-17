@@ -31,7 +31,7 @@ export class Auth {
 
     getJwtToken() {
         try {
-            return  localStorage.getItem("jwt");
+            return localStorage.getItem("jwt");
         } catch (error) {
             console.error("Error while retrieving JWT token:", error);
             return null;
@@ -40,15 +40,20 @@ export class Auth {
 
     setJwtToken(token) {
         try {
-             localStorage.setItem("jwt", token);
+            localStorage.setItem("jwt", token);
         } catch (error) {
             console.error("Error while saving JWT token:", error);
         }
     }
 
-     isLoggedIn() {
-        return !!this.getJwtToken();
+    isValidToken(){
+        return jwtDecode(this.getJwtToken()).exp * 1000 > Date.now()
     }
+
+    isLoggedIn() {
+        return !!this.getJwtToken() && this.isValidToken()
+    }
+
 
     signOut() {
         try {

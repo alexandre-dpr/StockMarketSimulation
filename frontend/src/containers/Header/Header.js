@@ -32,22 +32,20 @@ function Header({isAuth, handleClick}) {
     return (
         <div id="header" className='header'>
             <div className="flex-item-1">
-                <NavTo
-                    path={routes.home}
-                    className='logoApp'>
+                    <NavTo
+                        path={routes.home}
+                        className='logoApp'>
 
-                    <div className='logoBourse'>
-                        {t('home.bourse')}
-                    </div>
-                    <div className='logoPlay'>
-                        {t('home.play')}
-                    </div>
-                    <div className='containerLogo'>
-                        <img className='logo' src={logo} alt='logo'/>
-                    </div>
-
-
-                </NavTo>
+                        <div className='logoBourse'>
+                            {t('home.bourse')}
+                        </div>
+                        <div className='logoPlay'>
+                            {t('home.play')}
+                        </div>
+                        <div className='containerLogo'>
+                            <img className='logo' src={logo} alt='logo'/>
+                        </div>
+                    </NavTo>
             </div>
             <div className='containerNavBar flex-item-1'>
                 <NavTo
