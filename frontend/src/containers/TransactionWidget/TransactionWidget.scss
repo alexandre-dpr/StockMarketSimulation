@@ -1,14 +1,16 @@
 @import '../../index.scss';
 
-.rightSide{
+.rightSide {
   margin-top: 25px;
 }
-.buyCell, .sellCell{
+
+.buyCell, .sellCell {
   cursor: pointer;
   height: 40px;
   width: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .headerTransactionWidget {
@@ -26,8 +28,7 @@
   transition: transform 0.3s ease;
 }
 
-.containerInput{
-  margin-top: 5px;
+.containerInput {
 
   input:focus + label,
   input:not(:placeholder-shown) + label {
@@ -37,20 +38,31 @@
   }
 }
 
-.containerTransactionWidget{
-  .containerInput{
-    .input-container{
+.containerTransactionWidget {
+  .containerInput {
+    .input-container {
       width: 100%;
     }
   }
+
+  select {
+    width: 100%;
+    border: none;
+    font-size: 1em;
+    padding-block: 10px;
+    border-bottom: 2px solid black;
+    font-family: Gabarito;
+  }
+
 }
 
-.logInSentence{
+.logInSentence {
   cursor: pointer;
   transition: 0.15s ease-in;
 }
 
-.logInSentence:hover{
+.logInSentence:hover {
   transition: 0.15s ease-in;
   scale: (1.02);
 }
+

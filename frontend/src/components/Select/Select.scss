@@ -1,0 +1,39 @@
+.custom-select {
+  position: relative;
+  width: 100%;
+  font-family: Gabarito;
+}
+
+.select-trigger {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 2px solid black;
+
+  .chevron{
+    width: 15px;
+  }
+
+  .open{
+    transform: scaleY(-1);
+  }
+}
+
+.options {
+  position: absolute;
+  width: 100%;
+  background: white;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  z-index: 1000;
+}
+
+.options li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.options li:hover {
+  background-color: #f0f0f0;
+}

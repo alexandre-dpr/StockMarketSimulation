@@ -8,7 +8,7 @@ import {Auth} from "../../utils/Auth";
 import {isValidNumber, round} from "../../utils/services";
 import routes from "../../utils/routes.json"
 import {useNavigate} from "react-router-dom";
-
+import Select from "../../components/Select/Select";
 
 const TransactionWidget = ({ticker, price}) => {
     const {t} = useTranslation();
@@ -27,6 +27,20 @@ const TransactionWidget = ({ticker, price}) => {
     const [isAuth, setIsAuth] = useState(false)
     const auth = new Auth()
     const [calcAmount, setCalcAmount] = useState(0)
+    const orderTypes = {
+        ORDER_MARKET: t('transactionWidget.marketOrder'),
+        ORDER_STOP: t('transactionWidget.stopOrder'),
+        INVESTMENT_PLANNING: t('transactionWidget.investmentPlanning')
+
+    }
+    const [orderType, setOrderType] = useState(orderTypes.ORDER_MARKET)
+    const [stopPrice, setStopPrice] = useState(0)
+    const recurrences = {
+        WEEKLY : t('transactionWidget.weekly'),
+        MONTHLY : t('transactionWidget.monthly')
+    }
+    const [recurrence, setRecurrence] = useState(recurrences.WEEKLY);
+
 
     async function fetchData() {
         const stockPerformance = await requestWallet.getStockPerformance(ticker);
@@ -52,7 +66,6 @@ const TransactionWidget = ({ticker, price}) => {
 
     }, []);
 
-
     const handleClick = (type) => {
         setTransactionType(type);
         if (type === transactionTypes.BUY) {
@@ -63,19 +76,42 @@ const TransactionWidget = ({ticker, price}) => {
     };
 
     async function transaction() {
-        if (transactionType === transactionTypes.BUY) {
-            isValidNumber(quantity) ? await requestWallet.acheter(ticker, quantity) : alert("Quantité invalide")
-        } else {
-            await requestWallet.vendre(ticker, quantity);
+        if (orderType === orderTypes.ORDER_MARKET) {
+            if (transactionType === transactionTypes.BUY) {
+                isValidNumber(quantity) ? await requestWallet.acheter(ticker, quantity) : alert("Quantité invalide")
+            } else {
+                await requestWallet.vendre(ticker, quantity);
+            }
+            window.location.reload()
         }
-        window.location.reload()
+
     }
 
-    const handleChange = (value) => {
+    const handleInputQttChange = (value) => {
         setQuantity(value)
-        setCalcAmount(round(value * price, 2))
+        if (orderType === orderTypes.ORDER_MARKET) {
+            setCalcAmount(round(value * price, 2))
+        } else {
+            setCalcAmount(round(value * stopPrice, 2))
+        }
     }
 
+    const handleInputStopPriceChange = (value) => {
+        setStopPrice(value)
+        setCalcAmount(round(quantity * value, 2))
+
+    }
+    const handleSelectChange = (value) => {
+        setOrderType(value)
+    }
+
+    useEffect(() => {
+        console.log(orderType)
+    }, [orderType]);
+
+    const handleRadioChange = (event) => {
+        setRecurrence(event.target.value);
+    };
 
     return (
         <div className="w-100 containerTransactionWidget">
@@ -98,15 +134,60 @@ const TransactionWidget = ({ticker, price}) => {
                             <div>{`${dataStock.quantity} ${t('transactionWidget.sharesOwned')}.`}</div>
                         }
                     </div>
-                    <div className="containerInput">
-                        <InputLabel onInputChange={handleChange} label={t('transactionWidget.quantity')}
-                                    type={"number"}/>
+
+                    <div className={"orderChoice mt-7"}>
+                        <Select options={Object.values(orderTypes)} onSelect={handleSelectChange}/>
                     </div>
 
-                    <div className="equivalentAmount d-flex">
-                        <div className="flex-item-1"> {t('transactionWidget.amount')}</div>
-                        <div className="flex-item-1 text-right"> {`${calcAmount}$`}</div>
+                    {
+                        orderType === orderTypes.INVESTMENT_PLANNING &&
+                        <form className="mt-8">
+                            <div>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value={recurrences.WEEKLY}
+                                        checked={recurrence === recurrences.WEEKLY}
+                                        onChange={handleRadioChange}
+                                    />
+                                    {t('transactionWidget.weekly')}
+                                </label>
+                            </div>
+                            <div className="mt-3">
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value={recurrences.MONTHLY}
+                                        checked={recurrence === recurrences.MONTHLY}
+                                        onChange={handleRadioChange}
+                                    />
+                                    {t('transactionWidget.monthly')}
+                                </label>
+                            </div>
+
+                        </form>
+                    }
+
+                    <div className="containerInput mt-10">
+                        <InputLabel onInputChange={handleInputQttChange} label={t('transactionWidget.quantity')}
+                                    type={"number"}/>
                     </div>
+                    {
+                        orderType === orderTypes.ORDER_STOP &&
+
+                        <div className="containerInput mt-10">
+                            <InputLabel onInputChange={handleInputStopPriceChange}
+                                        label={t('transactionWidget.stopPrice')}
+                                        type={"number"}/>
+                        </div>
+                    }
+
+                    {orderType !== orderTypes.INVESTMENT_PLANNING &&
+                        <div className="equivalentAmount d-flex">
+                            <div className="flex-item-1"> {t('transactionWidget.amount')}</div>
+                            <div className="flex-item-1 text-right"> {`${calcAmount}$`}</div>
+                        </div>
+                    }
 
                     <div className="mt-8 containerButton w-100 d-flex justify-center">
                         <Button styles={"button black"} handleClick={transaction}
