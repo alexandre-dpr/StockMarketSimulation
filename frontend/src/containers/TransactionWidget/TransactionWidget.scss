@@ -28,15 +28,6 @@
   transition: transform 0.3s ease;
 }
 
-.containerInput {
-
-  input:focus + label,
-  input:not(:placeholder-shown) + label {
-    top: -8px;
-    font-size: 12px;
-    color: #333;
-  }
-}
 
 .containerTransactionWidget {
   .containerInput {
