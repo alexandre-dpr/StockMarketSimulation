@@ -1,11 +1,10 @@
 {
-  "stocksList": "/stocksList",
+  "stocksList": "/market",
   "tickerAutocomplete": "/tickerAutocomplete",
   "trends": "/trends",
   "stock": "/stock",
   "achat": "/achat",
   "vente": "/vente",
-  "favori" : "/favori",
+  "favori": "/favori",
   "leaderboard": "/leaderboard"
-
 }
