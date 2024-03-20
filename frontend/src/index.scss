@@ -8,9 +8,8 @@ $color-3: #9f9f9f;
 :export {
   primaryColor: $primary-color;
   secondaryColor: $secondary-color;
-  color-3:$color-3;
+  color-3: $color-3;
 }
-
 
 
 html, body {
@@ -60,36 +59,38 @@ html, body {
   src: url('assets/fonts/simpletype/Simpletype.ttf') format('truetype');
 }
 
+.Gabarito-SemiBold {
+  font-family: Gabarito-SemiBold;
+}
 
-//
+.Gabarito-Bold {
+  font-family: Gabarito-Bold;
+}
+
+.Gabarito {
+  font-family: Gabarito;
+}
+
+
 
 @mixin respond-to($breakpoint) {
   @if $breakpoint =='phone' {
     @media (max-width: 600px) {
       @content;
     }
-  }
-
-  @else if $breakpoint =='small-tablet' {
+  } @else if $breakpoint =='small-tablet' {
     @media (min-width: 601px) and (max-width: 1000px) {
       @content;
     }
-  }
-
-  @else if $breakpoint =='tablet' {
+  } @else if $breakpoint =='tablet' {
     @media (min-width: 601px) and (max-width: 1399px) {
       @content;
     }
-  }
-
-
-  @else if $breakpoint =='desktop' {
+  } @else if $breakpoint =='desktop' {
     @media (min-width: 1400px) and (max-width: 1920px) {
       @content;
     }
-  }
-
-  @else if $breakpoint =='large-desktop' {
+  } @else if $breakpoint =='large-desktop' {
     @media (min-width: 1921px) {
       @content;
     }

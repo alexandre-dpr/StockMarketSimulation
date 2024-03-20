@@ -61,6 +61,23 @@
   },
   "transactionWidget": {
     "buy": "Buy",
-    "sell": "Sell"
+    "sell": "Sell",
+    "quantity": "Quantity",
+    "reviewOrder": "Review order",
+    "amount": "Amount:",
+    "available": "available",
+    "sharesOwned": "shares owned",
+    "position": "Position",
+    "total": "Total",
+    "performance": "Performance",
+    "buyIn": "Buy in",
+    "logInSentence": "Log in or register to carry out your transactions and place your orders with ease.",
+    "marketOrder": "Market order",
+    "stopOrder": "Stop order",
+    "investmentPlanning":"Investment planning",
+    "stopPrice": "Stop price",
+    "indicative": "indicative",
+    "weekly": "Weekly",
+    "monthly":"Monthly"
   }
 }

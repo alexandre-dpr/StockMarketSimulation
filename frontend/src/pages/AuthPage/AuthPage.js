@@ -13,7 +13,7 @@ import {jwtDecode} from "jwt-decode";
 import {RequestWallet} from "../../request/RequestWallet";
 
 
-function AuthPage() {
+function AuthPage({setIsAuth}) {
     const router = useNavigate();
     const { t } = useTranslation();
     const requestAuth = new RequestAuth();
@@ -52,9 +52,11 @@ function AuthPage() {
             const resp = await requestAuth.login(login, password);
             await auth.setJwtToken(resp.data);
             router(routes.home);
+            setIsAuth(true)
         }catch (e) {
             setError(e.message);
         }
+
     }
 
     async function register(){
@@ -62,10 +64,12 @@ function AuthPage() {
             const resp = await requestAuth.register(username, login, password);
             await auth.setJwtToken(resp.data);
             router(routes.home);
+            setIsAuth(true)
         }catch (e) {
             console.log(e.message)
             setError(e.message);
         }
+
     }
 
     return (

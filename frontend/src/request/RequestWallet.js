@@ -32,28 +32,24 @@ export class RequestWallet {
         }
     }
 
-    async acheter(ticker, quantity,username) {
+    async acheter(ticker, quantity) {
+        const qtt = parseInt(quantity)
         try {
             return await this.axios.post(`${constants.url_api_portefeuille}${endpoints.achat}`, {
-                body: {
-                    username: username,
-                    ticker: ticker,
-                    quantity: quantity
-                }
+                ticker: ticker,
+                quantity: qtt
             });
         } catch (error) {
             throw error;
         }
     }
 
-    async vendre(ticker, quantity,username) {
+    async vendre(ticker, quantity) {
+        const qtt = parseInt(quantity)
         try {
             return await this.axios.post(`${constants.url_api_portefeuille}${endpoints.vente}`, {
-                body: {
-                    username: username,
-                    ticker: ticker,
-                    quantity: quantity
-                }
+                ticker: ticker,
+                quantity: qtt
             });
         } catch (error) {
             throw error;
@@ -67,4 +63,15 @@ export class RequestWallet {
             throw error;
         }
     }
+
+    async getStockPerformance(ticker){
+        try {
+            return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.stock}/${ticker}`);
+        } catch (error) {
+            return 0;
+        }
+    }
+
+
+
 }

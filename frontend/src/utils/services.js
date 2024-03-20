@@ -1,5 +1,6 @@
 import CustomImage from "../components/CustomImage/CustomImage";
 import React from "react";
+import constants from "../utils/constants.json"
 
 const getStockLogo = (ticker) => {
     return `https://financialmodelingprep.com/image-stock/${ticker}.png`
@@ -56,13 +57,56 @@ function percentageDiff(val1, val2) {
     }
 
     let difference = ((val2 - val1) / val1) * 100;
-    let value = difference.toFixed(2) + '%';
-    if(difference >= 0){
-        return <h3 style={{color:"rgb(54, 162, 235)"}}>+{value}</h3>
-    }else{
-        return <h3 style={{color:"rgb(255, 99, 132)"}}>{value}</h3>
+    let value = round(difference, 2) + '%';
+    if (difference >= 0) {
+        return [difference, <h3 style={{color: constants.green}}>+{value}</h3>]
+    } else {
+        return [difference, <h3 style={{color: constants.red}}>{value}</h3>]
     }
 
 }
 
-export {getFormatStocks, getStockLogo, timestampToHHMM, timestampToDDMMYY,percentageDiff}
+function round(value, toFixed) {
+    if (value !== undefined) {
+        return parseFloat(value.toFixed(toFixed));
+    }
+    return 0
+}
+
+function formatCurrency(value) {
+    if (value !== undefined) {
+        const units = ["", "k", "M", "B", "T"];
+        let unitIndex = 0;
+
+        while (value >= 1000 && unitIndex < units.length - 1) {
+            value /= 1000;
+            unitIndex++;
+        }
+        return `${value.toFixed(2)}${units[unitIndex]}`;
+    }
+    return 0
+}
+
+function isValidInteger(value) {
+    const strValeur = String(value);
+    const isValid = /^[0-9]+$/.test(strValeur);
+    return isValid && parseInt(strValeur, 10) > 0;
+}
+
+function isValidDecimal(value) {
+    const strValue = String(value);
+    const isValid = /^[0-9]+(\.[0-9]+)?$/.test(strValue);
+    return isValid && parseFloat(strValue) > 0;
+}
+
+export {
+    getFormatStocks,
+    getStockLogo,
+    timestampToHHMM,
+    timestampToDDMMYY,
+    percentageDiff,
+    round,
+    formatCurrency,
+    isValidInteger,
+    isValidDecimal
+}

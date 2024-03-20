@@ -8,7 +8,8 @@ import routes from "../../../utils/routes.json";
 import {useNavigate} from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import LineChart from "../../../components/Charts/LineChart/LineChart";
-
+import {timestampToDDMMYY} from "../../../utils/services";
+import Spinner from "../../../components/Spinner/Spinner";
 
 
 function Wallet() {
@@ -21,30 +22,28 @@ function Wallet() {
     const [isPercent, setIsPercent] = useState();
     const [dataGraph, setDataGraph] = useState(null);
     const [dateGraph, setDateGraph] = useState(null);
+    const [isLoading, setIsLoading] = useState(true)
 
 
     useEffect(()=>{
         initWallet();
-        initFav();
     }, [])
 
     async function initWallet(){
         const resp = await requestWallet.getWallet();
         await setData(resp.data);
         await initGraph(resp.data);
+        setIsLoading(false)
     }
 
-    async function initFav(){
-        const resp = await requestWallet.getFav();
-        await setFav(resp.data)
-    }
+
 
     async function initGraph(resp){
         let value = [];
         let date = [];
         resp.performanceHistory.forEach((item,index)=>{
             value.push(item.value);
-            date.push(item.date);
+            date.push(DDMMYYYY(item.date));
         })
         await setDateGraph(date);
         await setDataGraph(value)
@@ -56,22 +55,41 @@ function Wallet() {
     }
 
 
+    function DDMMYYYY(date){
+        const dateToFormat = new Date(date);
+        function addZero(number) {
+            return number < 10 ? '0' + number : number;
+        }
+        const jour = addZero(dateToFormat.getDate());
+        const mois = addZero(dateToFormat.getMonth() + 1);
+        const année = dateToFormat.getFullYear();
+        const dateFormatted = `${jour}/${mois}/${année}`;
+        console.log(dateFormatted)
+        return dateFormatted
+    }
+
+
 
     return (
         <div className="containerPage">
             {
-                data !== null?
-
+                isLoading?
+                    <div className="mt-10"><Spinner/></div>
+                    :
                     <div className="cards">
                         <div className="d-flex flex-column h-100 w-65 w-sm-100-p">
-                            <h1>{t('wallet.wallet')}</h1>
+                            <div className="d-flex align-center">
+
+                                <h1>{t('wallet.wallet')}</h1>
+                                <p className="ml-1-r"> Classement : {data.rank}</p>
+                            </div>
                             <div className="d-flex align-center">
                                 <h1>{data.totalValue} $ </h1>
                                 <p className="green ml-r-1"> {data.performance.value} $ ({data.performance.percentage})</p>
                             </div>
                             {
                                 dataGraph && dateGraph && <LineChart style={{height: "500px"}} data={dataGraph} labels={dateGraph}
-                                           intervalLabelsCount={10}/>
+                                                                     intervalLabelsCount={10}/>
                             }
                         </div>
                         <div className="d-flex flex-column h-100 w-35 w-sm-100-p">
@@ -97,7 +115,7 @@ function Wallet() {
                                                             <div className="pointer" onClick={() => {
                                                                 setIsPercent(!isPercent)
                                                             }}>
-                                                                <p className="green">{isPercent ? "4 %" : item.price + " $"}</p>
+                                                                <p className="green">{isPercent ? item.performance.percentage : item.performance.value + " $"}</p>
                                                             </div>
                                                         </div>
                                                     ))
@@ -111,29 +129,25 @@ function Wallet() {
                             <div className="h-50 w-100">
                                 <h3>{t('wallet.favorites')}</h3>
                                 <div className="d-flex flex-column w-100 overflow-scroll h-14-r">
-                                    <div className="actions-items">
-                                        <div>
-                                            <img src={logo} style={{width: 30}}/>
-                                        </div>
-                                        <div className="content pointer" onClick={() => {
-                                            goTicker("Test")
-                                        }}>
-
-                                            <p>Apple</p>
-                                            <p>432,5$</p>
-                                        </div>
-                                        <div className="pointer" onClick={() => {
-                                            setIsPercent(!isPercent)
-                                        }}>
-                                            <p className="green">{isPercent ? "1,42 %" : "4 $"}</p>
-                                        </div>
-                                    </div>
+                                    {
+                                        data.favoris.length > 0 && data.favoris.map((item,index)=>(
+                                            <div className="actions-items">
+                                                <div>
+                                                    <img src={`https://financialmodelingprep.com/image-stock/${item.ticker}.png`} style={{width: 30}}/>
+                                                </div>
+                                                <div className="content pointer" onClick={() => {
+                                                    goTicker(item.ticker)
+                                                }}>
+                                                    <p>{item.ticker}</p>
+                                                    <p>{item.price}</p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
-                    :
-                    <></>
             }
         </div>
 

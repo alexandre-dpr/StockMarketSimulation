@@ -65,8 +65,8 @@ public class PortefeuilleController {
     }
 
     @GetMapping("/leaderboard")
-    public ResponseEntity<LeaderboardDto> getLeaderboard(Authentication authentication) {
-        return ResponseEntity.ok(rankService.getLeaderboard(authentication.getName()));
+    public ResponseEntity<LeaderboardDto> getLeaderboard(String username) {
+        return ResponseEntity.ok(rankService.getLeaderboard(username));
     }
 
     @GetMapping("/stock/{ticker}")

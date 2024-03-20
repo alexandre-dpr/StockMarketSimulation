@@ -49,6 +49,14 @@
   width: max-content;
 }
 
+.flex-item-1 {
+  flex: 1;
+}
+
+.flex-item-2 {
+  flex: 1;
+}
+
 .flex-column{
   flex-direction: column;
 }
@@ -350,6 +358,10 @@
 
 .text-justify {
   text-align: justify;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .flex-row {
