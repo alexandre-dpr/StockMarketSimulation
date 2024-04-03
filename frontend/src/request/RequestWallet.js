@@ -24,6 +24,14 @@ export class RequestWallet {
         }
     }
 
+    async getHistorique() {
+        try {
+            return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.historique}`);
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getFav() {
         try {
             return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.favori}`);

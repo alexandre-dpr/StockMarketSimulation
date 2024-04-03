@@ -37,15 +37,19 @@
     justify-content: center;
     display: flex;
     align-items: center;
+    flex-direction: column;
 }
 
 @media (max-width: 768px) {
   .cards{
-    flex-direction: column;
     max-height: unset;
     padding: 10px;
     height: unset;
     max-height: unset;
+  }
+  .wallet-resp{
+    height: min-content !important;
+    max-height: 14rem !important;
   }
 }
 .green{

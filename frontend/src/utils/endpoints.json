@@ -6,6 +6,7 @@
   "achat": "/achat",
   "vente": "/vente",
   "favori" : "/favori",
-  "leaderboard": "/leaderboard"
+  "leaderboard": "/leaderboard",
+  "historique": "/historique"
 
 }
