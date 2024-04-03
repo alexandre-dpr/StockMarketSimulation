@@ -16,9 +16,9 @@ const HistoriqueTable = ({data}) => {
                     <TableRow>
                         <TableCell>Ticker</TableCell>
                         <TableCell>Quantité</TableCell>
-                        <TableCell >Prix</TableCell>
+                        <TableCell>Prix</TableCell>
                         <TableCell>Date</TableCell>
-                        <TableCell >Type</TableCell>
+                        <TableCell>Type</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -30,13 +30,14 @@ const HistoriqueTable = ({data}) => {
                             <TableCell component="th" scope="row">
                                 {row.ticker}
                             </TableCell>
-                            <TableCell >{row.quantity}</TableCell>
-                            <TableCell >{row.price}</TableCell>
-                            <TableCell >{new Date(row.time).toLocaleDateString('fr-FR')}</TableCell>
+                            <TableCell>{row.quantity}</TableCell>
+                            <TableCell>{row.price}</TableCell>
+                            <TableCell>{new Date(row.time).toLocaleDateString('fr-FR')}</TableCell>
                             <TableCell>{row.type}</TableCell>
 
                         </TableRow>
                     ))}
+
                 </TableBody>
             </Table>
         </TableContainer>
