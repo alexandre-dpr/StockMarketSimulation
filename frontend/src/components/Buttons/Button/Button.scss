@@ -2,7 +2,7 @@
 
 
 .button {
-
+    cursor: pointer;
     padding: 8px 0px;
     font-size: 20px;
     @include respond-to('phone') {
@@ -32,10 +32,7 @@
         text-align: center;
         border-radius: 5px;
         font-family: Gabarito;
-        cursor: pointer;
     }
-
-
 }
 
 .black {
@@ -45,4 +42,11 @@
 
 .black:hover {
     background-color: rgb(22, 22, 22);
+}
+
+.notValid {
+    background-color:black;
+    color: white;
+    opacity: 0.3;
+    cursor: default!important;
 }

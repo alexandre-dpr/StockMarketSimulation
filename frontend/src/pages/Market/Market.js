@@ -43,10 +43,13 @@ function Market() {
         }
 
         const gainers_result = await getTrends()
-        setGainers(await getFormatStocks(gainers_result.data.gainersJson));
-        const loosers_result = await getTrends()
-        setLoosers(await getFormatStocks(loosers_result.data.loosersJson));
-        setIsLoading(false)
+        if(gainers_result.data){
+            setGainers(await getFormatStocks(gainers_result.data.gainersJson));
+            const loosers_result = await getTrends()
+            setLoosers(await getFormatStocks(loosers_result.data.loosersJson));
+            setIsLoading(false)
+        }
+
 
     }
 

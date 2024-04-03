@@ -5,10 +5,12 @@ import InputLabel from "../../components/Input/InputLabel/InputLabel";
 import Button from "../../components/Buttons/Button/Button";
 import {RequestWallet} from "../../request/RequestWallet";
 import {Auth} from "../../utils/Auth";
-import {isValidNumber, round} from "../../utils/services";
+import {isValidDecimal, isValidInteger, round} from "../../utils/services";
 import routes from "../../utils/routes.json"
 import {useNavigate} from "react-router-dom";
 import Select from "../../components/Select/Select";
+import InputInteger from "../../components/Input/InputInteger/InputInteger";
+import InputDecimal from "../../components/Input/InputDecimal/InputDecimal";
 
 const TransactionWidget = ({ticker, price}) => {
     const {t} = useTranslation();
@@ -36,11 +38,11 @@ const TransactionWidget = ({ticker, price}) => {
     const [orderType, setOrderType] = useState(orderTypes.ORDER_MARKET)
     const [stopPrice, setStopPrice] = useState(0)
     const recurrences = {
-        WEEKLY : t('transactionWidget.weekly'),
-        MONTHLY : t('transactionWidget.monthly')
+        WEEKLY: t('transactionWidget.weekly'),
+        MONTHLY: t('transactionWidget.monthly')
     }
     const [recurrence, setRecurrence] = useState(recurrences.WEEKLY);
-
+    const [isReadyReview, setReadyReview] = useState(false)
 
     async function fetchData() {
         const stockPerformance = await requestWallet.getStockPerformance(ticker);
@@ -66,6 +68,14 @@ const TransactionWidget = ({ticker, price}) => {
 
     }, []);
 
+    useEffect(() => {
+        if (orderType === orderTypes.ORDER_STOP) {
+            setReadyReview(isValidInteger(quantity) && isValidDecimal(stopPrice))
+        } else {
+            setReadyReview(isValidInteger(quantity))
+        }
+    }, [quantity, stopPrice])
+
     const handleClick = (type) => {
         setTransactionType(type);
         if (type === transactionTypes.BUY) {
@@ -78,7 +88,7 @@ const TransactionWidget = ({ticker, price}) => {
     async function transaction() {
         if (orderType === orderTypes.ORDER_MARKET) {
             if (transactionType === transactionTypes.BUY) {
-                isValidNumber(quantity) ? await requestWallet.acheter(ticker, quantity) : alert("Quantité invalide")
+                await requestWallet.acheter(ticker, quantity)
             } else {
                 await requestWallet.vendre(ticker, quantity);
             }
@@ -104,10 +114,6 @@ const TransactionWidget = ({ticker, price}) => {
     const handleSelectChange = (value) => {
         setOrderType(value)
     }
-
-    useEffect(() => {
-        console.log(orderType)
-    }, [orderType]);
 
     const handleRadioChange = (event) => {
         setRecurrence(event.target.value);
@@ -169,16 +175,15 @@ const TransactionWidget = ({ticker, price}) => {
                     }
 
                     <div className="containerInput mt-10">
-                        <InputLabel onInputChange={handleInputQttChange} label={t('transactionWidget.quantity')}
-                                    type={"number"}/>
+                        <InputInteger onInputChange={handleInputQttChange} label={t('transactionWidget.quantity')}/>
                     </div>
                     {
                         orderType === orderTypes.ORDER_STOP &&
 
                         <div className="containerInput mt-10">
-                            <InputLabel onInputChange={handleInputStopPriceChange}
-                                        label={t('transactionWidget.stopPrice')}
-                                        type={"number"}/>
+                            <InputDecimal onInputChange={handleInputStopPriceChange}
+                                          label={t('transactionWidget.stopPrice')}
+                            />
                         </div>
                     }
 
@@ -190,7 +195,8 @@ const TransactionWidget = ({ticker, price}) => {
                     }
 
                     <div className="mt-8 containerButton w-100 d-flex justify-center">
-                        <Button styles={"button black"} handleClick={transaction}
+                        <Button styles={isReadyReview ? "button black" : "button notValid"}
+                                handleClick={isReadyReview ? transaction : null}
                                 children={t('transactionWidget.reviewOrder')}/>
                     </div>
 

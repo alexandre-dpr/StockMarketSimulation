@@ -87,12 +87,17 @@ function formatCurrency(value) {
     return 0
 }
 
-function isValidNumber(value) {
+function isValidInteger(value) {
     const strValeur = String(value);
     const isValid = /^[0-9]+$/.test(strValeur);
     return isValid && parseInt(strValeur, 10) > 0;
 }
 
+function isValidDecimal(value) {
+    const strValue = String(value);
+    const isValid = /^[0-9]+(\.[0-9]+)?$/.test(strValue);
+    return isValid && parseFloat(strValue) > 0;
+}
 
 export {
     getFormatStocks,
@@ -102,5 +107,6 @@ export {
     percentageDiff,
     round,
     formatCurrency,
-    isValidNumber
+    isValidInteger,
+    isValidDecimal
 }

@@ -44,7 +44,7 @@ public class BourseController {
         return ResponseEntity.ok().body(tickerService.findTickerByName(name, page));
     }
 
-    @GetMapping("/stocksList")
+    @GetMapping("/market")
     public ResponseEntity<Page<Ticker>> getStocksList(@RequestParam @NotNull Integer page) {
         return ResponseEntity.ok().body(tickerService.getStocksList(page));
     }
