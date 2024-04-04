@@ -16,6 +16,11 @@
 }
 
 
+.blur{
+    filter: blur(5px);
+    pointer-events: none;
+}
+
 .paper{
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.09);
     border-radius: 30px;

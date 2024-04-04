@@ -20,7 +20,7 @@ export class RequestWallet {
         try {
             return await this.axios.get(constants.url_api_portefeuille);
         } catch (error) {
-            throw error;
+            console.error(error);
         }
     }
 
@@ -76,7 +76,11 @@ export class RequestWallet {
         try {
             return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.stock}/${ticker}`);
         } catch (error) {
-            return 0;
+            if(error.response.status === 404){
+                return 0;
+            }else{
+                console.error(error);
+            }
         }
     }
 
