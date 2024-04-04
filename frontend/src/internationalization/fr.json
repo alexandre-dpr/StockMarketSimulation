@@ -64,7 +64,7 @@
     "sell": "Vendre",
     "quantity": "Quantité",
     "reviewOrder": "Valider l'ordre",
-    "amount": "Montant:",
+    "amount": "Montant",
     "available": "disponible(s)",
     "sharesOwned": "action(s) possédée(s)",
     "position": "Position",
@@ -75,9 +75,21 @@
     "marketOrder": "Ordre au marché",
     "stopOrder": "Ordre stop",
     "investmentPlanning":"Planification d'investissement",
-    "stopPrice": "Prix d'ordre stop",
+    "stopPrice": "Prix d'ordre stop ($)",
     "indicative": "indicatif",
     "weekly": "Hebdomadaire",
-    "monthly":"Mensuel"
-  }
+    "monthly":"Mensuel",
+    "transactionType": "Type de transaction",
+    "orderType": "Type d'ordre",
+    "recurrence": "Récurrence",
+    "errors": {
+      "insufficient_titles": "Titres insuffisants",
+      "insufficient_balance": "Solde insuffisant"
+    }
+  },
+  "orderValidation": {
+    "summary": "Récapitulatif"
+  },
+  "confirm": "Confirmer",
+  "cancel": "Annuler"
 }

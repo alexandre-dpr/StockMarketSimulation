@@ -74,10 +74,22 @@
     "logInSentence": "Log in or register to carry out your transactions and place your orders with ease.",
     "marketOrder": "Market order",
     "stopOrder": "Stop order",
-    "investmentPlanning":"Investment planning",
-    "stopPrice": "Stop price",
+    "investmentPlanning": "Investment planning",
+    "stopPrice": "Stop price ($)",
     "indicative": "indicative",
     "weekly": "Weekly",
-    "monthly":"Monthly"
-  }
+    "monthly": "Monthly",
+    "transactionType": "Transaction type",
+    "orderType": "Order type",
+    "recurrence": "Recurrence",
+    "errors": {
+      "insufficient_titles": "Insufficient titles",
+      "insufficient_balance": "Insufficient balance"
+    }
+  },
+  "orderValidation": {
+    "summary": "Summary"
+  },
+  "confirm": "Confirm",
+  "cancel": "Cancel"
 }

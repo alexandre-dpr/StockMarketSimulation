@@ -27,9 +27,16 @@
   background-color: black;
   transition: transform 0.3s ease;
 }
+.containerTransactionWidget::-webkit-scrollbar {
+  display: none;
+}
 
 
 .containerTransactionWidget {
+  height: 70vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+
   .containerInput {
     .input-container {
       width: 100%;
@@ -43,6 +50,11 @@
     padding-block: 10px;
     border-bottom: 2px solid black;
     font-family: Gabarito;
+  }
+
+  .error{
+    color: red;
+    font-size: 0.8em;
   }
 
 }
