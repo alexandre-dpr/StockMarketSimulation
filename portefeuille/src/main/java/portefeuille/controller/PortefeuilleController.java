@@ -1,6 +1,7 @@
 package portefeuille.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -10,7 +11,6 @@ import portefeuille.dto.HistoryDto;
 import portefeuille.dto.LeaderboardDto;
 import portefeuille.dto.PortefeuilleDto;
 import portefeuille.dto.StockPerformanceDto;
-import portefeuille.dto.request.TickerReqDto;
 import portefeuille.dto.request.TransactionActionReqDto;
 import portefeuille.exceptions.*;
 import portefeuille.service.PortefeuilleService;
@@ -48,19 +48,19 @@ public class PortefeuilleController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/favori")
-    public ResponseEntity<Void> ajouterFavori(Authentication authentication, @RequestBody @Valid TickerReqDto req) throws TooManyFavorites {
-        portefeuilleService.ajouterFavori(req.getTicker(), authentication.getName());
+    @PostMapping("/favori/{ticker}")
+    public ResponseEntity<Void> ajouterFavori(Authentication authentication, @PathVariable @NotEmpty String ticker) throws TooManyFavorites {
+        portefeuilleService.ajouterFavori(ticker, authentication.getName());
         return ResponseEntity.created(
                 ServletUriComponentsBuilder
                         .fromCurrentRequest().build().toUri()
-                        .resolve(String.format("favori/%s", req.getTicker()))
+                        .resolve(String.format("favori/%s", ticker))
         ).build();
     }
 
-    @DeleteMapping("/favori")
-    public ResponseEntity<Void> supprimerFavori(Authentication authentication, @RequestBody @Valid TickerReqDto req) {
-        portefeuilleService.supprimerFavori(req.getTicker(), authentication.getName());
+    @DeleteMapping("/favori/{ticker}")
+    public ResponseEntity<Void> supprimerFavori(Authentication authentication, @PathVariable @NotEmpty String ticker) {
+        portefeuilleService.supprimerFavori(ticker, authentication.getName());
         return ResponseEntity.noContent().build();
     }
 

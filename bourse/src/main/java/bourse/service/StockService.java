@@ -1,7 +1,6 @@
 package bourse.service;
 
 import bourse.dto.StockDto;
-import bourse.dto.StockListDto;
 import bourse.dto.StockTrendDto;
 import bourse.dto.StockTrendListDto;
 import bourse.enums.Range;
@@ -305,26 +304,6 @@ public class StockService {
                 break;
             }
         }
-    }
-
-    /**
-     * Récupère l'historique de prix d'actions pour un interval donné. Si l'action n'a jamais été récupérée, récupère aussi les informations dessus.
-     *
-     * @param tickers Liste de tickers des actions à récupérer
-     * @param range   1d, 1y
-     * @return List<StockListDto>
-     */
-    public List<StockListDto> getStocks(String[] tickers, Range range) throws IOException, UnauthorizedException, NotFoundException {
-        List<StockListDto> stocks = new ArrayList<>();
-        for (String ticker : tickers) {
-            stocks.add(
-                    new StockListDto(
-                            ticker,
-                            getStock(ticker, range)
-                    )
-            );
-        }
-        return stocks;
     }
 
     /**
