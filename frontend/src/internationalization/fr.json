@@ -52,7 +52,16 @@
     "own": "Vous possédez ",
     "stocks": " action(s) ",
     "own_nothing": "Vous ne possédez aucune action.",
-    "favorites": "Mes favoris"
+    "fav_nothing" : "Vous ne possédez aucun favoris.",
+    "favorites": "Mes favoris",
+    "historical" : "Historique :",
+    "table": {
+      "quantity": "Quantité",
+      "price": "Prix",
+      "date": "Date",
+      "type": "Type",
+      "ticker": "Action"
+    }
   },
   "stock": {
     "about": "À propos de",

@@ -52,7 +52,17 @@
     "own": "You own ",
     "stocks": " stock(s) ",
     "own_nothing": "You do not have any stocks.",
-    "favorites": "Favorites"
+    "fav_nothing" : "You do not have any favorites.",
+    "favorites": "Favorites",
+    "historical" : "Historical :",
+    "table": {
+      "quantity": "Quantity",
+      "price": "Price",
+      "date": "Date",
+      "type": "Type",
+      "ticker": "Ticker"
+    }
+
   },
   "stock": {
     "about": "About",

@@ -56,3 +56,27 @@
   color: limegreen;
 }
 
+.container-graph{
+  padding: 0 10px;
+}
+
+.switch-container{
+  display: flex;
+  padding: 5px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.switch-btn{
+  padding: 10px ;
+  border-radius: 20px;
+  cursor: pointer;
+  p{
+    margin: 0;
+  }
+}
+.switch-btn.active{
+  background-color: black;
+  color: white;
+}
+

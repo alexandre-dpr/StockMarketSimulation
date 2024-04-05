@@ -6,19 +6,22 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useTranslation } from 'react-i18next';
+
 
 const HistoriqueTable = ({data}) => {
+    const { t } = useTranslation();
 
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Ticker</TableCell>
-                        <TableCell>Quantité</TableCell>
-                        <TableCell>Prix</TableCell>
-                        <TableCell>Date</TableCell>
-                        <TableCell>Type</TableCell>
+                        <TableCell>{t('wallet.table.ticker')}</TableCell>
+                        <TableCell>{t('wallet.table.quantity')}</TableCell>
+                        <TableCell>{t('wallet.table.price')}</TableCell>
+                        <TableCell>{t('wallet.table.date')}</TableCell>
+                        <TableCell>{t('wallet.table.type')}</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
