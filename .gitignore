@@ -1,3 +1,5 @@
 /.idea/
 
 nettoyage_data.py
+/Automation/obj/
+/Automation/bin/
