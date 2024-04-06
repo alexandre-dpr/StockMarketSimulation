@@ -6,3 +6,33 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
 }
+.podium{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background-color: white;
+  padding: 6px;
+  position: absolute;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 9px;
+
+  p{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+.podium.n1{
+  right: 44%;
+
+}
+
+.podium.n2{
+  left: 16%;
+  top: 20%;
+}
+
+.podium.n3{
+  bottom: 48%;
+  right: 16%;
+}

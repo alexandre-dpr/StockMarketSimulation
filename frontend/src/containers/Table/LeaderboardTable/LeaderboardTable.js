@@ -21,10 +21,11 @@ const LeaderboardTable = ({data}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.leaderboard.slice(0,15).map((row) => (
+                    {data.leaderboard.slice(0,15).map((row,index) => (
                         <TableRow
                             key={row.ticker}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            className={index === 0 ? 'gold':index===1 ? 'silver': index===2 ?"bronze" :""}
                         >
                             <TableCell component="th" scope="row">
                                 {row.rank}
@@ -35,7 +36,7 @@ const LeaderboardTable = ({data}) => {
 
                         </TableRow>
                     ))}
-                    {data.user.rank > 15 &&
+                    {data.user && data.user.rank > 15 &&
                         <>
                             <TableRow>
                                 <TableCell colSpan={4} className={"alone-cell"}>.....</TableCell>
