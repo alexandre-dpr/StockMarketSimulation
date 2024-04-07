@@ -28,7 +28,6 @@ function Market() {
     const [nameResearch, setName] = useState('')
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true)
-
     async function fetchData() {
         setData([])
         var result = []
@@ -49,7 +48,6 @@ function Market() {
             setLoosers(await getFormatStocks(loosers_result.data.loosersJson));
             setIsLoading(false)
         }
-
 
     }
 

@@ -84,6 +84,20 @@ export class RequestWallet {
         }
     }
 
+    async addFavori(ticker){
+        try{
+            return await this.axios.post(`${constants.url_api_portefeuille}${endpoints.favori}/${ticker}`);
+        }catch (error){
+            console.error(error)
+        }
+    }
 
+    async delFavori(ticker){
+        try{
+            return await this.axios.delete(`${constants.url_api_portefeuille}${endpoints.favori}/${ticker}`);
+        }catch (error){
+            console.error(error)
+        }
+    }
 
 }
