@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import LineChart from "../../../components/Charts/LineChart/LineChart";
 import Spinner from "../../../components/Spinner/Spinner";
 import HistoriqueTable from "../../../containers/Table/HistoriqueTable/HistoriqueTable";
-import {Pie} from "react-chartjs-2";
 import Camembert from "./Camembert/Camembert";
 
 
@@ -29,6 +28,8 @@ function Wallet() {
 
 
     useEffect(()=>{
+        const baliseHeader = document.getElementById("header");
+        baliseHeader.classList.remove('h-home');
         initWallet();
         initHistorique();
     }, [])

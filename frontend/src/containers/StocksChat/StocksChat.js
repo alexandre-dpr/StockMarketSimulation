@@ -5,6 +5,8 @@ import like from "../../assets/img/like.svg";
 import bean from "../../assets/img/poubelle.png"
 import Button from "../../components/Buttons/Button/Button";
 import {RequestCommunity} from "../../request/RequestCommunity";
+import send from "../../assets/img/send-message.png";
+import utils from "../../utils/utils.json";
 
 const StocksChat = ({stocks,username}) => {
     const [commentaires,setCommentaires] = useState([]);
@@ -23,13 +25,13 @@ const StocksChat = ({stocks,username}) => {
 
     async function addComment(){
         if (addCommentaire.length > 0){
-            const resp = await requestCommunity.addComment(username,addCommentaire,stocks);
+            const resp = await requestCommunity.addComment(addCommentaire,stocks);
             setCommentaires([resp.data, ...commentaires]);
         }
     }
 
     async function likeAction(id){
-        const resp = await requestCommunity.likeComment(id,username);
+        const resp = await requestCommunity.likeComment(id,utils.interaction.LIKE);
         const index = commentaires.findIndex(objet => objet.id === id);
         if (index !== -1) {
             const nouveauxObjets = [...commentaires];
@@ -49,8 +51,8 @@ const StocksChat = ({stocks,username}) => {
             <h1>{commentaires.length} commentaire(s)</h1>
             <div className="d-flex w-100 align-center justify-between">
 
-            <InputLabel label="Ajoutez un commentaire" type="text" id="comment" value={addCommentaire} onInputChange={setAddCommentaire} />
-            <Button children="Ajouter un commentaire" styles={"button black"} handleClick={()=> {addComment()}}/>
+            <InputLabel label="Ajoutez un commentaire" type="text" id="comment" value={addCommentaire} onInputChange={setAddCommentaire}  />
+            <Button img={send} styles={"button black"} handleClick={()=> {addComment()}}/>
             </div>
             <div className="d-flex flex-column w-100">
                 {
@@ -86,10 +88,10 @@ const StocksChat = ({stocks,username}) => {
                             </div>
                             <p>{item.content}</p>
                             <div className="d-flex align-center">
-                                <div className="like pointer" onClick={()=>{likeAction(item.id)}}>
+                                <div className={item.interaction ?"like pointer isLike" :"like pointer"} onClick={()=>{likeAction(item.id)}}>
                                     <img style={{width: 20}} src={like}/>
                                 </div>
-                                <p>{item.interaction}</p>
+                                <p className="ml-1-r">{item.nbInteraction}</p>
                             </div>
                         </div>
                     ))

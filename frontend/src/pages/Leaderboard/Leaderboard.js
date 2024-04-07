@@ -49,7 +49,9 @@ function Leaderboard() {
                                 <img src={podium} className="w-80-p"/>
 
                             </div>
-                            <LeaderboardTable data={classement}/>
+                            {
+                                classement.leaderboard.length>0 && <LeaderboardTable data={classement}/>
+                            }
                         </>
                         :
                         <div className="mt-10"><Spinner/></div>

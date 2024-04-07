@@ -10,6 +10,7 @@
     "contactUs": "Contactez-nous"
   },
   "header": {
+    "wallet":"Portefeuille",
     "login": "Connecte toi!",
     "register": "Inscris-toi!",
     "about": "À propos",
