@@ -2,6 +2,7 @@ package com.example.community.service;
 
 import com.example.community.dto.request.AddCommentDTO;
 import com.example.community.dto.request.AddInteractionDTO;
+import com.example.community.dto.request.UpdateCommentaireDTO;
 import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
@@ -21,5 +22,8 @@ public interface Facade {
     CommentaireDTO addInteraction(String name, AddInteractionDTO interactionDTO) throws CommentaireInexistantException;
 
     @Transactional
-    void deleteCommentaire(String userId, Integer idCommentaire) throws CommentaireInexistantException, AuteurNonReconnueException;
+    void deleteCommentaire(String name, Integer idCommentaire) throws CommentaireInexistantException, AuteurNonReconnueException;
+
+    @Transactional
+    CommentaireDTO editCommentaire(String name, Integer idCommentaire, UpdateCommentaireDTO updateCommentaireDTO) throws CommentaireInexistantException, AuteurNonReconnueException;
 }

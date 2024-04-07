@@ -24,7 +24,7 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(AuteurNonReconnueException.class)
     public ResponseEntity<Object> auteurNonReconnueExceptionv(AuteurNonReconnueException ex, WebRequest request) {
-        ErrorDTO errorDTO = createDTO("Seul l'auteur peut supprimer le commentaire", HttpStatus.FORBIDDEN, ex, request);
+        ErrorDTO errorDTO = createDTO("Seul l'auteur peut interagir avec le commentaire", HttpStatus.FORBIDDEN, ex, request);
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.valueOf(errorDTO.getStatus()), request);
     }
     @ExceptionHandler(Exception.class)

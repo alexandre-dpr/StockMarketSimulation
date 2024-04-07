@@ -2,6 +2,7 @@ package com.example.community.service;
 
 import com.example.community.dto.request.AddCommentDTO;
 import com.example.community.dto.request.AddInteractionDTO;
+import com.example.community.dto.request.UpdateCommentaireDTO;
 import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
@@ -68,6 +69,21 @@ public class FacadeImpl implements Facade{
             throw new AuteurNonReconnueException("Seul l'auteur du commentaire peut le supprimer");
         }
         commentaireRepository.delete(commentaire.get());
+    }
+
+    @Override
+    public CommentaireDTO editCommentaire(String name, Integer idCommentaire, UpdateCommentaireDTO updateCommentaireDTO) throws CommentaireInexistantException, AuteurNonReconnueException {
+        Optional<Commentaire> commentaire = commentaireRepository.findById(idCommentaire);
+
+        if(commentaire.isEmpty()) {
+            throw new CommentaireInexistantException("Commentaire non trouvée");
+        }
+        if (!(commentaire.get().getUser().equals(name))){
+            throw new AuteurNonReconnueException("Seul l'auteur du commentaire peut le modifier");
+        }
+        commentaire.get().setContent(updateCommentaireDTO.content());
+        commentaireRepository.save(commentaire.get());
+        return commentaire.get().toDTO();
     }
 
 }

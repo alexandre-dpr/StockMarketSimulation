@@ -2,6 +2,7 @@ package com.example.community.controller;
 
 import com.example.community.dto.request.AddCommentDTO;
 import com.example.community.dto.request.AddInteractionDTO;
+import com.example.community.dto.request.UpdateCommentaireDTO;
 import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
@@ -29,6 +30,11 @@ public class CommentaireController {
     public ResponseEntity<Void> deleteComment(Authentication authentication, @PathVariable Integer id) throws CommentaireInexistantException, AuteurNonReconnueException {
         facade.deleteCommentaire(authentication.getName(),id);
          return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/comment/{id}")
+    public ResponseEntity<CommentaireDTO> editComment(Authentication authentication,@PathVariable Integer id ,@RequestBody UpdateCommentaireDTO updateCommentaireDTO) throws CommentaireInexistantException, AuteurNonReconnueException {
+        return ResponseEntity.ok(facade.editCommentaire(authentication.getName(), id,updateCommentaireDTO ));
     }
 
     @PostMapping(value = "/comment")
