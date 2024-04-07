@@ -15,8 +15,12 @@ import LineChart from "../../components/Charts/LineChart/LineChart";
 import TransactionWidget from "../../containers/TransactionWidget/TransactionWidget";
 import Spinner from "../../components/Spinner/Spinner";
 import constants from "../../utils/constants.json"
+import {RequestWallet} from "../../request/RequestWallet";
+import star_fill from "../../assets/img/star_fill.png";
+import star_empty from "../../assets/img/star_empty.png";
 
 function Stock() {
+    const requestWallet = new RequestWallet();
     const {t} = useTranslation();
     const {ticker} = useParams();
     const [username, setUsername] = useState(null);
@@ -28,8 +32,15 @@ function Stock() {
     const [timeStamp, setTimeStamp] = useState([])
     const [performance, setPerformance] = useState(0);
     const [isLoading, setIsLoading] = useState(true)
+    const [isFav,setFav] = useState(false)
 
     async function fetchData() {
+        const result_wallet = await requestWallet.getWallet();
+        if(result_wallet.data.favoris.length >0){
+            const favsTickers = result_wallet.data.favoris.map(stock => stock.ticker)
+            setFav(favsTickers.includes(ticker))
+            console.log(favsTickers)
+        }
         const result = await getStock(ticker, range);
         setData(result.data)
         if (result.data) {
@@ -65,6 +76,15 @@ function Stock() {
         setRange(newRange)
     }
 
+    async function manageFav(){
+        if(isFav){
+            const  del = await requestWallet.delFavori(ticker)
+        }else {
+            const add = await  requestWallet.addFavori(ticker)
+        }
+        fetchData()
+    }
+
 
     return (
             <div className='containerPage'>
@@ -84,6 +104,7 @@ function Stock() {
                                             <h1 className="ml-2">{data?.name} </h1>
                                             <h1 className="ml-1 ticker"> {ticker}</h1>
                                         </div>
+                                        <div> <img onClick={manageFav} src={isFav ? star_fill : star_empty} alt={""} style={{width:"30px", cursor:"pointer"}}/></div>
 
                                     </div>
                                     <div className="d-flex w-100">

@@ -49,10 +49,9 @@ const StocksChat = ({stocks,username}) => {
     return (
         <div className="w-100">
             <h1>{commentaires.length} commentaire(s)</h1>
-            <div className="d-flex w-100 align-center justify-between">
-
+            <div className="d-flex w-100 align-center">
             <InputLabel label="Ajoutez un commentaire" type="text" id="comment" value={addCommentaire} onInputChange={setAddCommentaire}  />
-            <Button img={send} styles={"button black"} handleClick={()=> {addComment()}}/>
+            <img className="ml-2" src={send} style={{width:"30px", cursor:"pointer"}} onClick={()=> {addComment()}}/>
             </div>
             <div className="d-flex flex-column w-100">
                 {
