@@ -20,7 +20,7 @@ export class RequestCommunity {
             return await this.axios.post(constants.url_community + "/" +RequestCommunity.COMMENT ,
                 {
                     "content": comment,
-                    "tickers": tickers
+                    "ticker": tickers
                 });
         } catch (error) {
             throw error;

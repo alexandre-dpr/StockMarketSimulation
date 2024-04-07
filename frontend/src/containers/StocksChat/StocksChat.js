@@ -62,6 +62,8 @@ const StocksChat = ({stocks,username}) => {
             const nouveauxObjets = [...commentaires];
             nouveauxObjets[index] = resp.data;
             setCommentaires(nouveauxObjets);
+            await setIsEdit(null);
+            await setEditMessage("");
         }
     }
 
