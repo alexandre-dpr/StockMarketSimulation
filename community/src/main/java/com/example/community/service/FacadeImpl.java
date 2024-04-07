@@ -1,6 +1,7 @@
 package com.example.community.service;
 
 import com.example.community.dto.request.AddCommentDTO;
+import com.example.community.dto.request.AddInteractionDTO;
 import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
@@ -21,7 +22,7 @@ public class FacadeImpl implements Facade{
     CommentaireRepository commentaireRepository;
 
     @Override
-    public List<CommentaireDTO> getAllCommentaire(String action) {
+    public List<CommentaireDTO> getAllCommentaire(String name,String action) {
         Optional <List<Commentaire>> commentaires = commentaireRepository.findAllByActionOrderByDateDesc(action);
         if(commentaires.isEmpty()) {
             return new ArrayList<>();
@@ -35,20 +36,20 @@ public class FacadeImpl implements Facade{
 
     @Override
     @Transactional
-    public CommentaireDTO addComentaire(String name, AddCommentDTO commentaireDTO,String id) {
-        Commentaire commentaire = new Commentaire(name, commentaireDTO.content(), id);
+    public CommentaireDTO addComentaire(String name, AddCommentDTO commentaireDTO) {
+        Commentaire commentaire = new Commentaire(name, commentaireDTO.content(), commentaireDTO.ticker());
         commentaireRepository.save(commentaire);
         return commentaire.toDTO();
     }
 
     @Override
     @Transactional
-    public CommentaireDTO addInteraction(String userId, Integer idCommentaire) throws CommentaireInexistantException {
-        Optional<Commentaire> commentaire = commentaireRepository.findById(idCommentaire);
+    public CommentaireDTO addInteraction(String user, AddInteractionDTO interactionDTO) throws CommentaireInexistantException {
+        Optional<Commentaire> commentaire = commentaireRepository.findById(interactionDTO.idComment());
         if(commentaire.isEmpty()) {
             throw new CommentaireInexistantException("Commentaire non trouvée");
         }
-        commentaire.get().addInteraction(userId);
+        commentaire.get().addInteraction(user,interactionDTO.interaction());
         commentaireRepository.save(commentaire.get());
         return commentaire.get().toDTO();
     }
