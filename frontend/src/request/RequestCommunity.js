@@ -46,5 +46,15 @@ export class RequestCommunity {
         }
     }
 
+    async editComment(idComment,content){
+        try {
+            return await this.axios.patch(constants.url_community + RequestCommunity.COMMENT + "/"+idComment,{
+                "content": content
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
 
 }

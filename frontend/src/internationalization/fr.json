@@ -21,6 +21,7 @@
     "connection": "Connexion",
     "registration": "Inscription",
     "password": "Mot de passe",
+    "confirmPassword": "Confimation du mot de passe",
     "connect": "Se connecter",
     "register": "S'inscrire",
     "email": "Email",

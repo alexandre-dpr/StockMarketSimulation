@@ -47,7 +47,14 @@
   @include respond-to('small-tablet') {
     display: none;
   }
+  @include respond-to('phone') {
+    display: none;
+  }
 }
+.burger-rotate{
+  transform: rotate(90deg);
+}
+
 #hamburger-nav{
   margin-left: auto;
   margin-right: 5px;
@@ -55,11 +62,14 @@
   @include respond-to('small-tablet') {
     display: block;
   }
+  @include respond-to('phone') {
+    display: block;
+  }
 }
 
 .container-nav-resp{
   z-index: 10;
-  margin-top: 36px;
+  margin-top: 40px;
   display: none;
   flex-direction: column;
   align-items: center;
@@ -72,9 +82,15 @@
   @include respond-to('small-tablet') {
     display: flex;
   }
+  @include respond-to('phone') {
+    display: flex;
+  }
 }
 #containt-rigth{
   @include respond-to('small-tablet') {
+    display: none;
+  }
+  @include respond-to('phone') {
     display: none;
   }
 }
@@ -83,16 +99,15 @@
   @include respond-to('small-tablet') {
     display: block;
   }
+  @include respond-to('phone') {
+    display: block;
+  }
 }
 .containerNavBar {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   font-family: Gabarito;
-
-
-
-
   @include respond-to('tablet') {
     font-size: 15px;
   }
@@ -104,7 +119,6 @@
   @include respond-to('large-desktop') {
     font-size: 19px;
   }
-
 }
 
 .logoApp {
