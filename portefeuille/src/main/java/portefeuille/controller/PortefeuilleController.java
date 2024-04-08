@@ -2,6 +2,7 @@ package portefeuille.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -65,7 +66,7 @@ public class PortefeuilleController {
     }
 
     @GetMapping("/leaderboard")
-    public ResponseEntity<LeaderboardDto> getLeaderboard(String username) {
+    public ResponseEntity<LeaderboardDto> getLeaderboard(@RequestParam String username) {
         return ResponseEntity.ok(rankService.getLeaderboard(username));
     }
 

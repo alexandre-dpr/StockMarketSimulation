@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
@@ -65,13 +66,12 @@ public class FacadeImplTest {
 
     @Test
     public void addComentaire_OK() throws ContentEmptyException {
-        // Given
         String name = "user";
         String content = "Ceci est un commentaire";
         String ticker = "AAPL";
         AddCommentDTO commentaireDTO = new AddCommentDTO(content,ticker);
         Commentaire commentaire = new Commentaire(name, commentaireDTO.content(), commentaireDTO.ticker());
-        when(commentaireRepository.save(any())).thenReturn(commentaire);
+        when(commentaireRepository.save(commentaire)).thenReturn(commentaire);
         CommentaireDTO result = facade.addComentaire(name, commentaireDTO);
         assertNotNull(result);
         assertEquals(commentaire.toDTO(), result);
@@ -83,7 +83,7 @@ public class FacadeImplTest {
         String content = "";
         String ticker = "AAPL";
         AddCommentDTO commentaireDTO = new AddCommentDTO(content,ticker);
-        CommentaireDTO result = facade.addComentaire(name, commentaireDTO);
+        facade.addComentaire(name, commentaireDTO);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class FacadeImplTest {
         String name = "user";
         AddInteractionDTO interactionDTO = new AddInteractionDTO(2, Interaction.LIKE);
         when(commentaireRepository.findById(any())).thenReturn(Optional.empty());
-        CommentaireDTO result = facade.addInteraction(name,interactionDTO);
+        facade.addInteraction(name,interactionDTO);
     }
 
     @Test
@@ -111,8 +111,8 @@ public class FacadeImplTest {
         Integer idCommentaire = 1;
         Commentaire commentaire = new Commentaire(username,"message","AAPL");
         when(commentaireRepository.findById(any())).thenReturn(Optional.of(commentaire));
-        doNothing().when(commentaireRepository).delete(commentaire);
         facade.deleteCommentaire(username,idCommentaire);
+        Mockito.verify(commentaireRepository).delete(commentaire);
     }
 
     @Test(expected = CommentaireInexistantException.class)
@@ -172,7 +172,7 @@ public class FacadeImplTest {
         UpdateCommentaireDTO updateCommentaireDTO = new UpdateCommentaireDTO("");
         Commentaire commentaire = new Commentaire(name,"message","AAPL");
         when(commentaireRepository.findById(any())).thenReturn(Optional.of(commentaire));
-        CommentaireDTO result = facade.editCommentaire(name,idCommentaire,updateCommentaireDTO);
+        facade.editCommentaire(name,idCommentaire,updateCommentaireDTO);
     }
 
 

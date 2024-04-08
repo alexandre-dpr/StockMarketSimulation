@@ -10,15 +10,15 @@ function Leaderboard() {
     const [classement,setClassement] = useState(null)
     const requestWallet = new RequestWallet();
     const [isLoading,setIsLoading] = useState(false);
+    const auth = new Auth();
 
-
-
-    useEffect(()=>{
+    useEffect( ()=>{
         getClassement()
     },[])
 
     async function getClassement(){
-        const resp = await requestWallet.getClassement();
+        const username = await auth.getUsername();
+        const resp = await requestWallet.getClassement(username);
         await setClassement(resp.data)
         setIsLoading(true)
     }
@@ -46,7 +46,7 @@ function Leaderboard() {
                                         <p>{classement.leaderboard[2].username}</p>
                                         <p>{classement.leaderboard[2].totalValue}$</p></div>
                                 }
-                                <img src={podium} className="w-80-p"/>
+                                <img src={podium} className="w-60-p"/>
 
                             </div>
                             {
