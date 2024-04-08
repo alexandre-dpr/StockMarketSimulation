@@ -20,7 +20,7 @@ export class RequestCommunity {
             return await this.axios.post(constants.url_community + "/" +RequestCommunity.COMMENT ,
                 {
                     "content": comment,
-                    "tickers": tickers
+                    "ticker": tickers
                 });
         } catch (error) {
             throw error;
@@ -41,6 +41,16 @@ export class RequestCommunity {
     async deleteComment(idComment){
         try {
             return await this.axios.delete(constants.url_community + RequestCommunity.COMMENT + "/"+idComment);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async editComment(idComment,content){
+        try {
+            return await this.axios.patch(constants.url_community + RequestCommunity.COMMENT + "/"+idComment,{
+                "content": content
+            });
         } catch (error) {
             throw error;
         }

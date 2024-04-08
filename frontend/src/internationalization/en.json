@@ -21,6 +21,7 @@
     "connection": "Connection",
     "registration": "Registration",
     "password": "Password",
+    "confirmPassword": "Password confirmation",
     "connect": "Log in ",
     "register": "Register",
     "email": "Email",
@@ -62,7 +63,8 @@
       "date": "Date",
       "type": "Type",
       "ticker": "Ticker"
-    }
+    },
+    "ordersPlaced": "Orders placed"
 
   },
   "stock": {

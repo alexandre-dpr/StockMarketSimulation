@@ -3,6 +3,7 @@ package com.example.community.util;
 import com.example.community.dto.response.ErrorDTO;
 import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
+import com.example.community.exceptions.ContentEmptyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,12 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(AuteurNonReconnueException.class)
     public ResponseEntity<Object> auteurNonReconnueExceptionv(AuteurNonReconnueException ex, WebRequest request) {
-        ErrorDTO errorDTO = createDTO("Seul l'auteur peut supprimer le commentaire", HttpStatus.FORBIDDEN, ex, request);
+        ErrorDTO errorDTO = createDTO("Seul l'auteur peut interagir avec le commentaire", HttpStatus.FORBIDDEN, ex, request);
+        return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.valueOf(errorDTO.getStatus()), request);
+    }
+    @ExceptionHandler(ContentEmptyException.class)
+    public ResponseEntity<Object> ContentEmptyException(ContentEmptyException ex, WebRequest request) {
+        ErrorDTO errorDTO = createDTO("Le commentaire est vide", HttpStatus.BAD_REQUEST, ex, request);
         return handleExceptionInternal(ex, errorDTO, new HttpHeaders(), HttpStatus.valueOf(errorDTO.getStatus()), request);
     }
     @ExceptionHandler(Exception.class)

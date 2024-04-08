@@ -2,9 +2,11 @@ package com.example.community.service;
 
 import com.example.community.dto.request.AddCommentDTO;
 import com.example.community.dto.request.AddInteractionDTO;
+import com.example.community.dto.request.UpdateCommentaireDTO;
 import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
+import com.example.community.exceptions.ContentEmptyException;
 import com.example.community.model.Commentaire;
 import com.example.community.repository.CommentaireRepository;
 import jakarta.transaction.Transactional;
@@ -36,7 +38,10 @@ public class FacadeImpl implements Facade{
 
     @Override
     @Transactional
-    public CommentaireDTO addComentaire(String name, AddCommentDTO commentaireDTO) {
+    public CommentaireDTO addComentaire(String name, AddCommentDTO commentaireDTO) throws ContentEmptyException {
+        if (commentaireDTO.content().length() == 0){
+            throw new ContentEmptyException("Le commentaire est vide.");
+        }
         Commentaire commentaire = new Commentaire(name, commentaireDTO.content(), commentaireDTO.ticker());
         commentaireRepository.save(commentaire);
         return commentaire.toDTO();
@@ -68,6 +73,24 @@ public class FacadeImpl implements Facade{
             throw new AuteurNonReconnueException("Seul l'auteur du commentaire peut le supprimer");
         }
         commentaireRepository.delete(commentaire.get());
+    }
+
+    @Override
+    public CommentaireDTO editCommentaire(String name, Integer idCommentaire, UpdateCommentaireDTO updateCommentaireDTO) throws ContentEmptyException, CommentaireInexistantException, AuteurNonReconnueException {
+        Optional<Commentaire> commentaire = commentaireRepository.findById(idCommentaire);
+
+        if(commentaire.isEmpty()) {
+            throw new CommentaireInexistantException("Commentaire non trouvée");
+        }
+        if (!(commentaire.get().getUser().equals(name))){
+            throw new AuteurNonReconnueException("Seul l'auteur du commentaire peut le modifier");
+        }
+        if (updateCommentaireDTO.content().length() == 0){
+            throw new ContentEmptyException("Le commentaire est vide.");
+        }
+        commentaire.get().setContent(updateCommentaireDTO.content());
+        commentaireRepository.save(commentaire.get());
+        return commentaire.get().toDTO();
     }
 
 }

@@ -33,7 +33,7 @@ function Header({isAuth, handleClick}) {
 
     return (<div className="d-flex flex-column">
         <div id="header" className='header'>
-            <div className="">
+            <div className="ml-1">
                 <NavTo
                     path={routes.home}
                     className='logoApp'>
@@ -103,7 +103,7 @@ function Header({isAuth, handleClick}) {
                 </div>
             </div>
             <div id="hamburger-nav">
-                <img src={hamburger} className="w-2-r pointer" onClick={(e)=>setIsOpen(!isOpen)}/>
+                <img src={hamburger} className={isOpen ? "burger-rotate w-2-r pointer" : "w-2-r pointer"} onClick={(e)=>setIsOpen(!isOpen)}/>
             </div>
 
         </div>
