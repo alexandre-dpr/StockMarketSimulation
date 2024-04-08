@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import './InputLabel.scss'
 
-function InputLabel({ onInputChange, label, id, type }) {
+function InputLabel({ onInputChange, label, id, type, placeholder }) {
     const [inputValue, setInputValue] = useState('');
 
     const handleChange = (event) => {
@@ -14,7 +14,7 @@ function InputLabel({ onInputChange, label, id, type }) {
 
     return (
         <div className="input-container">
-            <input type={type} id={id} placeholder=" " value={inputValue} onChange={handleChange}/>
+            <input type={type} id={id} placeholder={placeholder} value={inputValue} onChange={handleChange}/>
             <label htmlFor="email">{label}</label>
         </div>
     )

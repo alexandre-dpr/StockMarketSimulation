@@ -1,6 +1,8 @@
 import CustomImage from "../components/CustomImage/CustomImage";
 import React from "react";
 import constants from "../utils/constants.json"
+import cross from "../assets/img/cross.png"
+
 
 const getStockLogo = (ticker) => {
     return `https://financialmodelingprep.com/image-stock/${ticker}.png`
@@ -22,7 +24,7 @@ async function getFormatStocks(data) {
                 logo: <CustomImage style={{width: "35px", height: "35px"}} src={item.logoUrl} alt={"img"}/>
             };
         } catch (error) {
-            return {...item, logo: <CustomImage style={{width: "35px", height: "35px"}} src={""} alt={"img"}/>};
+            return {...item, logo: <CustomImage style={{width: "35px", height: "35px"}} src={cross} alt={"img"}/>};
         }
     }))
 

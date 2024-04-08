@@ -39,16 +39,25 @@ public class Commentaire {
         this.interactions = new HashMap<>();
     }
 
-    public void addInteraction(String userId){
-        if(interactions.containsKey(userId)){
-            interactions.remove(userId);
-        }else {
-            interactions.put(userId, Interaction.LIKE);
+    public void addInteraction(String user, Interaction interaction) {
+        switch (interaction) {
+            case LIKE:
+                if (this.interactions.containsKey(user)) {
+                    this.interactions.remove(user);
+                    if (interaction != Interaction.LIKE) {
+                        this.interactions.put(user, Interaction.LIKE);
+                    }
+                } else {
+                    this.interactions.put(user, Interaction.LIKE);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     public CommentaireDTO toDTO(){
-        return new CommentaireDTO(this.id,this.user,this.action,this.date.toString(),this.content,interactions.size());
+        return new CommentaireDTO(this.id,this.user,this.action,this.date.toString(),this.content,interactions.size(),this.interactions.containsKey(user));
     }
 
 

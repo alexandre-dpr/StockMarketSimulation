@@ -54,5 +54,8 @@
   "rangeHistoryStock": {
     "ONE_DAY": ["ONE_DAY","1d"],
     "ONE_YEAR": ["ONE_YEAR","1y"]
+  },
+  "interaction": {
+    "LIKE": "LIKE"
   }
 }

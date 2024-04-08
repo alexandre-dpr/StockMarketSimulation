@@ -10,6 +10,7 @@
     "contactUs": "Contact Us"
   },
   "header": {
+    "wallet":"Wallet",
     "login": "Sign in!",
     "register": "Sign up!",
     "about": "About",
@@ -20,6 +21,7 @@
     "connection": "Connection",
     "registration": "Registration",
     "password": "Password",
+    "confirmPassword": "Password confirmation",
     "connect": "Log in ",
     "register": "Register",
     "email": "Email",

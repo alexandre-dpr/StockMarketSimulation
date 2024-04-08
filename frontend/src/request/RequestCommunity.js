@@ -3,6 +3,8 @@ import Interceptor from "./Interceptor";
 
 export class RequestCommunity {
     static COMMENT = "/comment";
+    static INTERACTION = "/interaction";
+
     axios = Interceptor.getInstance();
 
     async getAllComment(tickers) {
@@ -13,20 +15,24 @@ export class RequestCommunity {
         }
     }
 
-    async addComment(username,comment,tickers) {
+    async addComment(comment,tickers) {
         try {
-            return await this.axios.post(constants.url_community + "/"+tickers ,
+            return await this.axios.post(constants.url_community + "/" +RequestCommunity.COMMENT ,
                 {
-                    "content": comment
+                    "content": comment,
+                    "ticker": tickers
                 });
         } catch (error) {
             throw error;
         }
     }
 
-    async likeComment(idComment,username){
+    async likeComment(idComment, interaction){
         try {
-            return await this.axios.post(constants.url_community + RequestCommunity.COMMENT + "/"+idComment);
+            return await this.axios.post(constants.url_community + RequestCommunity.INTERACTION,{
+                "idComment":idComment,
+                "interaction":interaction
+            });
         } catch (error) {
             throw error;
         }
@@ -35,6 +41,16 @@ export class RequestCommunity {
     async deleteComment(idComment){
         try {
             return await this.axios.delete(constants.url_community + RequestCommunity.COMMENT + "/"+idComment);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async editComment(idComment,content){
+        try {
+            return await this.axios.patch(constants.url_community + RequestCommunity.COMMENT + "/"+idComment,{
+                "content": content
+            });
         } catch (error) {
             throw error;
         }

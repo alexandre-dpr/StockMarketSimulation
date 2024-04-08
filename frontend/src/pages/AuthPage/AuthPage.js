@@ -23,6 +23,7 @@ function AuthPage({setIsAuth}) {
     const[username, setUsername] = useState('');
     const[login,setLogin] = useState('');
     const[password, setPassword] = useState('');
+    const [confirmPassword,setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const auth = new Auth();
 
@@ -61,12 +62,13 @@ function AuthPage({setIsAuth}) {
 
     async function register(){
         try {
-            const resp = await requestAuth.register(username, login, password);
-            await auth.setJwtToken(resp.data);
-            router(routes.home);
-            setIsAuth(true)
+            if (password === confirmPassword && password.length >= 8){
+                const resp = await requestAuth.register(username, login, password);
+                await auth.setJwtToken(resp.data);
+                router(routes.home);
+                setIsAuth(true)
+            }
         }catch (e) {
-            console.log(e.message)
             setError(e.message);
         }
 
@@ -87,6 +89,10 @@ function AuthPage({setIsAuth}) {
                     }
                     <InputLabel label={authType === route.register ? t('login.email') : t('login.email-username')} type="text" id="email" onInputChange={setLogin}/>
                     <InputLabel label={t('login.password')} type="password" id="password" onInputChange={setPassword}/>
+                    {
+                        authType === route.register ?
+                            <InputLabel label={t('login.confirmPassword')} type="password" id="confirm-password" onInputChange={setConfirmPassword}/> : null
+                    }
                     <Button children={authType === route.register ? t('login.register'):t('login.connect')} styles={"button black"}  handleClick={authType === route.register ? register : connected}/>
                 </form>
             </div>
