@@ -63,7 +63,8 @@
       "date": "Date",
       "type": "Type",
       "ticker": "Action"
-    }
+    },
+    "ordersPlaced": "Ordres placés"
   },
   "stock": {
     "about": "À propos de",

@@ -4,17 +4,18 @@ import {RequestWallet} from "../../../request/RequestWallet";
 import {Auth} from "../../../utils/Auth";
 import routes from "../../../utils/routes.json";
 import {useNavigate} from "react-router-dom";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import LineChart from "../../../components/Charts/LineChart/LineChart";
 import Spinner from "../../../components/Spinner/Spinner";
 import HistoriqueTable from "../../../containers/Table/HistoriqueTable/HistoriqueTable";
 import Camembert from "./Camembert/Camembert";
-
+import CustomImage from "../../../components/CustomImage/CustomImage";
+import star_fill from "../../../assets/img/star_fill.png";
+import constants from '../../../utils/constants.json'
 
 function Wallet() {
-    const { t } = useTranslation();
-    const [data,setData] = useState(null);
-    const [fav,setFav] = useState(null);
+    const {t} = useTranslation();
+    const [data, setData] = useState(null);
     const requestWallet = new RequestWallet();
     const auth = new Auth();
     const navigate = useNavigate();
@@ -24,37 +25,40 @@ function Wallet() {
     const [dataCam, setDataCam] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [historique, setHistorique] = useState([]);
-    const [switchBtn,setSwitchBtn] = useState(true);
+    const [switchBtn, setSwitchBtn] = useState(true);
+    const [favsTickers, setFavsTickers] = useState([])
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const baliseHeader = document.getElementById("header");
         baliseHeader.classList.remove('h-home');
         initWallet();
         initHistorique();
     }, [])
 
-    async function initWallet(){
+    async function initWallet() {
         const resp = await requestWallet.getWallet();
+        if (resp.data && resp.data.favoris.length > 0) {
+            setFavsTickers(resp.data.favoris.map(stock => stock.ticker))
+        }
         await setData(resp.data);
         await initGraph(resp.data);
         await initCamembert(resp.data);
         setIsLoading(false)
     }
 
-    async function initHistorique(){
+    async function initHistorique() {
         const resp = await requestWallet.getHistorique();
         await setHistorique(resp.data)
         console.log(resp.data)
     }
 
 
-
-    async function initGraph(resp){
+    async function initGraph(resp) {
         let value = [];
         let date = [];
-        resp.performanceHistory.forEach((item,index)=>{
-            value.push(item.value+10000);
+        resp.performanceHistory.forEach((item, index) => {
+            value.push(item.value + 10000);
             date.push(DDMMYYYY(item.date));
         })
         date.push(getDate())
@@ -63,24 +67,20 @@ function Wallet() {
         await setDataGraph(value)
     }
 
-    async function initCamembert(resp){
-        let ticker =[];
+    async function initCamembert(resp) {
+        let ticker = [];
         let percent = [];
-        let colors= []
         ticker.push("Solde");
-        percent.push(parseFloat((100*resp.solde/resp.totalValue).toFixed(2)))
-        colors.push('#' + Math.floor(Math.random()*16777215).toString(16))
-        resp.actions.forEach((item)=>{
+        percent.push(parseFloat((100 * resp.solde / resp.totalValue).toFixed(2)))
+        resp.actions.forEach((item) => {
             ticker.push(item.ticker);
             const percentage = 100 * (item.price * item.quantity) / resp.totalValue;
             percent.push(parseFloat(percentage.toFixed(2)));
-            colors.push('#' + Math.floor(Math.random()*16777215).toString(16))
         })
 
         await setDataCam({
-            "label" : ticker,
-            "data" : percent,
-            'colors' : colors
+            "label": ticker,
+            "data": percent,
         })
     }
 
@@ -90,11 +90,13 @@ function Wallet() {
     }
 
 
-    function DDMMYYYY(date){
+    function DDMMYYYY(date) {
         const dateToFormat = new Date(date);
+
         function addZero(number) {
             return number < 10 ? '0' + number : number;
         }
+
         const jour = addZero(dateToFormat.getDate());
         const mois = addZero(dateToFormat.getMonth() + 1);
         const année = dateToFormat.getFullYear();
@@ -111,57 +113,65 @@ function Wallet() {
         return `${day}/${month}/${year}`;
     }
 
-
-
+    async function manageFav(ticker){
+        const  del = await requestWallet.delFavori(ticker)
+        initWallet();
+    }
 
     return (
         <div className="containerPage">
             {
-                isLoading?
+                isLoading ?
                     <div className="mt-10"><Spinner/></div>
                     :
                     <div className="cards">
-                        <div className="align-center justify-center d-flex box-border w-100 flex-sm-column">
+                        <div className=" justify-center d-flex box-border w-100 flex-sm-column ">
                             <div className="d-flex flex-column h-100 w-65 w-sm-100-p">
-                                <div className="d-flex align-center">
-
+                                <div className="containerWalletName">
                                     <h1>{t('wallet.wallet')}</h1>
-                                    <p className="ml-1-r"> Classement : {data.rank}</p>
+                                    <h3>Classement : {data.rank}</h3>
                                 </div>
                                 <div className="d-flex align-center">
                                     <h1>{data.totalValue.toFixed(2)} $ </h1>
-                                    <p className="green ml-r-1"> {data.performance.value.toFixed(2)} $ ({data.performance.percentage})</p>
+                                    <h3 style={{color:data.performance.value>0 ? constants.green : constants.red,cursor:"default"}}  className="ml-r-1"> {data.performance.value.toFixed(2)} $
+                                        ({data.performance.percentage})</h3>
                                 </div>
                                 <div className="d-flex justify-center mb-1-r">
                                     <div className="switch-container">
-                                        <div className={switchBtn ? "switch-btn active" : "switch-btn"}  onClick={(e)=>setSwitchBtn(true)}>
+                                        <div className={switchBtn ? "switch-btn active" : "switch-btn"}
+                                             onClick={(e) => setSwitchBtn(true)}>
                                             <p>Evolution</p>
                                         </div>
-                                        <div className={switchBtn ? "switch-btn" : "switch-btn active"} onClick={(e)=>setSwitchBtn(false)}>
+                                        <div className={switchBtn ? "switch-btn" : "switch-btn active"}
+                                             onClick={(e) => setSwitchBtn(false)}>
                                             <p>Répartition</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="container-graph h-100-p">
                                     {
-                                        dataGraph && dateGraph && (switchBtn ?<LineChart style={{height: "500px"}} data={dataGraph} labels={dateGraph}
-                                                                             intervalLabelsCount={10}/> : <Camembert data={dataCam}/>)
+                                        dataGraph && dateGraph && (switchBtn ?
+                                            <LineChart style={{height: "500px"}} data={dataGraph} labels={dateGraph}
+                                                       intervalLabelsCount={10}/> :
+                                            <div style={{height: "450px", paddingBlock: "25px"}}><Camembert data={dataCam}/>
+                                            </div>)
                                     }
                                 </div>
                             </div>
-                            <div className="d-flex flex-column h-100 w-35 w-sm-100-p">
-                                <div className="h-50 d-flex flex-column">
+                            <div className= "d-flex flex-column h-100 w-sm-100-p h-100 rightSide scrollbar-none">
+                                <div className="d-flex flex-column mt-3">
                                     <h3>{t('wallet.own')}{data.actions.length}{t('wallet.stocks')} :</h3>
-                                    <div className="d-flex flex-column w-100 overflow-scroll h-14-r wallet-resp">
+                                    <div
+                                        className="d-flex flex-column wallet-resp">
                                         {
                                             data.actions.length > 0 ? <>
                                                     {
                                                         data.actions.map((item, index) => (
                                                             <div className="actions-items " id={item.ticker}>
                                                                 <div>
-                                                                    <img
-                                                                        src={`https://financialmodelingprep.com/image-stock/${item.ticker}.png`}
-                                                                        style={{width: 30}}/>
+                                                                    <CustomImage
+                                                                        style={{width: 30}}
+                                                                        src={`https://financialmodelingprep.com/image-stock/${item.ticker}.png`}/>
                                                                 </div>
                                                                 <div className="content pointer" onClick={() => {
                                                                     goTicker(item.ticker)
@@ -172,7 +182,7 @@ function Wallet() {
                                                                 <div className="pointer" onClick={() => {
                                                                     setIsPercent(!isPercent)
                                                                 }}>
-                                                                    <p className="green">{isPercent ? item.performance.percentage : item.performance.value.toFixed(2) + " $"}</p>
+                                                                    <h4 style={{color:item.performance.value>0 ? constants.green : constants.red}}>{isPercent ? item.performance.percentage : item.performance.value.toFixed(2) + " $"}</h4>
                                                                 </div>
                                                             </div>
                                                         ))
@@ -183,14 +193,17 @@ function Wallet() {
                                         }
                                     </div>
                                 </div>
-                                <div className="h-50 w-100">
+                                <div className="">
                                     <h3>{t('wallet.favorites')}</h3>
-                                    <div className="d-flex flex-column w-100 overflow-scroll h-14-r wallet-resp">
+                                    <div
+                                        className="d-flex flex-column wallet-resp scrollbar-none">
                                         {
-                                            data.favoris.length > 0 && data.favoris.map((item,index)=>(
+                                            data.favoris.length > 0 && data.favoris.map((item, index) => (
                                                 <div className="actions-items">
                                                     <div>
-                                                        <img src={`https://financialmodelingprep.com/image-stock/${item.ticker}.png`} style={{width: 30}}/>
+                                                        <CustomImage
+                                                            style={{width: 30}}
+                                                            src={`https://financialmodelingprep.com/image-stock/${item.ticker}.png`}/>
                                                     </div>
                                                     <div className="content pointer" onClick={() => {
                                                         goTicker(item.ticker)
@@ -198,6 +211,11 @@ function Wallet() {
                                                         <p>{item.ticker}</p>
                                                         <p>{item.price}</p>
                                                     </div>
+                                                    {auth.isLoggedIn() &&
+                                                        <div><img onClick={() => manageFav(item.ticker)} src={favsTickers.includes(item.ticker) ? star_fill : null}
+                                                                  alt={""} style={{width: "30px", cursor: "pointer"}}/>
+                                                        </div>
+                                                    }
                                                 </div>
                                             ))
                                         }
@@ -209,6 +227,10 @@ function Wallet() {
 
                                         }
                                     </div>
+                                </div>
+                                <div >
+                                    <h3>{t('wallet.ordersPlaced')}</h3>
+
                                 </div>
                             </div>
                         </div>

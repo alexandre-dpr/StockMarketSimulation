@@ -63,7 +63,8 @@
       "date": "Date",
       "type": "Type",
       "ticker": "Ticker"
-    }
+    },
+    "ordersPlaced": "Orders placed"
 
   },
   "stock": {

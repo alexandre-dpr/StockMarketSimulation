@@ -33,7 +33,7 @@ function Header({isAuth, handleClick}) {
 
     return (<div className="d-flex flex-column">
         <div id="header" className='header'>
-            <div className="">
+            <div className="ml-1">
                 <NavTo
                     path={routes.home}
                     className='logoApp'>

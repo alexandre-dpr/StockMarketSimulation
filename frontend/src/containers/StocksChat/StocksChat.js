@@ -3,7 +3,7 @@ import InputLabel from "../../components/Input/InputLabel/InputLabel";
 import "./StockChat.scss";
 import like from "../../assets/img/like.svg";
 import bean from "../../assets/img/poubelle.png";
-import edit from "../../assets/img/edit.png"
+//import edit from "../../assets/img/edit.png"
 import Button from "../../components/Buttons/Button/Button";
 import {RequestCommunity} from "../../request/RequestCommunity";
 import send from "../../assets/img/send-message.png";
@@ -76,14 +76,6 @@ const StocksChat = ({stocks,username}) => {
             </div>
             <div className="d-flex flex-column w-100">
                 {
-                    commentaires.length === 0 ?
-                        <div className="d-flex w-100 justify-center">
-                           <p>Il n'y a aucun commentaire</p>
-                        </div>
-                        :
-                        <></>
-                }
-                {
                     commentaires.map((item,index)=>(
                         <div className="card d-flex flex-column w-100 box-border" >
                             <div className="d-flex w-100 justify-between">
@@ -101,7 +93,7 @@ const StocksChat = ({stocks,username}) => {
                                     username === item.userId ?
                                         <div className="d-flex">
                                             <div className="like pointer mr-1-r" onClick={()=>{initEditMessage(item.id,item.content)}}>
-                                                <img style={{width: 20}} src={edit}/>
+                                                <img style={{width: 20}} src={""}/>
                                             </div>
                                             <div className="like pointer" onClick={()=>{deleteAction(item.id)}}>
                                                 <img style={{width: 20}} src={bean}/>

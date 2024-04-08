@@ -76,7 +76,7 @@ function round(value, toFixed) {
 }
 
 function formatCurrency(value) {
-    if (value !== undefined) {
+    if (value) {
         const units = ["", "k", "M", "B", "T"];
         let unitIndex = 0;
 
