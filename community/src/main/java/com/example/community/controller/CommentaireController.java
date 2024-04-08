@@ -6,6 +6,7 @@ import com.example.community.dto.request.UpdateCommentaireDTO;
 import com.example.community.dto.response.CommentaireDTO;
 import com.example.community.exceptions.AuteurNonReconnueException;
 import com.example.community.exceptions.CommentaireInexistantException;
+import com.example.community.exceptions.ContentEmptyException;
 import com.example.community.service.FacadeImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,12 +34,12 @@ public class CommentaireController {
     }
 
     @PatchMapping(value = "/comment/{id}")
-    public ResponseEntity<CommentaireDTO> editComment(Authentication authentication,@PathVariable Integer id ,@RequestBody UpdateCommentaireDTO updateCommentaireDTO) throws CommentaireInexistantException, AuteurNonReconnueException {
+    public ResponseEntity<CommentaireDTO> editComment(Authentication authentication,@PathVariable Integer id ,@RequestBody UpdateCommentaireDTO updateCommentaireDTO) throws ContentEmptyException,CommentaireInexistantException, AuteurNonReconnueException {
         return ResponseEntity.ok(facade.editCommentaire(authentication.getName(), id,updateCommentaireDTO ));
     }
 
     @PostMapping(value = "/comment")
-    public ResponseEntity<CommentaireDTO> addComment(Authentication authentication , @RequestBody AddCommentDTO commentaireDTO){
+    public ResponseEntity<CommentaireDTO> addComment(Authentication authentication , @RequestBody AddCommentDTO commentaireDTO) throws ContentEmptyException {
         return ResponseEntity.ok(facade.addComentaire(authentication.getName(),commentaireDTO));
     }
 
