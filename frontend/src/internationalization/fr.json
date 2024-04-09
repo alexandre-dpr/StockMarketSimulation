@@ -103,5 +103,11 @@
     "summary": "Récapitulatif"
   },
   "confirm": "Confirmer",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+  "about": {
+    "team": "L'équipe",
+    "ourMission": "Notre mission",
+    "paragraphTeam": "Nous sommes un groupe de quatre étudiants en Master 2 MIAGE à Orléans, passionnés par les défis technologiques et l'innovation. Dans le cadre de notre cours sur l'Interopérabilité des Systèmes d'Information, nous avons eu l'opportunité de mettre nos connaissances et notre créativité à l'épreuve.",
+    "paragraphMission" : "Notre projet consistait à concevoir et développer un site internet en utilisant l'architecture en microservices. Pour réaliser cette tâche, nous avons choisi d'utiliser Spring Boot et .NET pour le microservice dédié à l'automation des ordres. Concernant le front-end, nous avons opté pour React, un choix motivé par sa flexibilité et sa capacité à créer des interfaces utilisateur dynamiques et réactives."
+  }
 }
