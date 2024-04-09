@@ -33,14 +33,16 @@ function Stock() {
     const [performance, setPerformance] = useState(0);
     const [isLoading, setIsLoading] = useState(true)
     const [isFav,setFav] = useState(false)
-
+    const auth = new Auth();
     async function fetchData() {
-        const result_wallet = await requestWallet.getWallet();
-        if(result_wallet.data.favoris.length >0){
-            const favsTickers = result_wallet.data.favoris.map(stock => stock.ticker)
-            setFav(favsTickers.includes(ticker))
-            console.log(favsTickers)
+        if(auth.isLoggedIn()){
+            const result_wallet = await requestWallet.getWallet();
+            if(result_wallet.data && result_wallet.data.favoris.length >0){
+                const favsTickers = result_wallet.data.favoris.map(stock => stock.ticker)
+                setFav(favsTickers.includes(ticker))
+            }
         }
+
         const result = await getStock(ticker, range);
         setData(result.data)
         if (result.data) {
@@ -104,8 +106,9 @@ function Stock() {
                                             <h1 className="ml-2">{data?.name} </h1>
                                             <h1 className="ml-1 ticker"> {ticker}</h1>
                                         </div>
+                                        {auth.isLoggedIn() &&
                                         <div> <img onClick={manageFav} src={isFav ? star_fill : star_empty} alt={""} style={{width:"30px", cursor:"pointer"}}/></div>
-
+                                        }
                                     </div>
                                     <div className="d-flex w-100">
                                         <div className="lineChart w-100">
@@ -135,7 +138,7 @@ function Stock() {
                                     </div>
                                 </div>
 
-                                <div className="rightSide ml-5 w-30">
+                                <div className="rightSide ml-5 w-30 scrollbar-none">
                                     <TransactionWidget price={data?.price} ticker={ticker}/>
                                 </div>
                             </div>
