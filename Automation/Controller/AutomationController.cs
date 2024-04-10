@@ -1,4 +1,5 @@
-﻿using Automation.Service;
+﻿using Automation.Model.enums;
+using Automation.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Automation.Controller;
@@ -16,8 +17,15 @@ public class AutomationController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAutomations()
+    public IActionResult GetAutomations(string username)
     {
-        return Ok(_automationService.GetAutomations());
+        return Ok(_automationService.GetAutomations(username));
+    }
+
+    [HttpPost]
+    public IActionResult PostAutomations(string username, string symbole, int quantite, Frequency frequence)
+    {
+        _automationService.AjouterAutomationAsync(username, symbole, quantite, frequence);
+        return Ok();
     }
 }

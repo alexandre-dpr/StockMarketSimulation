@@ -1,13 +1,25 @@
-﻿namespace Automation.Model;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Automation.Model;
 
 public class UserAutomation
 {
-    public string User { get; set; }
-    public List<IAutomation> Automations { get; set; }
+    [Key] public string Username { get; set; }
+    public List<Dca> Automations { get; set; }
 
-    public UserAutomation(string user, List<IAutomation> automations)
+    public UserAutomation(string username, List<Dca> automations)
     {
-        User = user;
+        Username = username;
         Automations = automations;
+    }
+
+    public UserAutomation(string username)
+    {
+        Username = username;
+        Automations = new List<Dca>();
+    }
+
+    public UserAutomation()
+    {
     }
 }
