@@ -63,7 +63,8 @@
       "date": "Date",
       "type": "Type",
       "ticker": "Ticker"
-    }
+    },
+    "ordersPlaced": "Orders placed"
 
   },
   "stock": {
@@ -103,5 +104,20 @@
     "summary": "Summary"
   },
   "confirm": "Confirm",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "about": {
+    "team": "The team",
+    "ourMission": "Our mission",
+    "paragraphTeam": "We are a group of four Master 2 MIAGE students in Orléans, passionate about technological challenges and innovation. As part of our course on Information Systems Interoperability, we had the opportunity to put our knowledge and creativity to the test.",
+    "paragraphMission" : "Our project consisted of designing and developing a website using microservices architecture. To carry out this task, we chose to use Spring Boot and .NET for the microservice dedicated to order automation. Regarding the front-end, we opted for React, a choice motivated by its flexibility and its ability to create dynamic and responsive user interfaces."
+  },
+  "errors": {
+    "incorrectPwdConfirm": "Incorrect password confirmation.",
+    "invalidRegistrationForm": "Incorrect identifiers.",
+    "pwdSize": "The password must be greater than or equal to 8 characters.",
+    "invalidLoginForm":"Incorrect identifiers.",
+    "userAlreadyRegistered": "User already registered.",
+    "errorRegistering": "Error registering, please try again.",
+    "errorLogin": "Error loggin in, please try again."
+  }
 }

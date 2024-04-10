@@ -12,7 +12,6 @@
 .form-container {
   display: flex;
   height: 100%;
-  width: 50%;
   justify-content: center;
   flex-direction: column;
   align-items: center;
@@ -20,7 +19,14 @@
 
 .form-group {
   margin-bottom: 1rem;
+
 }
 
-
-/* Pour un meilleur style, vous pouvez ajouter des styles spécifiques à votre formulaire et à votre image */
+.leftSideAuth{
+  overflow:hidden;
+  max-width: 40%;
+  .imageBg{
+    transform:translateY(3%);
+    height: 100vh;
+  }
+}

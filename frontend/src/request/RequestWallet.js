@@ -64,9 +64,9 @@ export class RequestWallet {
         }
     }
 
-    async getClassement(){
+    async getClassement(username){
         try {
-            return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.leaderboard}`);
+            return await this.axios.get(`${constants.url_api_portefeuille}${endpoints.leaderboard}?username=${username}`);
         } catch (error) {
             throw error;
         }

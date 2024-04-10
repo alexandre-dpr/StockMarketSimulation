@@ -70,13 +70,12 @@ function percentageDiff(val1, val2) {
 
 function round(value, toFixed) {
     if (value !== undefined) {
-        return parseFloat(value.toFixed(toFixed));
+        return value.toFixed(toFixed);
     }
-    return 0
+    return "0";
 }
-
 function formatCurrency(value) {
-    if (value !== undefined) {
+    if (value) {
         const units = ["", "k", "M", "B", "T"];
         let unitIndex = 0;
 

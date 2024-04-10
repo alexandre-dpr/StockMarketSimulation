@@ -1,53 +1,50 @@
 @import "../../../index";
 
-.tableMarket {
 
-  .tableHeader {
-    font-size: 16px !important;
-    font-family: Gabarito-SemiBold !important;
+.tableHeader {
+  font-size: 16px !important;
+  font-family: Gabarito-SemiBold !important;
+}
+
+.tableCell {
+  cursor: default !important;
+  padding: 10px !important;
+  padding-left: 30px !important;
+}
+
+.ticker {
+  font-family: Gabarito-Bold !important;
+}
+
+#exchange {
+  @include respond-to('phone') {
+    display: none;
   }
-
-  .tableCell {
-    cursor: default !important;
-    padding: 10px !important;
-    padding-left: 30px !important;
-  }
-
-  .ticker {
-    font-family: Gabarito-Bold !important;
-  }
-
-  #exchange {
-    @include respond-to('phone') {
-      display: none;
-    }
-
-  }
-
-  #category {
-    @include respond-to('phone') {
-      display: none;
-    }
-
-
-    @include respond-to('small-tablet') {
-      display: none;
-    }
-  }
-
-  #country {
-    @include respond-to('phone') {
-      display: none;
-    }
-
-
-    @include respond-to('tablet') {
-      display: none;
-    }
-  }
-
 
 }
+
+#category {
+  @include respond-to('phone') {
+    display: none;
+  }
+
+
+  @include respond-to('small-tablet') {
+    display: none;
+  }
+}
+
+#country {
+  @include respond-to('phone') {
+    display: none;
+  }
+
+
+  @include respond-to('tablet') {
+    display: none;
+  }
+}
+
 
 //rgb(54, 162, 235); bleu
 //rgb(255, 99, 132);

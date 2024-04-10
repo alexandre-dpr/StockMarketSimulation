@@ -7,11 +7,19 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import './LeaderboardTable.scss.css'
+import gold from "../../../assets/img/icons8-médaille-d'or-olympique-48.png"
+import silver from "../../../assets/img/icons8-médaille-d'argent-olympique-48.png"
+import bronze from "../../../assets/img/icons8-médaille-de-bronze-olympique-48.png"
+import {round} from "../../../utils/services";
 
 const LeaderboardTable = ({data}) => {
+    function toFloat(string){
+        return parseFloat(string.replace('%', ''))
+    }
+
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <Table sx={{minWidth: 650}} aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell>Rank</TableCell>
@@ -21,17 +29,18 @@ const LeaderboardTable = ({data}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.leaderboard.slice(0,15).map((row,index) => (
-                        <TableRow
-                            key={row.ticker}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            className={index === 0 ? 'gold':index===1 ? 'silver': index===2 ?"bronze" :""}
-                        >
+                    {data.leaderboard.slice(0, 15).map((row, index) => (
+                        <TableRow>
                             <TableCell component="th" scope="row">
-                                {row.rank}
+                                {
+                                    (row.rank === 1 && toFloat(row.percentage)) ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={gold} alt="medal"/>
+                                        : ( row.rank === 2 && toFloat(row.percentage)) ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={silver} alt="medal"/>
+                                            : (row.rank === 3 && toFloat(row.percentage)) ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={bronze} alt="medal"/>
+                                                : row.rank
+                                }
                             </TableCell>
                             <TableCell>{row.username}</TableCell>
-                            <TableCell>{row.totalValue}</TableCell>
+                            <TableCell>{`${round(row.totalValue,2)} $`}</TableCell>
                             <TableCell>{row.percentage}</TableCell>
 
                         </TableRow>
@@ -44,7 +53,7 @@ const LeaderboardTable = ({data}) => {
                             <TableRow>
                                 <TableCell>{data.user.rank}</TableCell>
                                 <TableCell>{data.user.username}</TableCell>
-                                <TableCell>{data.user.totalValue}</TableCell>
+                                <TableCell>{round(data.user.totalValue,2)}</TableCell>
                                 <TableCell>{data.user.percentage}</TableCell>
                             </TableRow>
                         </>
@@ -54,7 +63,8 @@ const LeaderboardTable = ({data}) => {
                 </TableBody>
             </Table>
         </TableContainer>
-    );
+    )
+        ;
 };
 
 export default LeaderboardTable;

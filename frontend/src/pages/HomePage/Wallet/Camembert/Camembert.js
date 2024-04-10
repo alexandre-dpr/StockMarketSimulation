@@ -8,7 +8,6 @@ const Camembert = ({data}) => {
             {
                 label: '%',
                 data: data.data,
-                backgroundColor: data.colors,
                 hoverOffset: 4,
             },
         ],
@@ -22,7 +21,7 @@ const Camembert = ({data}) => {
         },
     }
     return (
-        <Pie style={{width:"100px"}}  data={data2} options={options} />
+        <Pie  data={data2} options={options} />
     );
 };
 
