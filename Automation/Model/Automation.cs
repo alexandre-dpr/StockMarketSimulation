@@ -4,15 +4,15 @@ using Newtonsoft.Json;
 
 namespace Automation.Model;
 
-public interface IAutomation
+public abstract class Automation
 {
-    [Key] public int Id { get; }
+    [Key] public int Id { get; set; }
 
     [JsonIgnore] public UserAutomation Parent { get; }
 
     public AutomationType AutomationType { get; }
 
-    void ExecuteAutomation(string username);
+    public abstract void ExecuteAutomation(string username);
 
-    Boolean IsAutomationReady();
+    public abstract Boolean IsAutomationReady();
 }

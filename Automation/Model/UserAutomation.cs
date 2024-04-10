@@ -5,9 +5,9 @@ namespace Automation.Model;
 public class UserAutomation
 {
     [Key] public string Username { get; set; }
-    public List<Dca> Automations { get; set; }
+    public List<Automation> Automations { get; set; }
 
-    public UserAutomation(string username, List<Dca> automations)
+    public UserAutomation(string username, List<Automation> automations)
     {
         Username = username;
         Automations = automations;
@@ -16,7 +16,7 @@ public class UserAutomation
     public UserAutomation(string username)
     {
         Username = username;
-        Automations = new List<Dca>();
+        Automations = new List<Automation>();
     }
 
     public UserAutomation()

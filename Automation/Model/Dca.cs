@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Automation.Model;
 
-public class Dca : IAutomation
+public class Dca : Automation
 {
     [Key] public int Id { get; set; }
     [JsonIgnore] public UserAutomation Parent { get; set; } = null!;
@@ -23,7 +23,11 @@ public class Dca : IAutomation
         AutomationType = AutomationType.Dca;
     }
 
-    public void ExecuteAutomation(string username)
+    public Dca()
+    {
+    }
+
+    public override void ExecuteAutomation(string username)
     {
         if (IsAutomationReady())
         {
@@ -32,7 +36,7 @@ public class Dca : IAutomation
         }
     }
 
-    public bool IsAutomationReady()
+    public override bool IsAutomationReady()
     {
         if (LastBuyTime == null) return true;
         var now = DateTime.Now;

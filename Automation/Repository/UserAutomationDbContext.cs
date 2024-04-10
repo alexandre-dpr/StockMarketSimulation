@@ -18,5 +18,6 @@ public class UserAutomationDbContext : DbContext
             .WithOne(child => child.Parent);
 
         modelBuilder.Entity<UserAutomation>().ToTable("UserAutomations");
+        modelBuilder.Entity<Dca>().ToTable("Dca");
     }
 }
