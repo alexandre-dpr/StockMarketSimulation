@@ -16,7 +16,6 @@ function AuthPage({setIsAuth}) {
     const router = useNavigate();
     const {t} = useTranslation();
     const requestAuth = new RequestAuth();
-    const requestWallet = new RequestWallet();
     const [authType, setAuthType] = useState();
     const location = useLocation();
     const [username, setUsername] = useState('');
@@ -43,9 +42,11 @@ function AuthPage({setIsAuth}) {
     }, []);
 
     useEffect(() => {
+        setError("")
+    }, [authType]);
+    useEffect(() => {
         setAuthType(location.state)
     }, [location.state]);
-
 
     async function connected() {
         try {
@@ -54,9 +55,14 @@ function AuthPage({setIsAuth}) {
             router(routes.home);
             setIsAuth(true)
         } catch (e) {
-            setError(e.message);
+            let msgError = ""
+            if (e.response.status === 401) {
+                msgError = t('errors.invalidLoginForm')
+            } else {
+                msgError = t('errors.errorLogin')
+            }
+            setError(msgError);
         }
-
     }
 
     async function register() {
@@ -66,11 +72,20 @@ function AuthPage({setIsAuth}) {
                 await auth.setJwtToken(resp.data);
                 router(routes.home);
                 setIsAuth(true)
+            } else {
+                password !== confirmPassword ? setError(t('errors.incorrectPwdConfirm')) : setError(t('errors.pwdSize'))
             }
         } catch (e) {
-            setError(e.message);
+            let msgError = ""
+            if (e.response.status === 409) {
+                msgError = t('errors.userAlreadyRegistered')
+            } else if (e.response.status === 401) {
+                msgError = t('errors.invalidRegistrationForm')
+            } else {
+                msgError = t('errors.errorRegistering')
+            }
+            setError(msgError);
         }
-
     }
 
     return (
@@ -79,7 +94,6 @@ function AuthPage({setIsAuth}) {
                 <img src={tradeCenter} className="imageBg" alt="Image2 login"/>
             </div>
             <div className="form-container w-60">
-                <p>{error}</p>
                 <h2>{authType === route.register ? t('login.registration') : t('login.connection')}</h2>
                 <form className="w-100 d-flex flex-column justify-center align-center">
                     {
@@ -98,7 +112,6 @@ function AuthPage({setIsAuth}) {
                         <InputLabel label={t('login.password')} type="password" id="password"
                                     onInputChange={setPassword}/>
                     </div>
-
                     {
                         authType === route.register ?
                             <div className="w-50">
@@ -106,6 +119,7 @@ function AuthPage({setIsAuth}) {
                                             onInputChange={setConfirmPassword}/>
                             </div> : null
                     }
+                    <div className="error mt- mb-1">{error}</div>
                     <Button children={authType === route.register ? t('login.register') : t('login.connect')}
                             styles={"button black"} handleClick={authType === route.register ? register : connected}/>
                 </form>

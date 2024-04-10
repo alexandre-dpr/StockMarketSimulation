@@ -13,6 +13,10 @@ import bronze from "../../../assets/img/icons8-médaille-de-bronze-olympique-48.
 import {round} from "../../../utils/services";
 
 const LeaderboardTable = ({data}) => {
+    function toFloat(string){
+        return parseFloat(string.replace('%', ''))
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 650}} aria-label="simple table">
@@ -29,9 +33,9 @@ const LeaderboardTable = ({data}) => {
                         <TableRow>
                             <TableCell component="th" scope="row">
                                 {
-                                    row.rank === 1 ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={gold} alt="medal"/>
-                                        : row.rank === 2 ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={silver} alt="medal"/>
-                                            : row.rank === 3 ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={bronze} alt="medal"/>
+                                    (row.rank === 1 && toFloat(row.percentage)) ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={gold} alt="medal"/>
+                                        : ( row.rank === 2 && toFloat(row.percentage)) ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={silver} alt="medal"/>
+                                            : (row.rank === 3 && toFloat(row.percentage)) ? <img style={{width: "30px",transform:"translateX(-10px)"}} src={bronze} alt="medal"/>
                                                 : row.rank
                                 }
                             </TableCell>
