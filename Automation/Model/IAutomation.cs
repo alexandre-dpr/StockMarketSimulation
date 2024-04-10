@@ -1,10 +1,16 @@
-﻿using Automation.Model.enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Automation.Model.enums;
+using Newtonsoft.Json;
 
 namespace Automation.Model;
 
 public interface IAutomation
 {
-    public AutomationType AutomationType { get; set; }
+    [Key] public int Id { get; }
+
+    [JsonIgnore] public UserAutomation Parent { get; }
+
+    public AutomationType AutomationType { get; }
 
     void ExecuteAutomation(string username);
 
