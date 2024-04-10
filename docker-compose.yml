@@ -102,6 +102,27 @@ services:
     networks:
       - my_network
 
+  mysql_database_automation:
+    image: mysql:latest
+    container_name: db_automation
+    environment:
+      MYSQL_ROOT_PASSWORD: your_password
+      MYSQL_DATABASE: your_database
+      MYSQL_USER: your_user
+      MYSQL_PASSWORD: your_user_password
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      GOSU_VERSION: 1.16
+      MYSQL_MAJOR: innovation
+      MYSQL_VERSION: 8.3.0-1.el8
+      MYSQL_SHELL_VERSION: 8.3.0-1.el8
+    volumes:
+      - /var/lib/mysql
+    ports:
+      - "3310:3306"
+    restart: "no"
+    networks:
+      - my_network
+
   service-community:
     build:
       context: ./community

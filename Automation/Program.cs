@@ -3,6 +3,10 @@ using Automation.Service;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,8 +30,33 @@ builder.Services.AddDbContext<UserAutomationDbContext>(options =>
 );
 builder.Services.BuildServiceProvider().GetService<UserAutomationDbContext>().Database.Migrate();
 
+// Read public key from file
+var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "app.pub");
+var publicKeyPem = File.ReadAllText(publicKeyPath);
+var publicKey = RSA.Create();
+publicKey.ImportFromPem(publicKeyPem);
+
+// Add JWT validation services
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new RsaSecurityKey(publicKey)
+        };
+    });
+
 var app = builder.Build();
 
+app.UseAuthentication();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -41,16 +41,22 @@ function Wallet() {
         if (resp.data && resp.data.favoris.length > 0) {
             setFavsTickers(resp.data.favoris.map(stock => stock.ticker))
         }
-        await setData(resp.data);
+        setData(resp.data);
         await initGraph(resp.data);
         await initCamembert(resp.data);
         setIsLoading(false)
     }
 
     async function initHistorique() {
+        await sleep(1000)
         const resp = await requestWallet.getHistorique();
-        await setHistorique(resp.data)
-        console.log(resp.data)
+        if(resp.data){
+            setHistorique(resp.data)
+        }
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
 
@@ -236,7 +242,7 @@ function Wallet() {
                         </div>
                         <div className="w-100 d-flex flex-column mt-3-r">
                             <h1>{t('wallet.historical')}</h1>
-                            <HistoriqueTable data={historique.mouvements}/>
+                            <HistoriqueTable data={historique?.mouvements}/>
                         </div>
                     </div>
             }

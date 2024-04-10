@@ -10,7 +10,7 @@
     "contactUs": "Contactez-nous"
   },
   "header": {
-    "wallet":"Portefeuille",
+    "wallet": "Portefeuille",
     "login": "Connecte toi!",
     "register": "Inscris-toi!",
     "about": "À propos",
@@ -54,9 +54,9 @@
     "own": "Vous possédez ",
     "stocks": " action(s) ",
     "own_nothing": "Vous ne possédez aucune action.",
-    "fav_nothing" : "Vous ne possédez aucun favoris.",
+    "fav_nothing": "Vous ne possédez aucun favoris.",
     "favorites": "Mes favoris",
-    "historical" : "Historique :",
+    "historical": "Historique :",
     "table": {
       "quantity": "Quantité",
       "price": "Prix",
@@ -86,11 +86,11 @@
     "logInSentence": "Connectez-vous ou inscrivez-vous pour réaliser vos transactions et placer vos ordres en toute simplicité.",
     "marketOrder": "Ordre au marché",
     "stopOrder": "Ordre stop",
-    "investmentPlanning":"Planification d'investissement",
+    "investmentPlanning": "Planification d'investissement",
     "stopPrice": "Prix d'ordre stop ($)",
     "indicative": "indicatif",
     "weekly": "Hebdomadaire",
-    "monthly":"Mensuel",
+    "monthly": "Mensuel",
     "transactionType": "Type de transaction",
     "orderType": "Type d'ordre",
     "recurrence": "Récurrence",
@@ -108,6 +108,15 @@
     "team": "L'équipe",
     "ourMission": "Notre mission",
     "paragraphTeam": "Nous sommes un groupe de quatre étudiants en Master 2 MIAGE à Orléans, passionnés par les défis technologiques et l'innovation. Dans le cadre de notre cours sur l'Interopérabilité des Systèmes d'Information, nous avons eu l'opportunité de mettre nos connaissances et notre créativité à l'épreuve.",
-    "paragraphMission" : "Notre projet consistait à concevoir et développer un site internet en utilisant l'architecture en microservices. Pour réaliser cette tâche, nous avons choisi d'utiliser Spring Boot et .NET pour le microservice dédié à l'automation des ordres. Concernant le front-end, nous avons opté pour React, un choix motivé par sa flexibilité et sa capacité à créer des interfaces utilisateur dynamiques et réactives."
+    "paragraphMission": "Notre projet consistait à concevoir et développer un site internet en utilisant une architecture en microservices. Pour réaliser cette tâche, nous avons choisi d'utiliser Spring Boot et .NET pour le microservice dédié à l'automation des ordres. Concernant le front-end, nous avons opté pour React, un choix motivé par sa flexibilité et sa capacité à créer des interfaces utilisateur dynamiques et réactives."
+  },
+  "errors": {
+    "incorrectPwdConfirm": "Confirmation du mot de passe incorrecte.",
+    "invalidRegistrationForm": "Identifiants incorrects",
+    "pwdSize": "Le mot de passe doit être supérieur ou égal à 8 caractères.",
+    "invalidLoginForm":"Identifiants incorrects.",
+    "userAlreadyRegistered": "Utilisateur déjà enregistré.",
+    "errorRegistering": "Erreur lors de l'enregistrement, veuillez réessayer.",
+    "errorLogin": "Erreur de connexion, veuillez réessayer."
   }
 }
