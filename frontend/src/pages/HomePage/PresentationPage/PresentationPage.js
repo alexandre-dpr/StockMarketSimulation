@@ -7,6 +7,8 @@ import {useTranslation} from "react-i18next";
 import {useLocation} from "react-router-dom";
 import styles from "../../../index.scss";
 
+
+
 function PresentationPage() {
     const location = useLocation();
 
@@ -82,7 +84,6 @@ function PresentationPage() {
 
     return (
         <div className="homePage">
-
             <div className="paper paper-1">
                 <AnimatedLineChart/>
             </div>

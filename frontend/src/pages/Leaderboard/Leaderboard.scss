@@ -7,14 +7,12 @@
   border-radius: 15px;
 }
 .podium{
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  background-color: white;
+  text-align: center;
   padding: 6px;
   position: absolute;
   width: 100px;
   display: flex;
   flex-direction: column;
-  border-radius: 9px;
 
   p{
     overflow: hidden;
@@ -23,16 +21,16 @@
   }
 }
 .podium.n1{
-  right: 44%;
+  right: 46%;
 
 }
 
 .podium.n2{
-  left: 22%;
-  top: 20%;
+  left: 27%;
+  top: 18%;
 }
 
 .podium.n3{
-  bottom: 46%;
-  right: 24%;
+  bottom: 56%;
+  right: 28%;
 }

@@ -152,7 +152,7 @@ function Wallet() {
                                     {
                                         dataGraph && dateGraph && (switchBtn ?
                                             <LineChart style={{height: "500px"}} data={dataGraph} labels={dateGraph}
-                                                       intervalLabelsCount={10}/> :
+                                                       intervalLabelsCount={10} lineColor={data.performance.value>0 ? constants.green : constants.red}/> :
                                             <div style={{height: "450px", paddingBlock: "25px"}}><Camembert data={dataCam}/>
                                             </div>)
                                     }
