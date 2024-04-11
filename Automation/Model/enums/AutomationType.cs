@@ -2,5 +2,6 @@
 
 public enum AutomationType
 {
-    Dca
+    Dca,
+    PriceThreshold
 }

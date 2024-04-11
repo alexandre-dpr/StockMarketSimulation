@@ -29,10 +29,18 @@ public class AutomationController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost]
+    [HttpPost("/api/dca")]
     public IActionResult AjouterDca([FromBody] DcaReqDto req)
     {
         _automationService.AjouterDca(req.Username, req.Symbole, req.Quantite, req.Frequence);
+        return Ok();
+    }
+
+    [HttpPost("/api/pricethreshold")]
+    public IActionResult AjouterPriceThreshold([FromBody] PriceThresholdReqDto req)
+    {
+        _automationService.AjouterPriceThreshold(req.ThresholdPrice, req.TransactionType, req.ThresholdType,
+            req.Username);
         return Ok();
     }
 }

@@ -19,5 +19,6 @@ public class UserAutomationDbContext : DbContext
 
         modelBuilder.Entity<UserAutomation>().ToTable("UserAutomations");
         modelBuilder.Entity<Dca>().ToTable("Dca");
+        modelBuilder.Entity<PriceThreshold>().ToTable("PriceThresholdAction");
     }
 }

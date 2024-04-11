@@ -16,16 +16,13 @@ public class AutomationService
 
     public void AjouterDca(string username, string symbole, int quantite, Frequency frequence)
     {
-        var userAutomation = _dbContext.UserAutomations.Find(username);
+        AddToAutomations(username, new Dca(symbole, quantite, frequence));
+    }
 
-        if (userAutomation == null)
-        {
-            userAutomation = new UserAutomation(username);
-            _dbContext.UserAutomations.Add(userAutomation);
-        }
-
-        userAutomation.Automations.Add(new Dca(symbole, quantite, frequence));
-        _dbContext.SaveChanges();
+    public void AjouterPriceThreshold(double thresholdPrice, TransactionType action, ThresholdType thresholdType,
+        string username)
+    {
+        AddToAutomations(username, new PriceThreshold(thresholdPrice, action, thresholdType));
     }
 
 
@@ -44,5 +41,19 @@ public class AutomationService
             .Include(ua => ua.Automations)
             .FirstOrDefault(ua => ua.Username == username)
             ?.Automations.RemoveAll(a => a.Id == id);
+    }
+
+    private void AddToAutomations(string username, Model.Automation automation)
+    {
+        var userAutomation = _dbContext.UserAutomations.Find(username);
+
+        if (userAutomation == null)
+        {
+            userAutomation = new UserAutomation(username);
+            _dbContext.UserAutomations.Add(userAutomation);
+        }
+
+        userAutomation.Automations.Add(automation);
+        _dbContext.SaveChanges();
     }
 }
