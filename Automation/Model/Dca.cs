@@ -1,18 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Automation.Model.enums;
-using Newtonsoft.Json;
+﻿using Automation.Model.enums;
 
 namespace Automation.Model;
 
 public class Dca : Automation
 {
-    [Key] public int Id { get; set; }
-    [JsonIgnore] public UserAutomation Parent { get; set; } = null!;
     public string Stock { get; set; }
     public DateTime? LastBuyTime { get; set; }
     public int BuyQuantity { get; set; }
     public Frequency Frequency { get; set; }
-    public AutomationType AutomationType { get; }
 
     public Dca(string stock, int buyQuantity, Frequency frequency)
     {

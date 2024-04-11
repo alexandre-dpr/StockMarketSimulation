@@ -1,17 +1,18 @@
+using System.Security.Cryptography;
+using System.Text.Json.Serialization;
 using Automation.Repository;
 using Automation.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Services
 builder.Services.AddControllers()
+    .AddJsonOptions(option => { option.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
     .AddNewtonsoftJson(
         options =>
         {
@@ -24,11 +25,10 @@ builder.Services.AddSingleton<AutomationService>();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // TODO Changer URL BDD
 builder.Services.AddDbContext<UserAutomationDbContext>(options =>
-        options.UseMySql("server=localhost;port=3308;database=your_database;uid=your_user;pwd=your_user_password;",
+        options.UseMySql("server=localhost;port=3310;database=your_database;uid=your_user;pwd=your_user_password;",
             new MySqlServerVersion(new Version(8, 3, 0))),
     ServiceLifetime.Singleton
 );
-builder.Services.BuildServiceProvider().GetService<UserAutomationDbContext>().Database.Migrate();
 
 // Read public key from file
 var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "app.pub");

@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Automation.Model;
 
 public class UserAutomation
 {
-    [Key] public string Username { get; set; }
+    [Key] [JsonIgnore] public string Username { get; set; }
     public List<Automation> Automations { get; set; }
 
     public UserAutomation(string username, List<Automation> automations)

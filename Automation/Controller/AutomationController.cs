@@ -1,6 +1,5 @@
-﻿using Automation.Model.enums;
+﻿using Automation.Dto.Request;
 using Automation.Service;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Automation.Controller;
@@ -18,28 +17,22 @@ public class AutomationController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAutomations(string username,HttpContext httpContext)
+    public IActionResult GetAutomations(string username)
     {
-        var authenticateResult =  httpContext.AuthenticateAsync().Result;
-        if (!authenticateResult.Succeeded)
-        {
-            httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            return Unauthorized();
-        }   
-        
-        return Ok(_automationService.GetAutomations(authenticateResult.Principal.Identity.Name));
+        return Ok(_automationService.GetAutomations(username));
+    }
+
+    [HttpDelete]
+    public IActionResult SupprimerAutomation(int idAutomation, string username)
+    {
+        _automationService.DeleteAutomation(idAutomation, username);
+        return NoContent();
     }
 
     [HttpPost]
-    public IActionResult PostAutomations(string username, string symbole, int quantite, Frequency frequence,HttpContext httpContext)
+    public IActionResult AjouterDca([FromBody] DcaReqDto req)
     {
-        var authenticateResult =  httpContext.AuthenticateAsync().Result;
-        if (!authenticateResult.Succeeded)
-        {
-            httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            return Unauthorized();
-        }   
-        _automationService.AjouterAutomationAsync(authenticateResult.Principal.Identity.Name, symbole, quantite, frequence);
+        _automationService.AjouterDca(req.Username, req.Symbole, req.Quantite, req.Frequence);
         return Ok();
     }
 }

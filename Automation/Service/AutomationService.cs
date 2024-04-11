@@ -1,6 +1,7 @@
 ﻿using Automation.Model;
 using Automation.Model.enums;
 using Automation.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Automation.Service;
 
@@ -13,37 +14,35 @@ public class AutomationService
         _dbContext = automationDbContext;
     }
 
-    public async Task AjouterAutomationAsync(string username, string symbole, int quantite, Frequency frequence)
+    public void AjouterDca(string username, string symbole, int quantite, Frequency frequence)
     {
-        // Rechercher l'utilisateur
-        var userAutomation = await _dbContext.UserAutomations.FindAsync(username);
+        var userAutomation = _dbContext.UserAutomations.Find(username);
 
-        // Si l'utilisateur n'existe pas, le créer
         if (userAutomation == null)
         {
             userAutomation = new UserAutomation(username);
             _dbContext.UserAutomations.Add(userAutomation);
         }
 
-        // Créer une nouvelle DCA
-        var dca = new Dca(symbole, quantite, frequence);
-
-        // Ajouter la DCA à la collection d'automations de l'utilisateur
-        userAutomation.Automations.Add(dca);
-
-        // Enregistrer les modifications
-        await _dbContext.SaveChangesAsync();
+        userAutomation.Automations.Add(new Dca(symbole, quantite, frequence));
+        _dbContext.SaveChanges();
     }
 
 
     public UserAutomation GetAutomations(string username)
     {
-        var userAutomation = _dbContext.UserAutomations.Find(username);
-        if (userAutomation != null)
-        {
-            _dbContext.Entry(userAutomation).Collection(ua => ua.Automations).Load();
-        }
+        var userAutomation = _dbContext.UserAutomations
+            .Include(ua => ua.Automations)
+            .FirstOrDefault(ua => ua.Username == username);
 
-        return userAutomation;
+        return userAutomation ?? new UserAutomation(username);
+    }
+
+    public void DeleteAutomation(int id, string username)
+    {
+        _dbContext.UserAutomations
+            .Include(ua => ua.Automations)
+            .FirstOrDefault(ua => ua.Username == username)
+            ?.Automations.RemoveAll(a => a.Id == id);
     }
 }

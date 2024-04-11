@@ -10,7 +10,7 @@ public abstract class Automation
 
     [JsonIgnore] public UserAutomation Parent { get; }
 
-    public AutomationType AutomationType { get; }
+    public AutomationType AutomationType { get; set; }
 
     public abstract void ExecuteAutomation(string username);
 
