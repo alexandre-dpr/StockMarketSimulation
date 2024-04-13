@@ -63,7 +63,8 @@ public class AutomationController : ControllerBase
         {
             return Unauthorized();
         }
-        _automationService.AjouterPriceThreshold(req.ThresholdPrice, req.TransactionType, req.ThresholdType,
+     
+        _automationService.AjouterPriceThreshold(req.Ticker, req.ThresholdPrice, req.TransactionType, req.ThresholdType,
             username);
         return Ok();
     }

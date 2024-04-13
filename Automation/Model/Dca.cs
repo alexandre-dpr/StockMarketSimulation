@@ -4,14 +4,14 @@ namespace Automation.Model;
 
 public class Dca : Automation
 {
-    public string Stock { get; set; }
+    public string Ticker { get; set; }
     public DateTime? LastBuyTime { get; set; }
     public int BuyQuantity { get; set; }
     public Frequency Frequency { get; set; }
 
-    public Dca(string stock, int buyQuantity, Frequency frequency)
+    public Dca(string ticker, int buyQuantity, Frequency frequency)
     {
-        Stock = stock;
+        Ticker = ticker;
         BuyQuantity = buyQuantity;
         Frequency = frequency;
         LastBuyTime = null;

@@ -14,15 +14,15 @@ public class AutomationService
         _dbContext = automationDbContext;
     }
 
-    public void AjouterDca(string username, string symbole, int quantite, Frequency frequence)
+    public void AjouterDca(string username, string ticker, int quantite, Frequency frequence)
     {
-        AddToAutomations(username, new Dca(symbole, quantite, frequence));
+        AddToAutomations(username, new Dca(ticker, quantite, frequence));
     }
 
-    public void AjouterPriceThreshold(double thresholdPrice, TransactionType action, ThresholdType thresholdType,
-        string username)
+    public void AjouterPriceThreshold(string ticker, double thresholdPrice, TransactionType action,
+        ThresholdType thresholdType, string username)
     {
-        AddToAutomations(username, new PriceThreshold(thresholdPrice, action, thresholdType));
+        AddToAutomations(username, new PriceThreshold(ticker, thresholdPrice, action, thresholdType));
     }
 
 
