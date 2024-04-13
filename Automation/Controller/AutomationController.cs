@@ -39,7 +39,7 @@ public class AutomationController : ControllerBase
     [HttpPost("/api/pricethreshold")]
     public IActionResult AjouterPriceThreshold([FromBody] PriceThresholdReqDto req)
     {
-        _automationService.AjouterPriceThreshold(req.ThresholdPrice, req.TransactionType, req.ThresholdType,
+        _automationService.AjouterPriceThreshold(req.Ticker, req.ThresholdPrice, req.TransactionType, req.ThresholdType,
             req.Username);
         return Ok();
     }

@@ -4,6 +4,7 @@ namespace Automation.Model;
 
 public class PriceThreshold : Automation
 {
+    public string Ticker { get; set; }
     public double ThresholdPrice { get; set; }
     public TransactionType TransactionType { get; set; }
     public ThresholdType ThresholdType { get; set; }
@@ -12,8 +13,10 @@ public class PriceThreshold : Automation
     {
     }
 
-    public PriceThreshold(double thresholdPrice, TransactionType transactionType, ThresholdType thresholdType)
+    public PriceThreshold(string ticker, double thresholdPrice, TransactionType transactionType,
+        ThresholdType thresholdType)
     {
+        Ticker = ticker;
         ThresholdPrice = thresholdPrice;
         TransactionType = transactionType;
         ThresholdType = thresholdType;

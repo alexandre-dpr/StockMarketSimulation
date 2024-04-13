@@ -9,7 +9,11 @@ public class UserAutomationDbContext : DbContext
     {
     }
 
-    public DbSet<UserAutomation> UserAutomations { get; set; }
+    protected UserAutomationDbContext()
+    {
+    }
+
+    public virtual DbSet<UserAutomation> UserAutomations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
