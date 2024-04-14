@@ -11,7 +11,6 @@ namespace Automation.Controller;
 [Authorize]
 public class AutomationController : ControllerBase
 {
-    
     private readonly AutomationService _automationService;
 
     public AutomationController(AutomationService automationService)
@@ -20,7 +19,6 @@ public class AutomationController : ControllerBase
     }
 
     [HttpGet]
-    
     public IActionResult GetAutomations()
     {
         var username = User.Claims.ElementAtOrDefault(1)?.Value;
@@ -28,6 +26,7 @@ public class AutomationController : ControllerBase
         {
             return Unauthorized();
         }
+
         return Ok(_automationService.GetAutomations(username));
     }
 
@@ -39,31 +38,33 @@ public class AutomationController : ControllerBase
         {
             return Unauthorized();
         }
+
         _automationService.DeleteAutomation(idAutomation, username);
         return NoContent();
     }
 
-    [HttpPost("/api/dca")]
+    [HttpPost("/api/automation/dca")]
     public IActionResult AjouterDca([FromBody] DcaReqDto req)
     {
         var username = User.Claims.ElementAtOrDefault(1)?.Value;
-        if (username == null || username!=req.Username)
+        if (username == null)
         {
             return Unauthorized();
         }
+
         _automationService.AjouterDca(username, req.Symbole, req.Quantite, req.Frequence);
         return Ok();
     }
 
-    [HttpPost("/api/pricethreshold")]
+    [HttpPost("/api/automation/pricethreshold")]
     public IActionResult AjouterPriceThreshold([FromBody] PriceThresholdReqDto req)
     {
         var username = User.Claims.ElementAtOrDefault(1)?.Value;
-        if (username == null || username!=req.Username)
+        if (username == null)
         {
             return Unauthorized();
         }
-     
+
         _automationService.AjouterPriceThreshold(req.Ticker, req.ThresholdPrice, req.TransactionType, req.ThresholdType,
             username);
         return Ok();
