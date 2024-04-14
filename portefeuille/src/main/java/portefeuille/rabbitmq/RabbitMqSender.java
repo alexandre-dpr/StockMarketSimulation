@@ -21,7 +21,7 @@ public class RabbitMqSender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void send(TickerInfoDto ticker){
-        rabbitTemplate.convertAndSend(exchange,routingkey, ticker);
+    public TickerInfoDto send(TickerInfoDto ticker){
+        return (TickerInfoDto) rabbitTemplate.convertSendAndReceive(exchange,routingkey, ticker);
     }
 }

@@ -28,10 +28,10 @@ public class Receiver implements RabbitListenerConfigurer {
     RabbitMqSender rabbitMqSender;
 
     @RabbitListener(queues = "${spring.rabbitmq.queue}")
-    public void receivedMessage(TickerInfo ticker) throws UnauthorizedException, IOException, NotFoundException {
+    public TickerInfo receivedMessage(TickerInfo ticker) throws UnauthorizedException, IOException, NotFoundException {
         logger.info("TickerReceived is  " + ticker);
         StockDto stock = stockService.getStock(ticker.ticker(), Range.ONE_DAY);
-        rabbitMqSender.send(new TickerInfo(ticker.uuid(), ticker.ticker(), stock.getPrice()));
+        return (new TickerInfo(ticker.ticker(), stock.getPrice()));
     }
 
     @Override

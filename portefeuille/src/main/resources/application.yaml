@@ -7,7 +7,9 @@ spring:
     username: service
     password: service
     exchange: bourse.exchange
-    queue: bourse.queue.price
+    queue:
+      price: bourse.queue.price
+      action: bourse.queue.action
     routingkey: bourse.routingkey
   cloud:
     consul:
