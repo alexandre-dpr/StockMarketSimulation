@@ -36,6 +36,7 @@ var publicKeyPem = File.ReadAllText(publicKeyPath);
 var publicKey = RSA.Create();
 publicKey.ImportFromPem(publicKeyPem);
 
+
 // Add JWT validation services
 builder.Services.AddAuthentication(options =>
     {
@@ -55,8 +56,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 var app = builder.Build();
-
 app.UseAuthentication();
+app.UseAuthorization();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -67,3 +69,5 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.UseHttpsRedirection();
 app.Run();
+
+
