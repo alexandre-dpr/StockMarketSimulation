@@ -22,6 +22,12 @@ public class DirectPriceService implements PriceService {
     @Override
     public double getPrice(String ticker) throws InterruptedException {
         String uuid = UUID.randomUUID().toString();
-        return sender.send(new TickerInfoDto(ticker, null)).price();
+        sender.send(new TickerInfoDto(uuid, ticker, null));
+        while (tickerInfoRepository.findById(uuid).isEmpty()) {
+            Thread.sleep(75);
+        }
+        double price = tickerInfoRepository.findById(uuid).get().getPrice();
+        tickerInfoRepository.deleteById(uuid);
+        return price;
     }
 }
