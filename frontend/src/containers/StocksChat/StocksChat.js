@@ -3,7 +3,7 @@ import InputLabel from "../../components/Input/InputLabel/InputLabel";
 import "./StockChat.scss";
 import like from "../../assets/img/like.svg";
 import bean from "../../assets/img/poubelle.png";
-//import edit from "../../assets/img/edit.png"
+import edit from "../../assets/img/edit.png"
 import Button from "../../components/Buttons/Button/Button";
 import {RequestCommunity} from "../../request/RequestCommunity";
 import send from "../../assets/img/send-message.png";
@@ -80,7 +80,7 @@ const StocksChat = ({stocks,username}) => {
                         <div className="card d-flex flex-column w-100 box-border" >
                             <div className="d-flex w-100 justify-between">
                                 <div className="d-flex">
-                                    <p>{item.userId}</p>
+                                    <p className={"Gabarito-Bold"}>{item.userId}</p>
                                     <p className="ml-r-1">
                                         {new Date(item.date).toLocaleDateString('fr-FR', {
                                             year: 'numeric',
@@ -93,7 +93,7 @@ const StocksChat = ({stocks,username}) => {
                                     username === item.userId ?
                                         <div className="d-flex">
                                             <div className="like pointer mr-1-r" onClick={()=>{initEditMessage(item.id,item.content)}}>
-                                                <img style={{width: 20}} src={""}/>
+                                                <img style={{width: 20}} src={edit}/>
                                             </div>
                                             <div className="like pointer" onClick={()=>{deleteAction(item.id)}}>
                                                 <img style={{width: 20}} src={bean}/>
@@ -106,7 +106,6 @@ const StocksChat = ({stocks,username}) => {
                             {
                                 isEdit && isEdit === item.id ?
                                     <div className="d-flex align-center">
-
                                         <InputLabel placeholder={item.content} type="text" id={"edit-"+item.id} onInputChange={setEditMessage}/>
                                         <Button children={"valider"} styles={"button black ml-1-r"}  handleClick={validateEdit}/>
                                     </div>
