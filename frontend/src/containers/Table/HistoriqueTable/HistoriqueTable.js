@@ -47,7 +47,7 @@ const HistoriqueTable = ({data}) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                                {data.reverse().slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                                     <TableRow key={row.ticker} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
                                         <TableCell onClick={() => handleClickTicker(row["ticker"])} className={"ticker"}
                                                    component="th" scope="row">

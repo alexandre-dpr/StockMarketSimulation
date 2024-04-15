@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import './AuthPage.scss'
 import {useTranslation} from 'react-i18next';
-import {useLocation, useNavigate, useRoutes} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import InputLabel from "../../components/Input/InputLabel/InputLabel";
 import Button from "../../components/Buttons/Button/Button";
 import route from "../../utils/routes.json";
@@ -9,7 +9,6 @@ import {RequestAuth} from "../../request/RequestAuth";
 import {Auth} from "../../utils/Auth";
 import routes from "../../utils/routes.json";
 import {jwtDecode} from "jwt-decode";
-import {RequestWallet} from "../../request/RequestWallet";
 import tradeCenter from "../../assets/img/pexels-nadi-lindsay-5320288.jpg"
 
 function AuthPage({setIsAuth}) {
@@ -120,8 +119,10 @@ function AuthPage({setIsAuth}) {
                             </div> : null
                     }
                     <div className="error mt- mb-1">{error}</div>
-                    <Button children={authType === route.register ? t('login.register') : t('login.connect')}
-                            styles={"button black"} handleClick={authType === route.register ? register : connected}/>
+                    <Button children={ authType === route.login ? t('login.connect') : t('login.register')}
+                            styles={"button black"} handleClick={authType === route.login ? connected :  register}/>
+                    <Button children={<div style={{fontSize:"0.8em"}}> {authType !== route.login ? t('login.connect') : t('login.register')}</div>}
+                            styles={"button mt-3"} handleClick={authType === route.register ? () => setAuthType(route.login) : () => setAuthType(route.register)}/>
                 </form>
             </div>
         </div>
