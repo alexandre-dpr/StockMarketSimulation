@@ -47,7 +47,13 @@ export class Auth {
     }
 
     isValidToken(){
-        return jwtDecode(this.getJwtToken()).exp * 1000 > Date.now()
+        const isValid = jwtDecode(this.getJwtToken()).exp * 1000 > Date.now()
+        if (isValid){
+            return true
+        } else {
+            localStorage.removeItem("jwt")
+            return false
+        }
     }
 
     isLoggedIn() {

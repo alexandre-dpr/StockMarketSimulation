@@ -51,8 +51,8 @@ function AuthPage({setIsAuth}) {
         try {
             const resp = await requestAuth.login(login, password);
             await auth.setJwtToken(resp.data);
-            router(routes.home);
             setIsAuth(true)
+            router(routes.home);
         } catch (e) {
             let msgError = ""
             if (e.response.status === 401) {
@@ -69,8 +69,8 @@ function AuthPage({setIsAuth}) {
             if (password === confirmPassword && password.length >= 8) {
                 const resp = await requestAuth.register(username, login, password);
                 await auth.setJwtToken(resp.data);
-                router(routes.home);
                 setIsAuth(true)
+                router(routes.home);
             } else {
                 password !== confirmPassword ? setError(t('errors.incorrectPwdConfirm')) : setError(t('errors.pwdSize'))
             }
