@@ -17,11 +17,9 @@ import jakarta.transaction.Transactional;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +33,13 @@ import java.util.*;
 @Service
 public class StockService {
 
-    @Autowired
-    private StockRepository stockRepository;
+    private final StockRepository stockRepository;
 
-    @Autowired
-    private StockTrendListRepository stockTrendListRepository;
+    private final StockTrendListRepository stockTrendListRepository;
 
-    @Autowired
-    private TickerService tickerService;
+    private final TickerService tickerService;
+
+    private final HttpClient httpClient;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -57,6 +54,13 @@ public class StockService {
 
     @Value("${api.token.alphavantage}")
     private String ALPHAVANTAGE_API_TOKEN;
+
+    public StockService(StockRepository stockRepository, StockTrendListRepository stockTrendListRepository, TickerService tickerService, HttpClient httpClient) {
+        this.stockRepository = stockRepository;
+        this.stockTrendListRepository = stockTrendListRepository;
+        this.tickerService = tickerService;
+        this.httpClient = httpClient;
+    }
 
     /**
      * Récupère l'historique de prix d'une action pour un interval donné. Si l'action n'a jamais été récupérée, récupère aussi les informations dessus.
@@ -96,7 +100,6 @@ public class StockService {
             default -> throw new IllegalArgumentException("Invalid range");
         }
 
-        HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(YAHOO_API);
 
         try {
@@ -188,6 +191,7 @@ public class StockService {
                 throw new UnauthorizedException(String.format("Failed to get stock price for ticker '%s'", ticker));
             }
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             throw new IOException(String.format("Failed to get stock price for ticker '%s'", ticker));
         }
     }
@@ -198,7 +202,6 @@ public class StockService {
     private Optional<JsonNode> getStockDescription(String ticker) throws IOException, UnauthorizedException {
         String FMI_API_URL = String.format("https://financialmodelingprep.com/api/v3/profile/%s?apikey=%s", ticker, FMI_API_TOKEN);
 
-        HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(FMI_API_URL);
 
         try {
@@ -238,7 +241,6 @@ public class StockService {
 
         String ALPHAVANTAGE_API_URL = String.format("https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=%s", ALPHAVANTAGE_API_TOKEN);
 
-        HttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(ALPHAVANTAGE_API_URL);
 
         try {
