@@ -4,14 +4,13 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import portefeuille.dto.rabbitMq.TickerInfoDto;
 
 @Service
 public class RabbitMqSender {
     @Value("${spring.rabbitmq.exchange}")
     private String exchange;
 
-    @Value("${spring.rabbitmq.routingkey}")
+    @Value("${spring.rabbitmq.routingkey.price}")
     private String routingkey;
 
     private final RabbitTemplate rabbitTemplate;
@@ -21,7 +20,7 @@ public class RabbitMqSender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void send(TickerInfoDto ticker){
-        rabbitTemplate.convertAndSend(exchange,routingkey, ticker);
+    public Double send(String ticker){
+        return (Double) rabbitTemplate.convertSendAndReceive(exchange,routingkey, ticker);
     }
 }

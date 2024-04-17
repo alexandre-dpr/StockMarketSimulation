@@ -12,12 +12,18 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMqConfig {
-    @Value("${spring.rabbitmq.queue}")
+    @Value("${spring.rabbitmq.queue.price}")
     private String queue;
+
+    @Value("${spring.rabbitmq.queue.action}")
+    private String queueAction;
     @Value("${spring.rabbitmq.exchange}")
     private String exchange;
-    @Value("${spring.rabbitmq.routingkey}")
+    @Value("${spring.rabbitmq.routingkey.price}")
     private String routingKey;
+
+    @Value("${spring.rabbitmq.routingkey.action}")
+    private String routingKeyAction;
     @Value("${spring.rabbitmq.username}")
     private String username;
     @Value("${spring.rabbitmq.password}")
@@ -31,6 +37,11 @@ public class RabbitMqConfig {
     }
 
     @Bean
+    Queue queueAction() {
+        return new Queue(queueAction, true);
+    }
+
+    @Bean
     Exchange myExchange() {
         return ExchangeBuilder.directExchange(exchange).durable(true).build();
     }
@@ -41,6 +52,15 @@ public class RabbitMqConfig {
                 .bind(queue())
                 .to(myExchange())
                 .with(routingKey)
+                .noargs();
+    }
+
+    @Bean
+    Binding bindingAction() {
+        return BindingBuilder
+                .bind(queueAction())
+                .to(myExchange())
+                .with(routingKeyAction)
                 .noargs();
     }
 
