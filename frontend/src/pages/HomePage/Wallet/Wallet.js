@@ -12,11 +12,13 @@ import Camembert from "./Camembert/Camembert";
 import CustomImage from "../../../components/CustomImage/CustomImage";
 import star_fill from "../../../assets/img/star_fill.png";
 import constants from '../../../utils/constants.json'
+import {RequestAutomation} from "../../../request/RequestAutomation";
 
 function Wallet() {
     const {t} = useTranslation();
     const [data, setData] = useState(null);
     const requestWallet = new RequestWallet();
+    const requestAutomation = new RequestAutomation();
     const auth = new Auth();
     const navigate = useNavigate();
     const [isPercent, setIsPercent] = useState();
@@ -27,6 +29,7 @@ function Wallet() {
     const [historique, setHistorique] = useState([]);
     const [switchBtn, setSwitchBtn] = useState(true);
     const [favsTickers, setFavsTickers] = useState([])
+    const [dataAutomation, setDataAutomation] = useState(null);
 
 
     useEffect(() => {
@@ -34,6 +37,7 @@ function Wallet() {
         baliseHeader.classList.remove('h-home');
         initWallet();
         initHistorique();
+        initAutomation();
     }, [])
 
     async function initWallet() {
@@ -53,6 +57,14 @@ function Wallet() {
         if(resp.data){
             setHistorique(resp.data)
         }
+    }
+
+    async function initAutomation(){
+        const resp = await requestAutomation.getAutomation();
+        if (resp.data){
+            setDataAutomation(resp.data);
+        }
+        console.log(resp.data)
     }
 
     function sleep(ms) {
