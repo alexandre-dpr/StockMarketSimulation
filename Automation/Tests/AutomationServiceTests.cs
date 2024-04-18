@@ -28,10 +28,11 @@ public class AutomationServiceTests
         const string ticker = "AAPL";
         const int quantite = 10;
         const Frequency frequence = Frequency.Weekly;
+        const TransactionType transactionType = TransactionType.Buy;
 
         _mockDbContext.Setup(x => x.UserAutomations.Find(username)).Returns((UserAutomation?)null);
 
-        _service.AjouterDca(username, ticker, quantite, frequence);
+        _service.AjouterDca(username, ticker, quantite, frequence, transactionType);
         _mockDbContext.Verify(x => x.SaveChanges(), Times.Once);
     }
 
@@ -56,7 +57,7 @@ public class AutomationServiceTests
     {
         const string username = "test";
 
-        var dca = new Dca("AAPL", 10, Frequency.Weekly);
+        var dca = new Dca("AAPL", 10, Frequency.Weekly, TransactionType.Sell);
         var userAutomation = new UserAutomation(username, [dca]);
 
         var userAutomations = new List<UserAutomation> { userAutomation }.AsQueryable();
@@ -79,7 +80,7 @@ public class AutomationServiceTests
         const string username = "test";
         const int id = 1;
 
-        var dca = new Dca("AAPL", 10, Frequency.Weekly);
+        var dca = new Dca("AAPL", 10, Frequency.Weekly, TransactionType.Sell);
         var userAutomation = new UserAutomation(username, [dca]);
 
         var userAutomations = new List<UserAutomation> { userAutomation }.AsQueryable();

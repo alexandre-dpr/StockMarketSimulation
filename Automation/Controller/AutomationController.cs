@@ -54,7 +54,7 @@ public class AutomationController : ControllerBase
             return Unauthorized();
         }
 
-        _automationService.AjouterDca(username, req.Symbole, req.Quantite, req.Frequence);
+        _automationService.AjouterDca(username, req.Symbole, req.Quantite, req.Frequence, req.TransactionType);
         return Ok();
     }
 

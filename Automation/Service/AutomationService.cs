@@ -18,9 +18,10 @@ public class AutomationService
         _rabbitMqSender = new RabbitMQSender();
     }
 
-    public void AjouterDca(string username, string ticker, int quantite, Frequency frequence)
+    public void AjouterDca(string username, string ticker, int quantite, Frequency frequence,
+        TransactionType transactionType)
     {
-        AddToAutomations(username, new Dca(ticker, quantite, frequence));
+        AddToAutomations(username, new Dca(ticker, quantite, frequence, transactionType));
     }
 
     public void AjouterPriceThreshold(string ticker, double thresholdPrice, TransactionType action,
