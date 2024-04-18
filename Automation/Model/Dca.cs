@@ -10,12 +10,14 @@ public class Dca : Automation
     public DateTime? LastBuyTime { get; set; }
     public int BuyQuantity { get; init; }
     public Frequency Frequency { get; init; }
+    public TransactionType TransactionType { get; init; }
 
-    public Dca(string ticker, int buyQuantity, Frequency frequency)
+    public Dca(string ticker, int buyQuantity, Frequency frequency, TransactionType transactionType)
     {
         Ticker = ticker;
         BuyQuantity = buyQuantity;
         Frequency = frequency;
+        TransactionType = transactionType;
         LastBuyTime = null;
         Type = AutomationType.Dca;
         DeleteAfterExecution = false;
@@ -29,7 +31,7 @@ public class Dca : Automation
     {
         if (IsReady(rabbitMqSender))
         {
-            var achat = new OrderDto(TransactionType.Buy.ToString(), username, Ticker, BuyQuantity);
+            var achat = new OrderDto(TransactionType.ToString(), username, Ticker, BuyQuantity);
             rabbitMqSender.SendOrder(achat);
             LastBuyTime = DateTime.Now;
         }
