@@ -11,10 +11,12 @@ import Select from "../../components/Select/Select";
 import InputInteger from "../../components/Input/InputInteger/InputInteger";
 import InputDecimal from "../../components/Input/InputDecimal/InputDecimal";
 import OrderValidation from "../OrderValidation/OrderValidation";
+import {RequestAutomation} from "../../request/RequestAutomation";
 
 const TransactionWidget = ({ticker, price}) => {
     const {t} = useTranslation();
     const navigate = useNavigate()
+    const requestAutomation = new RequestAutomation();
     const requestWallet = new RequestWallet();
     const [dataStock, setDataStock] = useState({})
     const [wallet, setWallet] = useState({})
@@ -44,6 +46,11 @@ const TransactionWidget = ({ticker, price}) => {
         MONTHLY: t('transactionWidget.monthly')
     }
     const [recurrence, setRecurrence] = useState(recurrences.WEEKLY);
+    const typeOrders = {
+        ABOVE: "au dessus de",
+        BELOW: "en dessous de "
+    }
+    const [typeOrder, setTypeOrder] = useState(typeOrders.ABOVE);
     const [isReadyReview, setReadyReview] = useState(false)
     const errors = {
         ERROR_BALANCE: t('transactionWidget.errors.insufficient_balance'),
@@ -132,6 +139,10 @@ const TransactionWidget = ({ticker, price}) => {
         setRecurrence(event.target.value);
     };
 
+    const handleRadioStopChange = (event) => {
+        setTypeOrder(event.target.value);
+    };
+
 
     async function transaction() {
         if (orderType === orderTypes.ORDER_MARKET) {
@@ -141,6 +152,12 @@ const TransactionWidget = ({ticker, price}) => {
                 await requestWallet.vendre(ticker, quantity);
             }
             window.location.reload()
+        }
+        else if (orderType === orderTypes.INVESTMENT_PLANNING){
+            await requestAutomation.dcaAutomation(ticker,parseFloat(quantity),recurrence=== recurrences.WEEKLY ? "Weekly" : "Monthly");
+        }
+        else if (orderType === orderTypes.ORDER_STOP){
+            await requestAutomation.pricethresholdAutomation(ticker,parseFloat(stopPrice),transactionType === transactionTypes.BUY ? "Buy" : "Sell",typeOrder === typeOrders.ABOVE ? "Above" : "Below",parseFloat(quantity));
         }
     }
 
@@ -241,7 +258,30 @@ const TransactionWidget = ({ticker, price}) => {
                             {
                                 orderType === orderTypes.ORDER_STOP &&
 
+
                                 <div className="containerInput mt-5">
+                                    <div>
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                value={typeOrders.ABOVE}
+                                                checked={typeOrder === typeOrders.ABOVE}
+                                                onChange={handleRadioStopChange}
+                                            />
+                                            Au dessus de
+                                        </label>
+                                    </div>
+                                    <div className="mt-3">
+                                        <label>
+                                            <input
+                                                type="radio"
+                                                value={typeOrders.BELOW}
+                                                checked={typeOrder === typeOrders.BELOW}
+                                                onChange={handleRadioStopChange}
+                                            />
+                                            En dessous de
+                                        </label>
+                                    </div>
                                     <InputDecimal onInputChange={handleInputStopPriceChange}
                                                   label={t('transactionWidget.stopPrice')}
                                     />

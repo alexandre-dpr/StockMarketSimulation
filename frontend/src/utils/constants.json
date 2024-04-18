@@ -8,5 +8,6 @@
   "url_api": "http://localhost:8080/api",
   "url_community" : "http://localhost:8080/api/community",
   "url_api_bourse": "http://localhost:8080/api/bourse",
-  "url_api_portefeuille": "http://localhost:8080/api/portefeuille"
+  "url_api_portefeuille": "http://localhost:8080/api/portefeuille",
+  "url_api_automation" : "http://localhost:8100/api/automation"
 }

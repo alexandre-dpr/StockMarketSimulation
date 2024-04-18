@@ -86,7 +86,7 @@
     "buyIn": "Buy in",
     "logInSentence": "Log in or register to carry out your transactions and place your orders with ease.",
     "marketOrder": "Market order",
-    "stopOrder": "Stop order",
+    "stopOrder": "Place an order",
     "investmentPlanning": "Investment planning",
     "stopPrice": "Stop price ($)",
     "indicative": "indicative",
@@ -108,8 +108,10 @@
   "about": {
     "team": "The team",
     "ourMission": "Our mission",
+    "boursePlay":"BoursePlay",
     "paragraphTeam": "We are a group of four Master 2 MIAGE students in Orléans, passionate about technological challenges and innovation. As part of our course on Information Systems Interoperability, we had the opportunity to put our knowledge and creativity to the test.",
-    "paragraphMission" : "Our project consisted of designing and developing a website using microservices architecture. To carry out this task, we chose to use Spring Boot and .NET for the microservice dedicated to order automation. Regarding the front-end, we opted for React, a choice motivated by its flexibility and its ability to create dynamic and responsive user interfaces."
+    "paragraphMission" : "Our project consisted of designing and developing a website using microservices architecture. To carry out this task, we chose to use Spring Boot and .NET for the microservice dedicated to order automation. Regarding the front-end, we opted for React. Everything is containerized with Docker.",
+    "paragraphBoursePlay": "BoursePlay is a stock market simulation website designed to offer an immersive experience in the world of finance. Users have the opportunity to manage a stock portfolio with fictitious money, which allows them to get started with the stock market without any financial risk. The site offers varied features such as buying and selling stocks, setting up recurring investment plans (Dollar Cost Averaging, or DCA) and managing stop orders to optimize trading strategies. By bringing together a very extensive catalog of stocks, BoursePlay comes as close as possible to the functionalities offered by real stock exchange platforms, thus facilitating the transition for those who plan to launch into real trading. The main objective is to allow users to familiarize themselves with the world of the stock market and understand market dynamics in a fun and educational way."
   },
   "errors": {
     "incorrectPwdConfirm": "Incorrect password confirmation.",

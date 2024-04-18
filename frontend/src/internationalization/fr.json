@@ -85,7 +85,7 @@
     "buyIn": "Prix d'achat",
     "logInSentence": "Connectez-vous ou inscrivez-vous pour réaliser vos transactions et placer vos ordres en toute simplicité.",
     "marketOrder": "Ordre au marché",
-    "stopOrder": "Ordre stop",
+    "stopOrder": "Placer un ordre",
     "investmentPlanning": "Planification d'investissement",
     "stopPrice": "Prix d'ordre stop ($)",
     "indicative": "indicatif",
@@ -107,8 +107,11 @@
   "about": {
     "team": "L'équipe",
     "ourMission": "Notre mission",
+    "boursePlay":"BoursePlay",
     "paragraphTeam": "Nous sommes un groupe de quatre étudiants en Master 2 MIAGE à Orléans, passionnés par les défis technologiques et l'innovation. Dans le cadre de notre cours sur l'Interopérabilité des Systèmes d'Information, nous avons eu l'opportunité de mettre nos connaissances et notre créativité à l'épreuve.",
-    "paragraphMission": "Notre projet consistait à concevoir et développer un site internet en utilisant une architecture en microservices. Pour réaliser cette tâche, nous avons choisi d'utiliser Spring Boot et .NET pour le microservice dédié à l'automation des ordres. Concernant le front-end, nous avons opté pour React, un choix motivé par sa flexibilité et sa capacité à créer des interfaces utilisateur dynamiques et réactives."
+    "paragraphMission": "Notre projet consistait à concevoir et développer un site internet en utilisant une architecture en microservices. Pour réaliser cette tâche, nous avons choisi d'utiliser Spring Boot et .NET pour le microservice dédié à l'automation des ordres. Concernant le front-end, nous avons opté pour React. Le tout est conteneurisé avec Docker.",
+    "paragraphBoursePlay": "BoursePlay est un site web de simulation boursière conçu pour offrir une expérience immersive dans l'univers de la finance. Les utilisateurs ont la possibilité de gérer un portefeuille d'actions avec de l'argent fictif, ce qui permet de s'initier à la bourse sans aucun risque financier. Le site propose des fonctionnalités variées telles que l'achat et la vente d'actions, la mise en place de plans d'investissement récurrents (Dollar Cost Averaging, ou DCA) et la gestion d'ordres stop pour optimiser les stratégies de trading. En rassemblant un catalogue d'actions très étendu, BoursePlay se rapproche au maximum des fonctionnalités offertes par les vraies plateformes boursières, facilitant ainsi la transition pour ceux qui envisagent de se lancer dans le trading réel. L'objectif principal est de permettre aux utilisateurs de se familiariser avec le monde de la bourse et de comprendre les dynamiques du marché de manière ludique et éducative."
+
   },
   "errors": {
     "incorrectPwdConfirm": "Confirmation du mot de passe incorrecte.",
