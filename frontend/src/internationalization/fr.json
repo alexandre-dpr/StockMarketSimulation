@@ -91,6 +91,8 @@
     "indicative": "indicatif",
     "weekly": "Hebdomadaire",
     "monthly": "Mensuel",
+    "above" : "Au dessus de",
+    "below" : "En dessous de",
     "transactionType": "Type de transaction",
     "orderType": "Type d'ordre",
     "recurrence": "Récurrence",

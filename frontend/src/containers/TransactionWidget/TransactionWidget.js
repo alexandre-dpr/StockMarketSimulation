@@ -47,8 +47,8 @@ const TransactionWidget = ({ticker, price}) => {
     }
     const [recurrence, setRecurrence] = useState(recurrences.WEEKLY);
     const typeOrders = {
-        ABOVE: "au dessus de",
-        BELOW: "en dessous de "
+        ABOVE: t('transactionWidget.above'),
+        BELOW: t('transactionWidget.below')
     }
     const [typeOrder, setTypeOrder] = useState(typeOrders.ABOVE);
     const [isReadyReview, setReadyReview] = useState(false)
@@ -87,6 +87,8 @@ const TransactionWidget = ({ticker, price}) => {
                 setReadyReview(isValidInteger(quantity) && isValidDecimal(stopPrice) && calcAmount <= wallet.solde)
             } else if (orderType === orderTypes.ORDER_MARKET) {
                 setReadyReview(isValidInteger(quantity) && calcAmount <= wallet.solde)
+            }else if (orderType === orderTypes.INVESTMENT_PLANNING) {
+                setReadyReview(isValidInteger(quantity) && calcAmount <= wallet.solde)
             }
             if (calcAmount > wallet.solde) {
                 setError(errors.ERROR_BALANCE)
@@ -97,6 +99,8 @@ const TransactionWidget = ({ticker, price}) => {
             if (orderType === orderTypes.ORDER_STOP) {
                 setReadyReview(isValidInteger(quantity) && isValidDecimal(stopPrice) && ownedQuantity >= quantity)
             } else if (orderType === orderTypes.ORDER_MARKET) {
+                setReadyReview(isValidInteger(quantity) && ownedQuantity >= quantity)
+            }else if (orderType === orderTypes.INVESTMENT_PLANNING){
                 setReadyReview(isValidInteger(quantity) && ownedQuantity >= quantity)
             }
             if (ownedQuantity < quantity) {
@@ -119,7 +123,7 @@ const TransactionWidget = ({ticker, price}) => {
 
     const handleInputQttChange = (value) => {
         setQuantity(value)
-        if (orderType === orderTypes.ORDER_MARKET) {
+        if (orderType === orderTypes.ORDER_MARKET || orderType === orderTypes.INVESTMENT_PLANNING) {
             setCalcAmount(round(value * price, 2))
         } else {
             setCalcAmount(round(value * stopPrice, 2))
@@ -139,8 +143,8 @@ const TransactionWidget = ({ticker, price}) => {
         setRecurrence(event.target.value);
     };
 
-    const handleRadioStopChange = (event) => {
-        setTypeOrder(event.target.value);
+    const handleSelectOrderChange = (event) => {
+        setTypeOrder(event);
     };
 
 
@@ -154,10 +158,14 @@ const TransactionWidget = ({ticker, price}) => {
             window.location.reload()
         }
         else if (orderType === orderTypes.INVESTMENT_PLANNING){
-            await requestAutomation.dcaAutomation(ticker,parseFloat(quantity),recurrence=== recurrences.WEEKLY ? "Weekly" : "Monthly");
+            await requestAutomation.dcaAutomation(ticker,parseFloat(quantity),recurrence=== recurrences.WEEKLY ? "Weekly" : "Monthly",transactionType === transactionTypes.BUY ? "Buy" : "Sell");
+            window.location.reload()
+
         }
         else if (orderType === orderTypes.ORDER_STOP){
             await requestAutomation.pricethresholdAutomation(ticker,parseFloat(stopPrice),transactionType === transactionTypes.BUY ? "Buy" : "Sell",typeOrder === typeOrders.ABOVE ? "Above" : "Below",parseFloat(quantity));
+            window.location.reload()
+
         }
     }
 
@@ -260,28 +268,9 @@ const TransactionWidget = ({ticker, price}) => {
 
 
                                 <div className="containerInput mt-5">
-                                    <div>
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                value={typeOrders.ABOVE}
-                                                checked={typeOrder === typeOrders.ABOVE}
-                                                onChange={handleRadioStopChange}
-                                            />
-                                            Au dessus de
-                                        </label>
-                                    </div>
-                                    <div className="mt-3">
-                                        <label>
-                                            <input
-                                                type="radio"
-                                                value={typeOrders.BELOW}
-                                                checked={typeOrder === typeOrders.BELOW}
-                                                onChange={handleRadioStopChange}
-                                            />
-                                            En dessous de
-                                        </label>
-                                    </div>
+
+                                        <Select options={Object.values(typeOrders)} onSelect={handleSelectOrderChange}/>
+
                                     <InputDecimal onInputChange={handleInputStopPriceChange}
                                                   label={t('transactionWidget.stopPrice')}
                                     />

@@ -23,12 +23,13 @@ export class RequestAutomation {
         }
     }
 
-    async dcaAutomation(symbole, quantite,frequence){
+    async dcaAutomation(symbole, quantite,frequence,transactionType){
         try {
             return await this.axios.post(constants.url_api_automation + "/dca",{
                 "symbole":symbole,
                 "quantite":quantite,
-                "frequence": frequence
+                "frequence": frequence,
+                "transactionType": transactionType
             });
         } catch (error) {
             throw error;
