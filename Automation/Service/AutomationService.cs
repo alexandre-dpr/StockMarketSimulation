@@ -1,5 +1,6 @@
 ﻿using Automation.Model;
 using Automation.Model.enums;
+using Automation.RabbitMq.SenderReceiver;
 using Automation.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,12 @@ public class AutomationService
 {
     private readonly UserAutomationDbContext _dbContext;
 
+    private readonly RabbitMQSender _rabbitMqSender;
+
     public AutomationService(UserAutomationDbContext automationDbContext)
     {
         _dbContext = automationDbContext;
+        _rabbitMqSender = new RabbitMQSender();
     }
 
     public void AjouterDca(string username, string ticker, int quantite, Frequency frequence)
@@ -20,9 +24,9 @@ public class AutomationService
     }
 
     public void AjouterPriceThreshold(string ticker, double thresholdPrice, TransactionType action,
-        ThresholdType thresholdType, string username)
+        ThresholdType thresholdType, int quantity, string username)
     {
-        AddToAutomations(username, new PriceThreshold(ticker, thresholdPrice, action, thresholdType));
+        AddToAutomations(username, new PriceThreshold(ticker, thresholdPrice, action, thresholdType, quantity));
     }
 
 
@@ -54,6 +58,23 @@ public class AutomationService
         }
 
         userAutomation.Automations.Add(automation);
+        _dbContext.SaveChanges();
+    }
+
+    public void ExecuteAutomations()
+    {
+        _dbContext.UserAutomations
+            .Include(ua => ua.Automations)
+            .ToList()
+            .ForEach(userAutomation => userAutomation.Automations
+                .ForEach(automation =>
+                {
+                    automation.Execute(_rabbitMqSender, userAutomation.Username);
+                    if (automation.DeleteAfterExecution)
+                    {
+                        DeleteAutomation(automation.Id, userAutomation.Username);
+                    }
+                }));
         _dbContext.SaveChanges();
     }
 }

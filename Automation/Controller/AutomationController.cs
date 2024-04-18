@@ -66,7 +66,7 @@ public class AutomationController : ControllerBase
         }
 
         _automationService.AjouterPriceThreshold(req.Ticker, req.ThresholdPrice, req.TransactionType, req.ThresholdType,
-            username);
+            req.Quantity, username);
         return Ok();
     }
 }

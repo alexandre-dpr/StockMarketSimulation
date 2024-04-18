@@ -1,13 +1,15 @@
 ﻿using Automation.Model.enums;
+using Automation.RabbitMq.DTOs;
+using Automation.RabbitMq.SenderReceiver;
 
 namespace Automation.Model;
 
 public class Dca : Automation
 {
-    public string Ticker { get; set; }
+    public string Ticker { get; init; }
     public DateTime? LastBuyTime { get; set; }
-    public int BuyQuantity { get; set; }
-    public Frequency Frequency { get; set; }
+    public int BuyQuantity { get; init; }
+    public Frequency Frequency { get; init; }
 
     public Dca(string ticker, int buyQuantity, Frequency frequency)
     {
@@ -15,23 +17,25 @@ public class Dca : Automation
         BuyQuantity = buyQuantity;
         Frequency = frequency;
         LastBuyTime = null;
-        AutomationType = AutomationType.Dca;
+        Type = AutomationType.Dca;
+        DeleteAfterExecution = false;
     }
 
     public Dca()
     {
     }
 
-    public override void ExecuteAutomation(string username)
+    public override void Execute(RabbitMQSender rabbitMqSender, string username)
     {
-        if (IsAutomationReady())
+        if (IsReady(rabbitMqSender))
         {
-            // Appeler rabbitMq pour acheter x actions pour le user
-            // Mettre à jour le last buy time
+            var achat = new OrderDto(TransactionType.Buy.ToString(), username, Ticker, BuyQuantity);
+            rabbitMqSender.SendOrder(achat);
+            LastBuyTime = DateTime.Now;
         }
     }
 
-    public override bool IsAutomationReady()
+    public override bool IsReady(RabbitMQSender _)
     {
         if (LastBuyTime == null) return true;
         var now = DateTime.Now;

@@ -1,37 +1,57 @@
 ﻿using Automation.Model.enums;
+using Automation.RabbitMq.DTOs;
+using Automation.RabbitMq.SenderReceiver;
 
 namespace Automation.Model;
 
 public class PriceThreshold : Automation
 {
-    public string Ticker { get; set; }
-    public double ThresholdPrice { get; set; }
-    public TransactionType TransactionType { get; set; }
-    public ThresholdType ThresholdType { get; set; }
+    public string Ticker { get; init; }
+    public int Quantity { get; init; }
+    public double ThresholdPrice { get; init; }
+    public TransactionType TransactionType { get; init; }
+    public ThresholdType ThresholdType { get; init; }
 
     public PriceThreshold()
     {
     }
 
     public PriceThreshold(string ticker, double thresholdPrice, TransactionType transactionType,
-        ThresholdType thresholdType)
+        ThresholdType thresholdType, int quantity)
     {
         Ticker = ticker;
         ThresholdPrice = thresholdPrice;
         TransactionType = transactionType;
         ThresholdType = thresholdType;
-        AutomationType = AutomationType.PriceThreshold;
+        Quantity = quantity;
+        Type = AutomationType.PriceThreshold;
+        DeleteAfterExecution = true;
     }
 
-    public override void ExecuteAutomation(string username)
+    public override void Execute(RabbitMQSender rabbitMqSender, string username)
     {
-        // TODO
-        throw new NotImplementedException();
+        if (IsReady(rabbitMqSender))
+        {
+            var order = new OrderDto(TransactionType.ToString(), username, Ticker, Quantity);
+            rabbitMqSender.SendOrder(order);
+        }
     }
 
-    public override bool IsAutomationReady()
+    public override bool IsReady(RabbitMQSender rabbitMqSender)
     {
-        // TODO
-        throw new NotImplementedException();
+        // TODO Compléter Dto
+        switch (ThresholdType)
+        {
+            case ThresholdType.Above:
+                return double.Parse(rabbitMqSender.SendMessageToQueue2AndGetResponse(new TickerInfoDto())) >
+                       ThresholdPrice;
+
+            case ThresholdType.Below:
+                return double.Parse(rabbitMqSender.SendMessageToQueue2AndGetResponse(new TickerInfoDto())) <
+                       ThresholdPrice;
+
+            default:
+                return false;
+        }
     }
 }

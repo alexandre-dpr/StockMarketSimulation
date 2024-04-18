@@ -1,10 +1,9 @@
-﻿using Automation.RabbitMq.DTOs;
+﻿using System.Text;
+using Automation.RabbitMq.DTOs;
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace Automation.RabbitMq.SenderReceiver;
-using System;
-using RabbitMQ.Client;
-using System.Text;
 
 public class RabbitMQSender
 {
@@ -16,7 +15,8 @@ public class RabbitMQSender
         _factory = new ConnectionFactory();
         _factory.UserName = "service";
         _factory.Password = "service";
-        var endpoints = new System.Collections.Generic.List<AmqpTcpEndpoint> {
+        var endpoints = new System.Collections.Generic.List<AmqpTcpEndpoint>
+        {
             new AmqpTcpEndpoint("hostname"),
             new AmqpTcpEndpoint("localhost")
         };
@@ -28,18 +28,18 @@ public class RabbitMQSender
         using (var channel = _connection.CreateModel())
         {
             channel.QueueDeclare(queue: "bourse.queue.action",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
             string message = Newtonsoft.Json.JsonConvert.SerializeObject(order);
             var body = Encoding.UTF8.GetBytes(message);
 
             channel.BasicPublish(exchange: "bourse.exchange",
-                                 routingKey: "bourse.routingkey",
-                                 basicProperties: null,
-                                 body: body);
+                routingKey: "bourse.routingkey",
+                basicProperties: null,
+                body: body);
 
             Console.WriteLine("Sent Order to Queue1: {0}", message);
         }
@@ -50,10 +50,10 @@ public class RabbitMQSender
         using (var channel = _connection.CreateModel())
         {
             channel.QueueDeclare(queue: "bourse.queue.price",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+                durable: false,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null);
 
             var replyQueueName = channel.QueueDeclare().QueueName;
             var props = channel.CreateBasicProperties();
@@ -63,9 +63,9 @@ public class RabbitMQSender
             var body = Encoding.UTF8.GetBytes(message);
 
             channel.BasicPublish(exchange: "bourse.exchange",
-                                 routingKey: "bourse.routingkey",
-                                 basicProperties: props,
-                                 body: body);
+                routingKey: "bourse.routingkey",
+                basicProperties: props,
+                body: body);
 
             var consumer = new EventingBasicConsumer(channel);
             string response = null;
@@ -75,8 +75,8 @@ public class RabbitMQSender
                 response = Encoding.UTF8.GetString(body);
             };
             channel.BasicConsume(queue: replyQueueName,
-                                 autoAck: true,
-                                 consumer: consumer);
+                autoAck: true,
+                consumer: consumer);
 
             return response;
         }

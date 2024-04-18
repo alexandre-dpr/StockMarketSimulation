@@ -43,10 +43,11 @@ public class AutomationServiceTests
         const TransactionType action = TransactionType.Buy;
         const ThresholdType thresholdType = ThresholdType.Above;
         const string username = "test";
+        const int quantity = 3;
 
         _mockDbContext.Setup(x => x.UserAutomations.Find(username)).Returns((UserAutomation?)null);
 
-        _service.AjouterPriceThreshold(ticker, thresholdPrice, action, thresholdType, username);
+        _service.AjouterPriceThreshold(ticker, thresholdPrice, action, thresholdType, quantity, username);
         _mockDbContext.Verify(x => x.SaveChanges(), Times.Once);
     }
 

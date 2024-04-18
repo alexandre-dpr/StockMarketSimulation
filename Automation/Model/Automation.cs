@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Automation.Model.enums;
+using Automation.RabbitMq.SenderReceiver;
 using Newtonsoft.Json;
 
 namespace Automation.Model;
@@ -10,9 +11,11 @@ public abstract class Automation
 
     [JsonIgnore] public UserAutomation Parent { get; }
 
-    public AutomationType AutomationType { get; set; }
+    public AutomationType Type { get; set; }
 
-    public abstract void ExecuteAutomation(string username);
+    public bool DeleteAfterExecution { get; set; }
 
-    public abstract Boolean IsAutomationReady();
+    public abstract void Execute(RabbitMQSender rabbitMqSender, string username);
+
+    public abstract bool IsReady(RabbitMQSender rabbitMqSender);
 }

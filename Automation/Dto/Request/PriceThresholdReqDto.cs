@@ -6,5 +6,6 @@ public record PriceThresholdReqDto(
     string Ticker,
     double ThresholdPrice,
     TransactionType TransactionType,
-    ThresholdType ThresholdType
+    ThresholdType ThresholdType,
+    int Quantity
 );
