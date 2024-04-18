@@ -1,6 +1,7 @@
 ﻿using Automation.Dto.Request;
 using Automation.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Automation.Controller;
@@ -8,6 +9,7 @@ namespace Automation.Controller;
 [ApiController]
 [Route("/api/[controller]")]
 [Produces("application/json")]
+[EnableCors("LocalhostPolicy")]
 [Authorize]
 public class AutomationController : ControllerBase
 {

@@ -58,6 +58,16 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("LocalhostPolicy",
+        corsBuilder =>
+        {
+            corsBuilder.WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 // Read public key from file
 var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "app.pub");
@@ -87,6 +97,7 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("LocalhostPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
