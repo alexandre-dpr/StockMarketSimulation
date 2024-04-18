@@ -95,9 +95,9 @@ builder.Services.AddAuthentication(options =>
     });
 
 var app = builder.Build();
+app.UseCors("LocalhostPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("LocalhostPolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
