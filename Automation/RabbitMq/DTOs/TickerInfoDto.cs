@@ -1,6 +1,3 @@
 ﻿namespace Automation.RabbitMq.DTOs;
 
-public class TickerInfoDto
-{
-    
-}
+public record TickerInfoDto(String ticker);

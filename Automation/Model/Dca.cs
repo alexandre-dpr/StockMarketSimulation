@@ -27,7 +27,7 @@ public class Dca : Automation
     {
     }
 
-    public override void Execute(RabbitMQSender rabbitMqSender, string username)
+    public override void Execute(RabbitMqSender rabbitMqSender, string username)
     {
         if (IsReady(rabbitMqSender))
         {
@@ -37,7 +37,7 @@ public class Dca : Automation
         }
     }
 
-    public override bool IsReady(RabbitMQSender _)
+    public override bool IsReady(RabbitMqSender _)
     {
         if (LastBuyTime == null) return true;
         var now = DateTime.Now;

@@ -28,7 +28,7 @@ public class PriceThreshold : Automation
         DeleteAfterExecution = true;
     }
 
-    public override void Execute(RabbitMQSender rabbitMqSender, string username)
+    public override void Execute(RabbitMqSender rabbitMqSender, string username)
     {
         if (IsReady(rabbitMqSender))
         {
@@ -37,17 +37,17 @@ public class PriceThreshold : Automation
         }
     }
 
-    public override bool IsReady(RabbitMQSender rabbitMqSender)
+    public override bool IsReady(RabbitMqSender rabbitMqSender)
     {
         // TODO Compléter Dto
         switch (ThresholdType)
         {
             case ThresholdType.Above:
-                return double.Parse(rabbitMqSender.SendMessageToQueue2AndGetResponse(new TickerInfoDto())) >
+                return rabbitMqSender.getPrice(new TickerInfoDto(Ticker)) >
                        ThresholdPrice;
 
             case ThresholdType.Below:
-                return double.Parse(rabbitMqSender.SendMessageToQueue2AndGetResponse(new TickerInfoDto())) <
+                return rabbitMqSender.getPrice(new TickerInfoDto(Ticker)) <
                        ThresholdPrice;
 
             default:

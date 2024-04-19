@@ -10,12 +10,12 @@ public class AutomationService
 {
     private readonly UserAutomationDbContext _dbContext;
 
-    private readonly RabbitMQSender _rabbitMqSender;
+    private readonly RabbitMqSender _rabbitMqSender;
 
     public AutomationService(UserAutomationDbContext automationDbContext)
     {
         _dbContext = automationDbContext;
-        _rabbitMqSender = new RabbitMQSender();
+        _rabbitMqSender = new RabbitMqSender();
     }
 
     public void AjouterDca(string username, string ticker, int quantite, Frequency frequence,

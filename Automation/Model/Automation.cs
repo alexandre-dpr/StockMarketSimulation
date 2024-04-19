@@ -15,7 +15,7 @@ public abstract class Automation
 
     public bool DeleteAfterExecution { get; set; }
 
-    public abstract void Execute(RabbitMQSender rabbitMqSender, string username);
+    public abstract void Execute(RabbitMqSender rabbitMqSender, string username);
 
-    public abstract bool IsReady(RabbitMQSender rabbitMqSender);
+    public abstract bool IsReady(RabbitMqSender rabbitMqSender);
 }
