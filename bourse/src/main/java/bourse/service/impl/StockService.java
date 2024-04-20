@@ -1,4 +1,4 @@
-package bourse.service;
+package bourse.service.impl;
 
 import bourse.dto.StockDto;
 import bourse.dto.StockTrendDto;
@@ -11,6 +11,8 @@ import bourse.modele.StockTrendList;
 import bourse.modele.Ticker;
 import bourse.repository.StockRepository;
 import bourse.repository.StockTrendListRepository;
+import bourse.service.IStockService;
+import bourse.service.ITickerService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -31,13 +33,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
-public class StockService {
+public class StockService implements IStockService {
 
     private final StockRepository stockRepository;
 
     private final StockTrendListRepository stockTrendListRepository;
 
-    private final TickerService tickerService;
+    private final ITickerService tickerService;
 
     private final HttpClient httpClient;
 
@@ -55,7 +57,16 @@ public class StockService {
     @Value("${api.token.alphavantage}")
     private String ALPHAVANTAGE_API_TOKEN;
 
-    public StockService(StockRepository stockRepository, StockTrendListRepository stockTrendListRepository, TickerService tickerService, HttpClient httpClient) {
+    @Value("${api.url.yahoo}")
+    private String YAHOO_API_URL;
+
+    @Value("${api.url.fmi}")
+    private String FMI_API_URL;
+
+    @Value("${api.url.alphavantage}")
+    private String ALPHAVANTAGE_API_URL;
+
+    public StockService(StockRepository stockRepository, StockTrendListRepository stockTrendListRepository, ITickerService tickerService, HttpClient httpClient) {
         this.stockRepository = stockRepository;
         this.stockTrendListRepository = stockTrendListRepository;
         this.tickerService = tickerService;
@@ -69,6 +80,7 @@ public class StockService {
      * @param range  1d, 1y
      * @return StockDto
      */
+    @Override
     public StockDto getStock(String ticker, Range range) throws IOException, UnauthorizedException, NotFoundException {
         // On vérifie si on n'a pas déjà fetch les infos très récemment
         Optional<Stock> optStock = getSavedStock(ticker);
@@ -92,7 +104,7 @@ public class StockService {
             }
         }
 
-        String YAHOO_API = "https://query1.finance.yahoo.com/v8/finance/chart/%s?region=US&lang=en-US&includePrePost=false&interval=%s&useYfid=true&range=%s&corsDomain=finance.yahoo.com&.tsrc=finance";
+        String YAHOO_API = YAHOO_API_URL;
 
         switch (range) {
             case ONE_DAY -> YAHOO_API = String.format(YAHOO_API, ticker, "2m", range.label);
@@ -200,9 +212,9 @@ public class StockService {
      * Appelle l'API FMI pour récupérer les informations sur l'action
      */
     private Optional<JsonNode> getStockDescription(String ticker) throws IOException, UnauthorizedException {
-        String FMI_API_URL = String.format("https://financialmodelingprep.com/api/v3/profile/%s?apikey=%s", ticker, FMI_API_TOKEN);
+        String FMI_API = String.format(FMI_API_URL, ticker, FMI_API_TOKEN);
 
-        HttpGet httpGet = new HttpGet(FMI_API_URL);
+        HttpGet httpGet = new HttpGet(FMI_API);
 
         try {
             logger.info(String.format("Calling FMI API for ticker %s", ticker));
@@ -228,6 +240,7 @@ public class StockService {
     /**
      * Appelle l'API ALPHAVANTAGE pour récupérer les actions en tendance.
      */
+    @Override
     public StockTrendListDto getTrends() throws UnauthorizedException, IOException {
         Optional<StockTrendList> optStockTrendList = stockTrendListRepository.findAll().stream().findFirst();
         if (optStockTrendList.isPresent()) {
@@ -239,9 +252,9 @@ public class StockService {
             }
         }
 
-        String ALPHAVANTAGE_API_URL = String.format("https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=%s", ALPHAVANTAGE_API_TOKEN);
+        String ALPHAVANTAGE_API = String.format(ALPHAVANTAGE_API_URL, ALPHAVANTAGE_API_TOKEN);
 
-        HttpGet httpGet = new HttpGet(ALPHAVANTAGE_API_URL);
+        HttpGet httpGet = new HttpGet(ALPHAVANTAGE_API);
 
         try {
             logger.debug("Calling ALPHAVANTAGE API");
@@ -322,6 +335,7 @@ public class StockService {
      *
      * @param stock Action à sauvegarder
      */
+    @Override
     @Transactional
     public void saveStock(Stock stock) {
         stockRepository.save(stock);
@@ -333,6 +347,7 @@ public class StockService {
      *
      * @param stockTrendList trend
      */
+    @Override
     @Transactional
     public void saveStockTrendList(StockTrendList stockTrendList) {
         stockTrendListRepository.deleteAll();

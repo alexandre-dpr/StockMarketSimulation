@@ -1,7 +1,8 @@
-package bourse.service;
+package bourse.service.impl;
 
 import bourse.modele.Ticker;
 import bourse.repository.TickerRepository;
+import bourse.service.ITickerService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class TickerService {
+public class TickerService implements ITickerService {
 
     @Autowired
     TickerRepository tickerRepository;
 
+    @Override
     public Page<Ticker> findTickerByName(String name, int page) {
         if (page >= 1) {
             Pageable pageable = PageRequest.of(page - 1, 50);
@@ -26,10 +28,12 @@ public class TickerService {
         }
     }
 
+    @Override
     public Optional<Ticker> getTickerOpt(String ticker) {
         return tickerRepository.findById(ticker);
     }
 
+    @Override
     public Page<Ticker> getStocksList(int page) {
         if (page >= 1) {
             Pageable pageable = PageRequest.of(page - 1, 50);
@@ -39,6 +43,7 @@ public class TickerService {
         }
     }
 
+    @Override
     @Transactional
     public void saveTicker(Ticker ticker) {
         tickerRepository.save(ticker);

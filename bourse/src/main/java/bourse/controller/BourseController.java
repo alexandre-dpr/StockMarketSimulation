@@ -6,8 +6,8 @@ import bourse.enums.Range;
 import bourse.exceptions.NotFoundException;
 import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Ticker;
-import bourse.service.StockService;
-import bourse.service.TickerService;
+import bourse.service.IStockService;
+import bourse.service.ITickerService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +22,10 @@ import java.io.IOException;
 public class BourseController {
 
     @Autowired
-    StockService stockService;
+    IStockService stockService;
 
     @Autowired
-    TickerService tickerService;
+    ITickerService tickerService;
 
     @GetMapping("/stock/{ticker}")
     public ResponseEntity<StockDto> getStock(@PathVariable @NotBlank String ticker, @RequestParam @NotNull Range range) throws IOException, UnauthorizedException, NotFoundException {

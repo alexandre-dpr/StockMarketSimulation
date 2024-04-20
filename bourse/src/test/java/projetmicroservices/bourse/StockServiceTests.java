@@ -7,8 +7,8 @@ import bourse.exceptions.UnauthorizedException;
 import bourse.modele.Stock;
 import bourse.modele.Ticker;
 import bourse.repository.StockRepository;
-import bourse.service.StockService;
-import bourse.service.TickerService;
+import bourse.service.impl.StockService;
+import bourse.service.impl.TickerService;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
@@ -48,9 +48,15 @@ class StockServiceTests {
 
     @BeforeEach
     void setUp() throws NoSuchFieldException, IllegalAccessException {
-        Field field = StockService.class.getDeclaredField("STOCKS_FETCH_INTERVAL");
-        field.setAccessible(true);
-        field.set(stockService, 1);
+        Field stocksFetchInterval = StockService.class.getDeclaredField("STOCKS_FETCH_INTERVAL");
+        stocksFetchInterval.setAccessible(true);
+        stocksFetchInterval.set(stockService, 1);
+        Field yahooApi = StockService.class.getDeclaredField("YAHOO_API_URL");
+        yahooApi.setAccessible(true);
+        yahooApi.set(stockService, "YAHOO_API_URL");
+        Field fmiApi = StockService.class.getDeclaredField("FMI_API_URL");
+        fmiApi.setAccessible(true);
+        fmiApi.set(stockService, "FMI_API_URL");
     }
 
     @Test
@@ -171,7 +177,7 @@ class StockServiceTests {
 
         Mockito.when(httpClient.execute(Mockito.any(HttpGet.class))).thenAnswer(invocation -> {
             HttpGet httpGet = invocation.getArgument(0);
-            if (httpGet.getURI().toString().startsWith("https://query1.finance.yahoo.com")) {
+            if (httpGet.getURI().toString().startsWith("YAHOO_API_URL")) {
                 return mockResponseYahoo;
             } else {
                 return mockResponseFMI;
