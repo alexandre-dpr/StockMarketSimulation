@@ -21,13 +21,18 @@ public class AutomationService
     public void AjouterDca(string username, string ticker, int quantite, Frequency frequence,
         TransactionType transactionType)
     {
-        AddToAutomations(username, new Dca(ticker, quantite, frequence, transactionType));
+        var automation = AddToAutomations(username, new Dca(ticker, quantite, frequence, transactionType));
+        ExecuteAutomation(automation, username);
+        _dbContext.SaveChanges();
     }
 
     public void AjouterPriceThreshold(string ticker, double thresholdPrice, TransactionType action,
         ThresholdType thresholdType, int quantity, string username)
     {
-        AddToAutomations(username, new PriceThreshold(ticker, thresholdPrice, action, thresholdType, quantity));
+        var automation = AddToAutomations(username,
+            new PriceThreshold(ticker, thresholdPrice, action, thresholdType, quantity));
+        ExecuteAutomation(automation, username);
+        _dbContext.SaveChanges();
     }
 
 
@@ -48,7 +53,7 @@ public class AutomationService
             ?.Automations.RemoveAll(a => a.Id == id);
     }
 
-    private void AddToAutomations(string username, Model.Automation automation)
+    private Model.Automation AddToAutomations(string username, Model.Automation automation)
     {
         var userAutomation = _dbContext.UserAutomations.Find(username);
 
@@ -60,22 +65,26 @@ public class AutomationService
 
         userAutomation.Automations.Add(automation);
         _dbContext.SaveChanges();
+
+        return automation;
     }
 
-    public void ExecuteAutomations()
+    private void ExecuteAutomations(object? state)
     {
         _dbContext.UserAutomations
             .Include(ua => ua.Automations)
             .ToList()
             .ForEach(userAutomation => userAutomation.Automations
-                .ForEach(automation =>
-                {
-                    automation.Execute(_rabbitMqSender, userAutomation.Username);
-                    if (automation.DeleteAfterExecution)
-                    {
-                        DeleteAutomation(automation.Id, userAutomation.Username);
-                    }
-                }));
+                .ForEach(automation => { ExecuteAutomation(automation, userAutomation.Username); }));
         _dbContext.SaveChanges();
+    }
+
+    private void ExecuteAutomation(Model.Automation automation, string username)
+    {
+        bool isExecuted = automation.Execute(_rabbitMqSender, username);
+        if (isExecuted && automation.DeleteAfterExecution)
+        {
+            DeleteAutomation(automation.Id, username);
+        }
     }
 }
