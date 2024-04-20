@@ -69,13 +69,22 @@ public class AutomationService
         return automation;
     }
 
-    private void ExecuteAutomations(object? state)
+    public void ExecuteAutomations(object? state)
     {
-        _dbContext.UserAutomations
+        var userAutomations = _dbContext.UserAutomations
             .Include(ua => ua.Automations)
-            .ToList()
-            .ForEach(userAutomation => userAutomation.Automations
-                .ForEach(automation => { ExecuteAutomation(automation, userAutomation.Username); }));
+            .ToList();
+
+        for (int i = 0; i < userAutomations.Count; i++)
+        {
+            var userAutomation = userAutomations[i];
+            for (int j = 0; j < userAutomation.Automations.Count; j++)
+            {
+                var automation = userAutomation.Automations[j];
+                ExecuteAutomation(automation, userAutomation.Username);
+            }
+        }
+
         _dbContext.SaveChanges();
     }
 
