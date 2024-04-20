@@ -1,4 +1,4 @@
-package auth.service.exceptions;
+package auth.exceptions;
 
 public class ExistingUserException extends Exception {
     public ExistingUserException(String s) {

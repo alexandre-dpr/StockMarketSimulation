@@ -1,9 +1,10 @@
-package auth.service;
+package auth.service.impl;
 
+import auth.exceptions.BadLoginException;
+import auth.exceptions.ExistingUserException;
 import auth.modele.User;
 import auth.repository.UserRepository;
-import auth.service.exceptions.BadLoginException;
-import auth.service.exceptions.ExistingUserException;
+import auth.service.IUserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +15,7 @@ import java.util.function.Function;
 
 
 @Service("UserService")
-public class UserService {
+public class UserService implements IUserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -25,6 +26,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Override
     @Transactional
     public String register(String email, String username, String password) throws ExistingUserException {
         Optional<User> user = userRepository.findByEmailOrUsername(email, username);
@@ -40,6 +42,7 @@ public class UserService {
         return generateToken.apply(addedUser);
     }
 
+    @Override
     public String login(String login, String password) throws BadLoginException {
         Optional<User> user = userRepository.findByEmailOrUsername(login, login);
         if (user.isEmpty()) {
