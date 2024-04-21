@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using Automation.Repository;
@@ -28,7 +29,7 @@ builder.Services.AddHostedService<ScheduledTaskService>();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // TODO Changer URL BDD
 builder.Services.AddDbContext<UserAutomationDbContext>(options =>
-        options.UseMySql("server=localhost;port=3310;database=your_database;uid=your_user;pwd=your_user_password;",
+        options.UseMySql("server=mysql_database_automation;port=3306;database=your_database;uid=your_user;pwd=your_user_password;",
             new MySqlServerVersion(new Version(8, 3, 0))),
     ServiceLifetime.Singleton
 );
@@ -71,8 +72,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Read public key from file
-var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "app.pub");
+var assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+var directoryPath = Path.GetDirectoryName(assemblyPath);
+var publicKeyPath = Path.Combine(directoryPath, "app.pub");
 var publicKeyPem = File.ReadAllText(publicKeyPath);
 var publicKey = RSA.Create();
 publicKey.ImportFromPem(publicKeyPem);
@@ -96,7 +98,9 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-var consulClient = new ConsulClient();
+var consulClient = new ConsulClient(opt => {
+    opt.Address = new Uri("http://"+Environment.GetEnvironmentVariable("CONSUL_ADDRESS")+":8500");
+});
 
 // Register service with Consul
 var registration = new AgentServiceRegistration()
@@ -107,7 +111,7 @@ var registration = new AgentServiceRegistration()
     Port = 8100,
     Check = new AgentServiceCheck()
     {
-        HTTP = "http://localhost:8100/actuator/health", // Health check endpoint
+        HTTP = "http://"+Dns.GetHostName()+":8080/actuator/health", // Health check endpoint
         Interval = TimeSpan.FromSeconds(10) // Check every 10 seconds
     }
 };

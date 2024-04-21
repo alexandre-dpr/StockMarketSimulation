@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Automation.Controller;
 
 [ApiController]
-[Route("/api/[controller]")]
+[Route("/[controller]")]
 [Produces("application/json")]
 [EnableCors("LocalhostPolicy")]
 [Authorize]
@@ -28,7 +28,6 @@ public class AutomationController : ControllerBase
         {
             return Unauthorized();
         }
-
         return Ok(_automationService.GetAutomations(username));
     }
 
@@ -45,7 +44,7 @@ public class AutomationController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("/api/automation/dca")]
+    [HttpPost("/automation/dca")]
     public IActionResult AjouterDca([FromBody] DcaReqDto req)
     {
         var username = User.Claims.ElementAtOrDefault(1)?.Value;
@@ -58,7 +57,7 @@ public class AutomationController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("/api/automation/pricethreshold")]
+    [HttpPost("/automation/pricethreshold")]
     public IActionResult AjouterPriceThreshold([FromBody] PriceThresholdReqDto req)
     {
         var username = User.Claims.ElementAtOrDefault(1)?.Value;

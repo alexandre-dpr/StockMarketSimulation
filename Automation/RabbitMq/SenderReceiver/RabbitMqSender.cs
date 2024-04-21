@@ -14,14 +14,20 @@ public class RabbitMqSender
 
     public RabbitMqSender()
     {
+        String rabbit = Environment.GetEnvironmentVariable("RABBITMQ");
+        Console.WriteLine("RabbitMQ: " + rabbit);
         _factory = new ConnectionFactory();
-        _factory.UserName = "service";
-        _factory.Password = "service";
-        var endpoints = new System.Collections.Generic.List<AmqpTcpEndpoint> {
-            new AmqpTcpEndpoint("hostname"),
-            new AmqpTcpEndpoint("localhost")
-        };
-        _connection = _factory.CreateConnection(endpoints);
+                _factory.UserName = "service";
+                _factory.Password = "service";
+                _factory.Port = 5672;
+                _factory.VirtualHost = "/";
+                _factory.HostName = "rabbitmq";
+                var endpoints = new System.Collections.Generic.List<AmqpTcpEndpoint> {
+                    new AmqpTcpEndpoint(rabbit),
+                    new AmqpTcpEndpoint("hostname"),
+                    new AmqpTcpEndpoint("localhost")
+                };
+                _connection = _factory.CreateConnection(endpoints);
     }
 
     public void SendOrder(OrderDto order)

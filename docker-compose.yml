@@ -117,6 +117,8 @@ services:
       MYSQL_SHELL_VERSION: 8.3.0-1.el8
     volumes:
       - /var/lib/mysql
+      - ./automation.sql:/docker-entrypoint-initdb.d/automation.sql
+
     ports:
       - "3310:3306"
     restart: "no"
@@ -191,6 +193,26 @@ services:
       - service-auth
       - mysql_database_portefeuille
       - rabbitmq
+
+  service-automation:
+    build:
+      context: ./Automation
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - "8100:8080"
+    environment:
+      - RABBITMQ=rabbitmq
+      - CONSUL_ADDRESS=discovery
+    networks:
+      - my_network
+    depends_on:
+        - discovery
+        - mysql_database_automation
+        - service-auth
+        - rabbitmq
+        - service-bourse
+        - service-portefeuille
   gateway:
     build:
       context: ./gateway

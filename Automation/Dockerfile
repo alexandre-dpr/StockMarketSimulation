@@ -1,23 +1,19 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 as base
 WORKDIR /app
-EXPOSE 8100
-EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
 WORKDIR /src
-COPY ["Automation/Automation.csproj", "Automation/"]
-RUN dotnet restore "Automation/Automation.csproj"
+COPY ./Automation.csproj ./
+RUN dotnet restore ./Automation.csproj
 COPY . .
-WORKDIR "/src/Automation"
-RUN dotnet build "Automation.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Automation.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet build . -c Release -o /app
+
+FROM build as publish
+RUN dotnet publish . -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Automation.dll"]
+COPY --from=publish /app .
+COPY app.pub ./
+CMD dotnet Automation.dll
