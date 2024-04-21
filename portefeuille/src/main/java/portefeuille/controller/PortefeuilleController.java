@@ -2,7 +2,6 @@ package portefeuille.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,18 +13,18 @@ import portefeuille.dto.PortefeuilleDto;
 import portefeuille.dto.StockPerformanceDto;
 import portefeuille.dto.request.TransactionActionReqDto;
 import portefeuille.exceptions.*;
-import portefeuille.service.PortefeuilleService;
-import portefeuille.service.RankService;
+import portefeuille.service.IPortefeuilleService;
+import portefeuille.service.IRankService;
 
 @RestController
 @RequestMapping("/portefeuille")
 public class PortefeuilleController {
 
     @Autowired
-    private PortefeuilleService portefeuilleService;
+    private IPortefeuilleService portefeuilleService;
 
     @Autowired
-    private RankService rankService;
+    private IRankService rankService;
 
     @GetMapping
     public ResponseEntity<PortefeuilleDto> getPortefeuille(Authentication authentication) throws InterruptedException, WalletAlreadyCreatedException {

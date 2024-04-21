@@ -1,14 +1,14 @@
-package portefeuille.service;
+package portefeuille.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import portefeuille.service.interfaces.PriceService;
+import portefeuille.service.IPriceService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class CachedPriceService implements PriceService {
+public class CachedPriceService implements IPriceService {
 
     @Autowired
     private DirectPriceService directPriceService;

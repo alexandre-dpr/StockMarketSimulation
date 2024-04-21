@@ -1,4 +1,4 @@
-package portefeuille.service;
+package portefeuille.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,25 +11,28 @@ import portefeuille.dto.PortefeuilleDto;
 import portefeuille.modele.Portefeuille;
 import portefeuille.modele.Rank;
 import portefeuille.repository.RankRepository;
+import portefeuille.service.IPortefeuilleService;
+import portefeuille.service.IRankService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RankService {
+public class RankService implements IRankService {
 
     @Autowired
     private RankRepository rankRepository;
 
     @Autowired
-    private PortefeuilleService portefeuilleService;
+    private IPortefeuilleService portefeuilleService;
 
     @Autowired
     private CachedPriceService cachedPriceService;
 
-    public record Pair(Portefeuille pf, PortefeuilleDto dto) {
+    private record Pair(Portefeuille pf, PortefeuilleDto dto) {
     }
 
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void calculateRanks() throws InterruptedException {
         List<Portefeuille> pfList = portefeuilleService.getAllPortefeuilles();
@@ -58,6 +61,7 @@ public class RankService {
         cachedPriceService.clearCache();
     }
 
+    @Override
     public Rank getDefaultRank() {
         return Rank.builder()
                 .rank(rankRepository.getDefaultRank())
@@ -69,13 +73,14 @@ public class RankService {
     /**
      * Retourne les 15 premiers du leaderboard et l'utilisateur (au cas où il est hors des 15 premiers)
      */
+    @Override
     public LeaderboardDto getLeaderboard(String username) {
         List<LeaderboardUserDto> leaderboard = rankRepository.getLeaderboard().stream()
                 .limit(15)
                 .sorted((u1, u2) -> Double.compare(u2.getTotalValue(), u1.getTotalValue()))
                 .toList();
-        if("".equals(username)){
-            return new LeaderboardDto(leaderboard, new LeaderboardUserDto(-1l,"no user sent","-999",-99990.99));
+        if ("".equals(username)) {
+            return new LeaderboardDto(leaderboard, new LeaderboardUserDto(-1L, "no user sent", "-999", -99990.99));
         }
         LeaderboardUserDto user = rankRepository.getLeaderboardPosition(username);
         return new LeaderboardDto(leaderboard, user);

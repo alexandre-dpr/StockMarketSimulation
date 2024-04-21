@@ -1,4 +1,4 @@
-package portefeuille.service;
+package portefeuille.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,29 +14,31 @@ import portefeuille.modele.PerformanceHistory;
 import portefeuille.modele.Portefeuille;
 import portefeuille.repository.MouvementRepository;
 import portefeuille.repository.PortefeuilleRepository;
-import portefeuille.service.interfaces.PriceService;
+import portefeuille.service.IPerformanceHistoryService;
+import portefeuille.service.IPortefeuilleService;
+import portefeuille.service.IPriceService;
+import portefeuille.service.IRankService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("SpringTransactionalMethodCallsInspection")
 @Service
-public class PortefeuilleService {
+public class PortefeuilleService implements IPortefeuilleService {
 
     private final PortefeuilleRepository portefeuilleRepository;
 
     private final MouvementRepository mouvementRepository;
 
-    private final PerformanceHistoryService performanceHistoryService;
+    private final IPerformanceHistoryService performanceHistoryService;
 
     private final DirectPriceService directPriceService;
 
-    private final RankService rankService;
+    private final IRankService rankService;
 
     @Autowired
-    public PortefeuilleService(PortefeuilleRepository portefeuilleRepository, MouvementRepository mouvementRepository, PerformanceHistoryService performanceHistoryService, DirectPriceService directPriceService, @Lazy RankService rankService) {
+    public PortefeuilleService(PortefeuilleRepository portefeuilleRepository, MouvementRepository mouvementRepository, IPerformanceHistoryService performanceHistoryService, DirectPriceService directPriceService, @Lazy IRankService rankService) {
         this.portefeuilleRepository = portefeuilleRepository;
         this.mouvementRepository = mouvementRepository;
         this.performanceHistoryService = performanceHistoryService;
@@ -44,6 +46,7 @@ public class PortefeuilleService {
         this.rankService = rankService;
     }
 
+    @Override
     @Transactional
     public PortefeuilleDto creerPortefeuille(String username) throws WalletAlreadyCreatedException {
         Optional<Portefeuille> optPortefeuille = portefeuilleRepository.getPortefeuille(username);
@@ -70,6 +73,7 @@ public class PortefeuilleService {
      * @return PortefeuilleDto
      * @throws InterruptedException Si la connexion est perdue avec le service en charge de la récupération du prix
      */
+    @Override
     public PortefeuilleDto getPortefeuilleDto(String username) throws InterruptedException, WalletAlreadyCreatedException {
         Optional<Portefeuille> portefeuilleOptional = portefeuilleRepository.getPortefeuille(username);
         if (portefeuilleOptional.isPresent()) {
@@ -87,7 +91,8 @@ public class PortefeuilleService {
      * @return PortefeuilleDto
      * @throws InterruptedException Si la connexion est perdue avec le service en charge de la récupération du prix
      */
-    public PortefeuilleDto getPortefeuilleDto(Portefeuille p, PriceService priceService) throws InterruptedException {
+    @Override
+    public PortefeuilleDto getPortefeuilleDto(Portefeuille p, IPriceService priceService) throws InterruptedException {
         double totalAchats = 0;
         double totalCourant = 0;
         List<StockPerformanceDto> performanceActions = new ArrayList<>();
@@ -116,7 +121,8 @@ public class PortefeuilleService {
         return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory, p.getRank().getRank(), favoriteStockDto);
     }
 
-    public StockPerformanceDto getStockPerformance(Mouvement action, PriceService priceService) throws InterruptedException {
+    @Override
+    public StockPerformanceDto getStockPerformance(Mouvement action, IPriceService priceService) throws InterruptedException {
         double prixAchat = action.getQuantity() * action.getPrice();
         double currentPrice = priceService.getPrice(action.getTicker());
         double prixActuel = action.getQuantity() * currentPrice;
@@ -124,6 +130,7 @@ public class PortefeuilleService {
         return new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
     }
 
+    @Override
     public StockPerformanceDto getStockPerformance(String ticker, String username) throws InterruptedException, NotFoundException {
         Mouvement mouvement = portefeuilleRepository.getStockForUser(ticker, username);
         if (mouvement == null) {
@@ -132,6 +139,7 @@ public class PortefeuilleService {
         return getStockPerformance(mouvement, directPriceService);
     }
 
+    @Override
     public HistoryDto getHistorique(String username) throws NotFoundException {
         Optional<Portefeuille> p = portefeuilleRepository.getHistorique(username);
         if (p.isPresent()) {
@@ -141,6 +149,7 @@ public class PortefeuilleService {
         }
     }
 
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void acheterAction(String username, String ticker, int quantity) throws NotFoundException, InsufficientFundsException, InterruptedException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
@@ -183,6 +192,7 @@ public class PortefeuilleService {
         }
     }
 
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void vendreAction(String username, String ticker, int quantity) throws NotFoundException, NotEnoughStocksException, InterruptedException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
@@ -228,6 +238,7 @@ public class PortefeuilleService {
         }
     }
 
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void ajouterFavori(String ticker, String username) throws TooManyFavorites {
         if (portefeuilleRepository.getNbFavoris(username) < Constants.MAX_FAVORITE_STOCKS) {
@@ -241,6 +252,7 @@ public class PortefeuilleService {
         }
     }
 
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void supprimerFavori(String ticker, String username) {
         Portefeuille p = portefeuilleRepository.getPortefeuille(username).orElseThrow();
@@ -248,10 +260,12 @@ public class PortefeuilleService {
         portefeuilleRepository.save(p);
     }
 
+    @Override
     public List<Portefeuille> getAllPortefeuilles() {
         return portefeuilleRepository.findAll();
     }
 
+    @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public void savePortefeuille(Portefeuille p) {
         portefeuilleRepository.save(p);

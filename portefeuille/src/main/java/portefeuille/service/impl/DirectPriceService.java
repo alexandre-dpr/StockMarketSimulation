@@ -1,17 +1,14 @@
-package portefeuille.service;
+package portefeuille.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import portefeuille.dto.rabbitMq.TickerInfoDto;
 import portefeuille.rabbitmq.RabbitMqSender;
 import portefeuille.repository.TickerInfoRepository;
-import portefeuille.service.interfaces.PriceService;
-
-import java.util.UUID;
+import portefeuille.service.IPriceService;
 
 
 @Service
-public class DirectPriceService implements PriceService {
+public class DirectPriceService implements IPriceService {
 
     @Autowired
     TickerInfoRepository tickerInfoRepository;
@@ -20,7 +17,7 @@ public class DirectPriceService implements PriceService {
     RabbitMqSender sender;
 
     @Override
-    public double getPrice(String ticker) throws InterruptedException {
+    public double getPrice(String ticker) {
         return sender.send(ticker);
     }
 }

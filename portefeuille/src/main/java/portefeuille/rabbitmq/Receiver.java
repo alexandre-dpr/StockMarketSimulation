@@ -12,7 +12,7 @@ import portefeuille.exceptions.InsufficientFundsException;
 import portefeuille.exceptions.NotEnoughStocksException;
 import portefeuille.exceptions.NotFoundException;
 import portefeuille.repository.TickerInfoRepository;
-import portefeuille.service.PortefeuilleService;
+import portefeuille.service.IPortefeuilleService;
 
 @Component
 public class Receiver implements RabbitListenerConfigurer {
@@ -22,7 +22,7 @@ public class Receiver implements RabbitListenerConfigurer {
     TickerInfoRepository repository;
 
     @Autowired
-    PortefeuilleService portefeuilleService;
+    IPortefeuilleService portefeuilleService;
 
 
     @RabbitListener(queues = "${spring.rabbitmq.queue.action}")

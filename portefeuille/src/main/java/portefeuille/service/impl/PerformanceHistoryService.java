@@ -1,4 +1,4 @@
-package portefeuille.service;
+package portefeuille.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,16 +7,18 @@ import portefeuille.config.Constants;
 import portefeuille.dto.PerformanceDto;
 import portefeuille.modele.PerformanceHistory;
 import portefeuille.repository.PerformanceHistoryRepository;
+import portefeuille.service.IPerformanceHistoryService;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PerformanceHistoryService {
+public class PerformanceHistoryService implements IPerformanceHistoryService {
 
     @Autowired
     PerformanceHistoryRepository performanceHistoryRepository;
 
+    @Override
     @Transactional
     public void savePerformance(PerformanceDto performanceDto, String username) {
         if (!performanceHistoryRepository.isPerformanceSavedSinceDate(LocalDateTime.now().minusHours(Constants.HISTORY_SAVE_INTERVAL), username)) {
@@ -25,6 +27,7 @@ public class PerformanceHistoryService {
         }
     }
 
+    @Override
     public List<PerformanceHistory> getPerformanceHistory(String username) {
         return performanceHistoryRepository.findPerformanceHistoryByUsername(username);
     }
