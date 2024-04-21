@@ -117,8 +117,14 @@ public class PortefeuilleService implements IPortefeuilleService {
                     )
             );
         }
+        Long rank;
+        if (p.getRank() != null) {
+            rank = p.getRank().getRank();
+        } else {
+            rank = rankService.getDefaultRank().getRank();
+        }
 
-        return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory, p.getRank().getRank(), favoriteStockDto);
+        return PortefeuilleDto.createPortefeuilleDto(p.getSolde(), performanceActions, perf, p.getSolde() + totalCourant, performanceHistory, rank, favoriteStockDto);
     }
 
     @Override
@@ -151,7 +157,7 @@ public class PortefeuilleService implements IPortefeuilleService {
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void acheterAction(String username, String ticker, int quantity) throws NotFoundException, InsufficientFundsException, InterruptedException {
+    public void acheterAction(String username, String ticker, int quantity) throws NotFoundException, InsufficientFundsException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
         if (p.isPresent()) {
             Portefeuille portefeuille = p.get();
@@ -194,7 +200,7 @@ public class PortefeuilleService implements IPortefeuilleService {
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public void vendreAction(String username, String ticker, int quantity) throws NotFoundException, NotEnoughStocksException, InterruptedException {
+    public void vendreAction(String username, String ticker, int quantity) throws NotFoundException, NotEnoughStocksException {
         Optional<Portefeuille> p = portefeuilleRepository.getPortefeuille(username);
 
         if (p.isPresent()) {

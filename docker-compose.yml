@@ -209,5 +209,16 @@ services:
       - service-bourse
       - service-community
       - service-portefeuille
+
+  service-front:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    networks:
+      - my_network
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
 networks:
   my_network:

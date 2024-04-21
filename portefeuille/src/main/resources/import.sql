@@ -1,11 +1,5 @@
-insert into your_database.portefeuille_rank (id, percentage, rank_number, wallet_value)
-values (2, '0.00%', 1, 10000);
-
-insert into your_database.portefeuille_rank_seq (sequence_name, next_val)
-values ('portefeuille_rank', 2);
-
 insert into your_database.portefeuille (username, solde, rank_id)
-values ('Alex', 6526.349999999999, 2);
+values ('Alex', 6526.349999999999, null);
 
 insert into your_database.mouvement (mouvement_id, price, quantity, ticker, time, type, portefeuille_username)
 values (1, 399.12, 6, 'MSFT', '2024-04-21 10:25:22.010472', 0, null),

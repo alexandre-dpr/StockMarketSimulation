@@ -42,5 +42,5 @@ api:
     fmi: https://financialmodelingprep.com/api/v3/profile/%s?apikey=%s
     alphavantage: https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=%s
   token:
-    fmi: <TOKEN_API_FMI> # https://site.financialmodelingprep.com/developer --> Compte gratuit
-    alphavantage: <TOKEN_API_ALPHAVANTAGE> # https://www.alphavantage.co/support/#api-key --> Compte gratuit
+    fmi: gkDwRC2LAu8vm1z65aPqbAoyQGrhEKue # https://site.financialmodelingprep.com/developer --> Compte gratuit
+    alphavantage: O40DV9XZIXZFMJVK # https://www.alphavantage.co/support/#api-key --> Compte gratuit
