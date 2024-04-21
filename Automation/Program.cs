@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using System.Text.Json.Serialization;
 using Automation.Repository;
 using Automation.Service;
+using Consul;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -95,6 +96,30 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+var consulClient = new ConsulClient();
+
+// Register service with Consul
+var registration = new AgentServiceRegistration()
+{
+    ID = "service-automation-8100",
+    Name = "service-automation",
+    Address = "localhost",
+    Port = 8100,
+    Check = new AgentServiceCheck()
+    {
+        HTTP = "http://localhost:8100/actuator/health", // Health check endpoint
+        Interval = TimeSpan.FromSeconds(10) // Check every 10 seconds
+    }
+};
+consulClient.Agent.ServiceRegister(registration);
+
+// Register shutdown hook to deregister service from Consul
+AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) =>
+{
+    consulClient.Agent.ServiceDeregister("service-automation-8100").Wait();
+};
+
+
 var app = builder.Build();
 app.UseCors("LocalhostPolicy");
 app.UseAuthentication();
@@ -108,5 +133,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.MapGet("/actuator/health", () =>
+    {
+        
+        return "\"status\": \"UP\"";
+    })
+    .WithName("GetStatus")
+    .WithOpenApi();
 app.UseHttpsRedirection();
 app.Run();
