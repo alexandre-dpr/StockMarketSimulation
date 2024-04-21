@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: service-portefeuille
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: service
+    password: service
+    exchange: bourse.exchange
+    queue:
+      price: bourse.queue.price
+      action: bourse.queue.action
+    routingkey:
+      price: bourse.routingkey.price
+      action: bourse.routingkey.action
+  cloud:
+    consul:
+      discovery:
+        register: true
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+  datasource:
+    url: jdbc:mysql://mysql_database_portefeuille:3306/your_database # TODO Changer pour la bonne base
+    username: your_user
+    password: your_user_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+jwt:
+  public.key: classpath:app.pub
+server:
+  port: 8085

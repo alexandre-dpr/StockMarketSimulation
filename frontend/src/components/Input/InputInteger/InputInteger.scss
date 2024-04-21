@@ -1,0 +1,7 @@
+.input-container {
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -11px;
+  }
+}
+

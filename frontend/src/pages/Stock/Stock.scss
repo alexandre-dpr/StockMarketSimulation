@@ -1,0 +1,108 @@
+@import '../../index.scss';
+
+.pageStock {
+  background-color: $primary-color;
+  padding-inline: 4vw;
+  padding-block: 4vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding-bottom: 5vh;
+  border-radius: 15px;
+
+  .ticker {
+    color: #b4b4b4;
+  }
+
+  .stockInfos {
+    padding-inline: 5%;
+  }
+
+  .stockDescription {
+    text-align: justify;
+  }
+
+  .containerLineChart {
+    height: 500px;
+  }
+
+  .boxRange {
+    cursor: pointer;
+    padding-block: 5px;
+    width: 60px;
+    background-color: #dedede;
+    text-align: center;
+    border-radius: 10px;
+
+  }
+
+  .focus {
+    background-color: #b4b4b4;
+
+  }
+
+  .marketCap {
+    .label {
+      font-family: Gabarito-Bold;
+    }
+  }
+
+}
+
+.containerWidget {
+  @include respond-to('phone') {
+    width: 100%;
+    margin-top: 3%;
+  }
+  @include respond-to('small-tablet') {
+    width: 100%;
+    margin-top: 3%;
+
+  }
+  @include respond-to('tablet') {
+    width: 100%;
+    margin-top: 3%;
+  }
+  @include respond-to('desktop') {
+    width: 30%;
+    margin-top: 3%;
+    margin-left: 5%;
+  }
+  @include respond-to('large-desktop') {
+    width: 30%;
+    margin-top: 3%;
+    margin-left: 5%;
+  }
+}
+
+
+.containerSections {
+  @include respond-to('phone') {
+    flex-direction: column;
+  }
+  @include respond-to('small-tablet') {
+    flex-direction: column;
+  }
+  @include respond-to('tablet') {
+    flex-direction: column;
+  }
+}
+
+
+.containerStockGraph {
+  @include respond-to('phone') {
+    width: 100%;
+  }
+  @include respond-to('small-tablet') {
+    width: 100%;
+  }
+  @include respond-to('tablet') {
+    width: 100%;
+  }
+  @include respond-to('desktop') {
+    width: 70%;
+
+  }
+  @include respond-to('large-desktop') {
+    width: 70%;
+
+  }
+}

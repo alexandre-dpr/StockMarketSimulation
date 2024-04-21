@@ -1,0 +1,38 @@
+server:
+  port: 8081
+security:
+  basic:
+    enabled: false
+  ignored: /**
+spring:
+  application:
+    name: service-auth
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+    consul:
+      discovery:
+        register: true
+      host: ${CONSUL_HOST:lol}
+      port: ${CONSUL_PORT:8500}
+      ribbon:
+        enabled: false
+
+  datasource:
+    url: jdbc:mysql://mysql_database_auth:3306/your_database
+    username: your_user
+    password: your_user_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+
+
+jwt:
+  private.key: classpath:app.key
+  public.key: classpath:app.pub
+

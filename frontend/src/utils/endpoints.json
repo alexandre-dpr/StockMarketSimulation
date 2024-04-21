@@ -1,0 +1,12 @@
+{
+  "stocksList": "/market",
+  "tickerAutocomplete": "/tickerAutocomplete",
+  "trends": "/trends",
+  "stock": "/stock",
+  "achat": "/achat",
+  "vente": "/vente",
+  "favori" : "/favori",
+  "leaderboard": "/leaderboard",
+  "historique": "/historique"
+
+}

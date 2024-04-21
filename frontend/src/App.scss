@@ -1,0 +1,59 @@
+@import './index.scss';
+
+
+.containerPage {
+    padding-block: 110px;
+    padding-inline: 10vw;
+    @include respond-to('phone') {
+        padding-top: 30px;
+        padding-inline: 0;
+    }
+
+    @include respond-to('small-tablet') {
+        padding-top: 20px;
+        padding-inline: 0;
+    }
+}
+
+.error{
+    color: red;
+    font-size: 0.9em;
+}
+
+
+.blur{
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+.paper{
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.09);
+    border-radius: 30px;
+    background:white;
+}
+
+
+h1 {
+    font-family: Gabarito-Bold;
+
+    @include respond-to('phone') {
+        font-size: 25px;
+    }
+
+
+    @include respond-to('tablet') {
+        font-size: 28px;
+    }
+
+    @include respond-to('desktop') {
+
+        font-size: 30px;
+
+    }
+
+    @include respond-to('large-desktop') {
+        font-size: 33px;
+
+    }
+}
+

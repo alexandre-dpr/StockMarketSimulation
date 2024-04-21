@@ -1,0 +1,52 @@
+@import '../../../index.scss';
+
+
+.button {
+    cursor: pointer;
+    padding: 8px 0px;
+    font-size: 20px;
+    @include respond-to('phone') {
+        font-size: 13px;
+        width: 100px;
+    }
+
+    @include respond-to('tablet') {
+        font-size: 16px;
+        width: 150px;
+    }
+
+    @include respond-to('desktop') {
+        font-size: 20px;
+        width: 180px;
+    }
+
+    @include respond-to('large-desktop') {
+        font-size: 23px;
+        width: 210px;
+    }
+
+}
+
+.containerButton {
+    div {
+        text-align: center;
+        border-radius: 5px;
+        font-family: Gabarito;
+    }
+}
+
+.black {
+    color: white;
+    background-color: black;
+}
+
+.black:hover {
+    background-color: rgb(22, 22, 22);
+}
+
+.notValid {
+    background-color:black;
+    color: white;
+    opacity: 0.3;
+    cursor: default!important;
+}

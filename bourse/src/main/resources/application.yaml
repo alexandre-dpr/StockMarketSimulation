@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: service-bourse
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: service
+    password: service
+    exchange: bourse.exchange
+    queue:
+      price: bourse.queue.price
+    routingkey:
+      price: bourse.routingkey.price
+  cloud:
+    consul:
+      discovery:
+        register: true
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      ribbon:
+        enabled: false
+  datasource:
+    url: jdbc:mysql://mysql_database_bourse:3306/your_database # TODO Changer pour la bonne base
+    username: your_user
+    password: your_user_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+jwt:
+  public.key: classpath:app.pub
+server:
+  port: 8083
+fetch:
+  interval:
+    stocks: 1 # en minutes
+    trends: 2 # en heures
+api:
+  url:
+    yahoo: https://query1.finance.yahoo.com/v8/finance/chart/%s?region=US&lang=en-US&includePrePost=false&interval=%s&useYfid=true&range=%s&corsDomain=finance.yahoo.com&.tsrc=finance
+    fmi: https://financialmodelingprep.com/api/v3/profile/%s?apikey=%s
+    alphavantage: https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=%s
+  token:
+    fmi: gkDwRC2LAu8vm1z65aPqbAoyQGrhEKue # https://site.financialmodelingprep.com/developer --> Compte gratuit
+    alphavantage: O40DV9XZIXZFMJVK # https://www.alphavantage.co/support/#api-key --> Compte gratuit

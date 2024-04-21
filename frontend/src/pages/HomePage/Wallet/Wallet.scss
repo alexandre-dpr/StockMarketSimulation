@@ -1,0 +1,97 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.actions-items {
+  display: grid;
+  grid-template-columns: 15% 1fr minmax(15%, auto); /* Utilisation de minmax() */
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  margin-block: 5px;
+}
+.containerWalletName h1, .containerWalletName h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  flex-grow: 1;
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  p {
+    margin-block: 2px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+.cards{
+    background-color: white;
+    padding: 4vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    height: 100%;
+    max-height: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.rightSide{
+  max-height: 700px;
+  overflow-y: scroll;
+  width: 35%;
+  margin-left: 5%;
+}
+
+@media (max-width: 768px) {
+  .rightSide{
+    max-height: 700px;
+    overflow-y: scroll;
+    margin: 0;
+  }
+  .cards{
+    max-height: unset;
+    padding: 10px;
+    height: unset;
+    max-height: unset;
+  }
+  .wallet-resp{
+    height: min-content !important;
+    max-height: 14rem !important;
+  }
+}
+
+
+.container-graph{
+  padding: 0 10px;
+  width: 100%;
+}
+
+.switch-container{
+  display: flex;
+  padding: 5px;
+  border: none;
+  border-radius: 20px;
+  background-color: #efefef;
+}
+.switch-btn{
+  padding: 10px ;
+  border-radius: 20px;
+  cursor: pointer;
+  p{
+    margin: 0;
+  }
+}
+.switch-btn.active{
+  background-color: black;
+  color: white;
+}
+

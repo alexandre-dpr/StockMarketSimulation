@@ -1,0 +1,41 @@
+@import '../../index.scss';
+
+.containerPage {
+  /*background: rgb(255,99,132);
+  background: radial-gradient(circle, rgba(255,99,132,0.5) 0%, rgba(54,162,235,0.2) 100%);*/
+
+  .headerMarket {
+    align-items: center;
+    display: flex;
+    @include respond-to('phone') {
+      display: block;
+    }
+  }
+
+
+  .pageMarket {
+    background-color: $primary-color;
+    padding-inline: 4vw;
+    padding-block: 4vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+
+
+    .trends{
+
+      @include respond-to('phone') {
+        display: none;
+      }
+      .containerTrends {
+        justify-content: space-around;
+        margin-bottom: 40px;
+      }
+
+      .boxTrends {
+        width: 45%;
+      }
+    }
+  }
+
+}
+

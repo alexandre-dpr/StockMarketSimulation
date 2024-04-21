@@ -1,0 +1,28 @@
+.card{
+  width: 100%;
+  padding: 4vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  box-sizing: border-box;
+  background-color: white;
+  p{
+
+  margin-block: 5px;
+  }
+}
+.like{
+  padding: 5px;
+  border-radius: 40px;
+
+}
+.like:hover{
+  background-color: lightgrey;
+}
+
+.isLike{
+  background-color: cornflowerblue;
+}
+
+.isLike:hover{
+  background-color: lightgrey;
+}

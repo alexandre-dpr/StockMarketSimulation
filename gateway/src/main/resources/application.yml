@@ -1,0 +1,72 @@
+server:
+  port: 8080
+security:
+  basic:
+    enabled: false
+  ignored: /**
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      discovery:
+        register: true
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      ribbon:
+        enabled: false
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - PATCH
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+
+      routes:
+        - id: service-auth
+          uri: lb://service-auth
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/auth(?<segment>/?.*), /auth$\{segment}
+            - PreserveHostHeader=true
+        - id: community
+          uri: lb://service-community
+          predicates:
+            - Path=/api/community/**
+          filters:
+            - RewritePath=/api/community(?<segment>/?.*), /community$\{segment}
+            - PreserveHostHeader
+        - id: bourse
+          uri: lb://service-bourse
+          predicates:
+            - Path=/api/bourse/**
+          filters:
+            - RewritePath=/api/bourse(?<segment>/?.*), /bourse$\{segment}
+            - PreserveHostHeader=true
+        - id: portefeuille
+          uri: lb://service-portefeuille
+          predicates:
+            - Path=/api/portefeuille/**
+          filters:
+            - RewritePath=/api/portefeuille(?<segment>/?.*), /portefeuille$\{segment}
+            - PreserveHostHeader=true
+        - id: automation
+          uri: lb://service-automation
+          predicates:
+            - Path=/api/automation/**
+          filters:
+            - RewritePath=/api/automation(?<segment>/?.*), /automation$\{segment}
+            - PreserveHostHeader=true

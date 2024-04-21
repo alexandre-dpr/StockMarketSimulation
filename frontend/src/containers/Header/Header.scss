@@ -1,0 +1,184 @@
+@import '../../index.scss';
+
+.header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  z-index: 10;
+  background-color: white;
+  height: 36px;
+  box-shadow: 0px 4px 4px -2px rgba(0, 0, 0, 0.1);
+
+}
+
+.h-home {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.buttonsLogin {
+  display: flex;
+  justify-content: right;
+  padding-right: 2%;
+
+  .button {
+
+    @include respond-to('phone') {
+      font-size: 12px;
+    }
+
+    @include respond-to('tablet') {
+      font-size: 13px;
+
+    }
+
+    @include respond-to('desktop') {
+      font-size: 17px;
+
+    }
+
+    @include respond-to('large-desktop') {
+      font-size: 20px;
+
+    }
+  }
+}
+#containt-nav{
+  @include respond-to('small-tablet') {
+    display: none;
+  }
+  @include respond-to('phone') {
+    display: none;
+  }
+}
+.burger-rotate{
+  transform: rotate(90deg);
+}
+
+#hamburger-nav{
+  margin-left: auto;
+  margin-right: 5px;
+  display: none;
+  @include respond-to('small-tablet') {
+    display: block;
+  }
+  @include respond-to('phone') {
+    display: block;
+  }
+}
+
+.container-nav-resp{
+  z-index: 10;
+  margin-top: 40px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  position: fixed;
+  background-color: white;
+  width: 100%;
+  padding-block: 15px;
+  box-shadow: 0px 4px 4px -2px rgba(0, 0, 0, 0.2);
+  @include respond-to('small-tablet') {
+    display: flex;
+  }
+  @include respond-to('phone') {
+    display: flex;
+  }
+}
+#containt-rigth{
+  @include respond-to('small-tablet') {
+    display: none;
+  }
+  @include respond-to('phone') {
+    display: none;
+  }
+}
+
+#hamburger-nav{
+  @include respond-to('small-tablet') {
+    display: block;
+  }
+  @include respond-to('phone') {
+    display: block;
+  }
+}
+.containerNavBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-family: Gabarito;
+  @include respond-to('tablet') {
+    font-size: 15px;
+  }
+
+  @include respond-to('desktop') {
+    font-size: 17px;
+  }
+
+  @include respond-to('large-desktop') {
+    font-size: 19px;
+  }
+}
+
+.logoApp {
+  font-family: Gabarito-Bold;
+  display: flex;
+  margin-left: 2%;
+  cursor: pointer;
+  width: fit-content;
+
+  .containerLogo {
+    margin-left: 10px;
+  }
+
+  .logo {
+    @include respond-to('phone') {
+      width: 35px;
+      height: 35px;
+    }
+
+    @include respond-to('tablet') {
+      width: 28px;
+      height: 28px;
+    }
+
+    @include respond-to('desktop') {
+      padding-top: 2px;
+      width: 31px;
+      height: 31px;
+
+    }
+
+    @include respond-to('large-desktop') {
+      padding-top: 4px;
+      width: 35px;
+      height: 35px;
+    }
+
+  }
+
+  .logoBourse,
+  .logoPlay {
+
+    @include respond-to('phone') {
+      display: none;
+    }
+
+    @include respond-to('tablet') {
+      font-size: 28px;
+    }
+
+    @include respond-to('desktop') {
+      font-size: 30px;
+    }
+
+    @include respond-to('large-desktop') {
+      font-size: 35px;
+    }
+
+  }
+
+}

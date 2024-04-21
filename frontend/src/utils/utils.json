@@ -1,0 +1,61 @@
+{
+  "market_table": [
+    {
+      "label": "logo"
+    },
+    {
+      "label": "ticker"
+    },
+    {
+      "label": "name"
+    },
+    {
+      "label": "exchange"
+    },
+    {
+      "label": "category"
+    },
+    {
+      "label": "country"
+    }
+  ],
+  "gainers": [
+    {
+      "label": "logo"
+    },
+    {
+      "label": "ticker"
+    },
+    {
+      "label": "name"
+    },
+    {
+      "label": "price"
+    },
+    {
+      "label": "currency"
+    },
+    {
+      "label": "change"
+    },
+    {
+      "label": "changePercentage"
+    },
+    {
+      "label": "changeAmount"
+    },
+    {
+      "label": "volume"
+    }
+  ],
+  "rowsPerPage": 50,
+  "plus": "+",
+  "minus": "-",
+  "rangeHistoryStock": {
+    "ONE_DAY": ["ONE_DAY","1d"],
+    "ONE_YEAR": ["ONE_YEAR","1y"]
+  },
+  "interaction": {
+    "LIKE": "LIKE"
+  }
+}

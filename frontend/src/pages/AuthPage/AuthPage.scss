@@ -1,0 +1,32 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.image-container {
+  flex: 1;
+}
+
+.form-container {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+
+}
+
+.leftSideAuth{
+  overflow:hidden;
+  max-width: 40%;
+  .imageBg{
+    transform:translateY(3%);
+    height: 100vh;
+  }
+}

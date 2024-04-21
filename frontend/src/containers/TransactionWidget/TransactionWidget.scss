@@ -1,0 +1,72 @@
+@import '../../index.scss';
+
+.buyCell, .sellCell {
+  cursor: pointer;
+  height: 40px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerTransactionWidget {
+  position: relative;
+  border-bottom: 2px solid transparent;
+}
+
+.indicator {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 50%;
+  height: 2px;
+  background-color: black;
+  transition: transform 0.3s ease;
+}
+
+.containerTransactionWidget::-webkit-scrollbar {
+  display: none;
+}
+
+
+.containerTransactionWidget {
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  .containerInput {
+    .input-container {
+      width: 100%;
+    }
+  }
+
+  .inputOrderStop {
+    margin-top: 40px
+  }
+
+  select {
+    width: 100%;
+    border: none;
+    font-size: 1em;
+    padding-block: 10px;
+    border-bottom: 2px solid black;
+    font-family: Gabarito;
+  }
+
+  .thresholdDef {
+    margin-top: 50px;
+    color: gray;
+    font-style: italic;
+  }
+
+  .orderLoop {
+    border-bottom: 1px solid grey;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+}
+
+.logInSentence {
+  cursor: pointer;
+}
+

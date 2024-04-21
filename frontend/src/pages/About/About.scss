@@ -1,0 +1,33 @@
+@import "../../index";
+
+.pageAbout {
+  background-color: $primary-color;
+  padding-inline: 4vw;
+  padding-top: 5vh;
+  padding-bottom: 8vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.scroller {
+  display: flex;
+  width: calc((100px + 80px) * 4);
+  animation: scroll 15s linear infinite;
+}
+
+.scroller div {
+  margin-right: 80px;
+}
+
+.scroller div:last-child {
+  margin-right: 0;
+}
