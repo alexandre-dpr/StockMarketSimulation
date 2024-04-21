@@ -24,8 +24,8 @@ public class CommentaireController {
     private CommunityService communityService;
 
     @GetMapping(value = "/{ticker}")
-    public ResponseEntity<List<CommentaireDTO>> getComments(@PathVariable String ticker, Authentication authentication) {
-        return ResponseEntity.ok(communityService.getComments(authentication.getName(), ticker));
+    public ResponseEntity<List<CommentaireDTO>> getComments(@PathVariable String ticker) {
+        return ResponseEntity.ok(communityService.getComments(ticker));
     }
 
     @DeleteMapping(value = "/comment/{id}")

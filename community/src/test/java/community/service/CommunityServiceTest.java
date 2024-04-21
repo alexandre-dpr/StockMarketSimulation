@@ -52,7 +52,7 @@ public class CommunityServiceTest {
             commentaireDTOList.add(e.toDTO());
         });
         when(commentaireRepository.findAllByActionOrderByDateDesc(action)).thenReturn(Optional.of(commentaireList));
-        List<CommentaireDTO> result = facade.getComments("damien", action);
+        List<CommentaireDTO> result = facade.getComments(action);
         assertEquals(commentaireDTOList, result);
     }
 
@@ -60,7 +60,7 @@ public class CommunityServiceTest {
     public void getAllCommentaire_Empty_OK() {
         String action = "someAction";
         when(commentaireRepository.findAllByActionOrderByDateDesc(action)).thenReturn(Optional.empty());
-        List<CommentaireDTO> result = facade.getComments("someName", action);
+        List<CommentaireDTO> result = facade.getComments(action);
         assertEquals(0, result.size());
     }
 
@@ -149,7 +149,6 @@ public class CommunityServiceTest {
         String name = "user";
         Integer idCommentaire = 1;
         UpdateCommentaireDTO updateCommentaireDTO = new UpdateCommentaireDTO("message");
-        Commentaire commentaire = new Commentaire(name, "message", "AAPL");
         when(commentaireRepository.findById(any())).thenReturn(Optional.empty());
         facade.editComment(name, idCommentaire, updateCommentaireDTO);
     }

@@ -73,13 +73,6 @@ public class StockService implements IStockService {
         this.httpClient = httpClient;
     }
 
-    /**
-     * Récupère l'historique de prix d'une action pour un interval donné. Si l'action n'a jamais été récupérée, récupère aussi les informations dessus.
-     *
-     * @param ticker Ticker de l'action à récupérer
-     * @param range  1d, 1y
-     * @return StockDto
-     */
     @Override
     public StockDto getStock(String ticker, Range range) throws IOException, UnauthorizedException, NotFoundException {
         // On vérifie si on n'a pas déjà fetch les infos très récemment
@@ -237,9 +230,6 @@ public class StockService implements IStockService {
         }
     }
 
-    /**
-     * Appelle l'API ALPHAVANTAGE pour récupérer les actions en tendance.
-     */
     @Override
     public StockTrendListDto getTrends() throws UnauthorizedException, IOException {
         Optional<StockTrendList> optStockTrendList = stockTrendListRepository.findAll().stream().findFirst();
@@ -330,23 +320,12 @@ public class StockService implements IStockService {
         return stockRepository.findById(ticker);
     }
 
-    /**
-     * Sauvegarde en base une action
-     *
-     * @param stock Action à sauvegarder
-     */
     @Override
     @Transactional
     public void saveStock(Stock stock) {
         stockRepository.save(stock);
     }
 
-    /**
-     * Sauvegarde en base une trend
-     * On veut toujours une seule trend, donc on supprime toutes les anciennes quand on en ajoute
-     *
-     * @param stockTrendList trend
-     */
     @Override
     @Transactional
     public void saveStockTrendList(StockTrendList stockTrendList) {

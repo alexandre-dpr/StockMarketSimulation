@@ -24,7 +24,7 @@ public class CommunityService implements ICommunityService {
     CommentaireRepository commentaireRepository;
 
     @Override
-    public List<CommentaireDTO> getComments(String name, String action) {
+    public List<CommentaireDTO> getComments(String action) {
         Optional<List<Commentaire>> commentaires = commentaireRepository.findAllByActionOrderByDateDesc(action);
         if (commentaires.isEmpty()) {
             return new ArrayList<>();
