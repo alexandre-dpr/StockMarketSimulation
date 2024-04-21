@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import LineChart from "../../../components/Charts/LineChart/LineChart";
 import Spinner from "../../../components/Spinner/Spinner";
 import HistoriqueTable from "../../../containers/Table/HistoriqueTable/HistoriqueTable";
-import Camembert from "./Camembert/Camembert";
+import Camembert from "../../../components/Camembert/Camembert";
 import CustomImage from "../../../components/CustomImage/CustomImage";
 import star_fill from "../../../assets/img/star_fill.png";
 import constants from '../../../utils/constants.json'
@@ -37,7 +37,7 @@ function Wallet() {
         baliseHeader.classList.remove('h-home');
         initWallet();
         initHistorique();
-        initAutomation();
+        //initAutomation();
     }, [])
 
     async function initWallet() {
