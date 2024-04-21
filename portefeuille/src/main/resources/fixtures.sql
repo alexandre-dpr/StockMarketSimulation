@@ -1,11 +1,11 @@
-insert into your_database.portefeuille (username, solde, rank_id)
-values ('Alex', 6526.349999999999, 2);
-
 insert into your_database.portefeuille_rank (id, percentage, rank_number, wallet_value)
 values (2, '0.00%', 1, 10000);
 
 insert into your_database.portefeuille_rank_seq (sequence_name, next_val)
 values ('portefeuille_rank', 2);
+
+insert into your_database.portefeuille (username, solde, rank_id)
+values ('Alex', 6526.349999999999, 2);
 
 insert into your_database.mouvement (mouvement_id, price, quantity, ticker, time, type, portefeuille_username)
 values (1, 399.12, 6, 'MSFT', '2024-04-21 10:25:22.010472', 0, null),
@@ -38,8 +38,8 @@ values (1, '2024-04-21 10:25:38.439767', '0.00%', 'Alex', 0),
        (6, '2024-04-16 10:25:38.439000', '0.2%', 'Alex', 20),
        (7, '2024-04-15 10:25:38.439000', '-0.5%', 'Alex', -50);
 
-insert into your_database.performance_history_seq (next_val)
-values (451);
+# insert into your_database.performance_history_seq (next_val)
+# values (451);
 
 insert into your_database.favoris (username, favori)
 values ('Alex', 'MSFT'),
