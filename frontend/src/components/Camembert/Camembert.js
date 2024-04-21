@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pie} from "react-chartjs-2";
+import {Chart} from "react-chartjs-2";
 
 const Camembert = ({data}) => {
     const data2 = {
@@ -21,7 +21,7 @@ const Camembert = ({data}) => {
         },
     }
     return (
-        <Pie  data={data2} options={options} />
+        <Chart type="doughnut"  data={data2} options={options} />
     );
 };
 

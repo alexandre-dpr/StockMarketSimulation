@@ -8,11 +8,12 @@ import {useTranslation} from 'react-i18next';
 import LineChart from "../../../components/Charts/LineChart/LineChart";
 import Spinner from "../../../components/Spinner/Spinner";
 import HistoriqueTable from "../../../containers/Table/HistoriqueTable/HistoriqueTable";
-import Camembert from "./Camembert/Camembert";
+import Camembert from "../../../components/Camembert/Camembert";
 import CustomImage from "../../../components/CustomImage/CustomImage";
 import star_fill from "../../../assets/img/star_fill.png";
 import constants from '../../../utils/constants.json'
 import {RequestAutomation} from "../../../request/RequestAutomation";
+import bean from "../../../assets/img/poubelle.png";
 
 function Wallet() {
     const {t} = useTranslation();
@@ -29,15 +30,14 @@ function Wallet() {
     const [historique, setHistorique] = useState([]);
     const [switchBtn, setSwitchBtn] = useState(true);
     const [favsTickers, setFavsTickers] = useState([])
-    const [dataAutomation, setDataAutomation] = useState(null);
-
+    const [dataAutomation, setDataAutomation] = useState([]);
 
     useEffect(() => {
         const baliseHeader = document.getElementById("header");
         baliseHeader.classList.remove('h-home');
         initWallet();
         initHistorique();
-        initAutomation();
+        //initAutomation();
     }, [])
 
     async function initWallet() {
@@ -65,6 +65,10 @@ function Wallet() {
             setDataAutomation(resp.data);
         }
         console.log(resp.data)
+    }
+
+    async function delAutomation(id) {
+        const resp = await requestAutomation.deleteAutomation(id);
     }
 
     function sleep(ms) {
@@ -246,9 +250,27 @@ function Wallet() {
                                         }
                                     </div>
                                 </div>
-                                <div >
+                                <div>
                                     <h3>{t('wallet.ordersPlaced')}</h3>
+                                    {dataAutomation.length !== 0 ? dataAutomation.map(item =>
+                                            <div className="orderLoop">
+                                                {
+                                                    Object.keys(item).map(
+                                                        (auto) =>
+                                                            <div className="d-flex w-100 mt-3">
+                                                                <div className="w-50 Gabarito-Bold"> {`${auto}: `}</div>
+                                                                <div className="w-50"> {item[auto]}</div>
+                                                            </div>
+                                                    )
+                                                }
+                                                <div className="mt-5 w-100 d-flex justify-end">
+                                                    <img onClick={() => delAutomation(item.id)} style={{width: 20}} src={bean}/>
+                                                </div>
+                                            </div>
+                                        ) :
+                                        <p>{t('wallet.order_nothing')}</p>
 
+                                    }
                                 </div>
                             </div>
                         </div>
