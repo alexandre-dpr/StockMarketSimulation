@@ -10,11 +10,11 @@ values ('Alex', 6526.349999999999, 2);
 insert into your_database.mouvement (mouvement_id, price, quantity, ticker, time, type, portefeuille_username)
 values (1, 399.12, 6, 'MSFT', '2024-04-21 10:25:22.010472', 0, null),
        (3, 399.12, 6, 'MSFT', '2024-04-21 10:25:29.486242', 1, null),
-       (4, 399.12, 6, 'MSFT', '2024-04-21 10:28:34.831280', 0, null),
+       (4, 389.07, 6, 'MSFT', '2024-04-21 10:28:34.831280', 0, null),
        (5, 389.07, 6, 'MSFT', '2024-04-21 10:28:34.831280', 0, null),
-       (6, 555.04, 1, 'NFLX', '2024-04-21 10:45:14.386241', 0, null),
+       (6, 553.02, 1, 'NFLX', '2024-04-21 10:45:14.386241', 0, null),
        (7, 553.02, 1, 'NFLX', '2024-04-21 10:45:14.386241', 0, null),
-       (8, 174.63, 3, 'AMZN', '2024-04-21 10:48:13.112181', 0, null),
+       (8, 174.99, 3, 'AMZN', '2024-04-21 10:48:13.112181', 0, null),
        (9, 174.99, 3, 'AMZN', '2024-04-21 10:48:13.112181', 0, null);
 
 insert into your_database.portefeuille_actions (portefeuille_username, actions_mouvement_id)
