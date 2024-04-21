@@ -65,7 +65,7 @@ function Wallet() {
 
     async function initAutomation(){
         const resp = await requestAutomation.getAutomation();
-        if (resp.data !== undefined){
+        if (resp.data){
             let liste_automations = []
             const liste_aux = resp.data.automations
             liste_aux.map((item)=>{
@@ -290,10 +290,11 @@ function Wallet() {
                                                 {
                                                     Object.keys(item).map(
                                                         (auto) =>
-                                                            <div className="d-flex w-100 mt-3">
-                                                                <div className="w-50 Gabarito-Bold"> {`${auto}: `}</div>
-                                                                <div className="w-50"> {item[auto]}</div>
-                                                            </div>
+                                                                    auto !== "id" &&
+                                                                    <div className="d-flex w-100 mt-3">
+                                                                        <div className="w-50 Gabarito-Bold"> {`${auto}: `}</div>
+                                                                        <div className="w-50"> {item[auto]}</div>
+                                                                    </div>
                                                     )
                                                 }
                                                 <div className="mt-5 w-100 d-flex justify-end">
