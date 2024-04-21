@@ -32,14 +32,17 @@ function Stock() {
     const [timeStamp, setTimeStamp] = useState([])
     const [performance, setPerformance] = useState(0);
     const [isLoading, setIsLoading] = useState(true)
-    const [isFav,setFav] = useState(false)
+    const [isFav, setFav] = useState(false)
     const auth = new Auth();
+
     async function fetchData() {
-        if(auth.isLoggedIn()){
+        if (auth.isLoggedIn()) {
             const result_wallet = await requestWallet.getWallet();
-            if(result_wallet.data && result_wallet.data.favoris.length >0){
+            if (result_wallet.data && result_wallet.data.favoris.length > 0) {
                 const favsTickers = result_wallet.data.favoris.map(stock => stock.ticker)
                 setFav(favsTickers.includes(ticker))
+            } else {
+                setFav(false)
             }
         }
 
@@ -69,6 +72,7 @@ function Stock() {
         fetchData()
     }, [range]);
 
+
     useEffect(() => {
         setPerformance(percentageDiff(history[0], history[history.length - 1]))
     }, [history, range]);
@@ -78,27 +82,28 @@ function Stock() {
         setRange(newRange)
     }
 
-    async function manageFav(){
-        if(isFav){
-            const  del = await requestWallet.delFavori(ticker)
-        }else {
-            const add = await  requestWallet.addFavori(ticker)
+    async function manageFav() {
+        if (isFav) {
+            const del = await requestWallet.delFavori(ticker)
+        } else {
+            const add = await requestWallet.addFavori(ticker)
         }
         fetchData()
     }
 
 
     return (
-            <div className='containerPage'>
-                {
-                    isLoading ?
-                        <div className="mt-10">
-                            <Spinner/>
-                        </div>
-                        :
-                        <div className={"pageStock"}>
-                            <div className={"d-flex w-100"}>
-                                <div className="leftSide w-70">
+        <div className='containerPage'>
+            {
+                isLoading ?
+                    <div className="mt-10">
+                        <Spinner/>
+                    </div>
+                    :
+                    <div className={"pageStock"}>
+                        <div className="d-flex w-100 containerSections ">
+                            <div className={"containerStockGraph "}>
+                                <div className="leftSide w-100">
                                     <div className={"d-flex align-center"}>
                                         <CustomImage src={getStockLogo(ticker)} alt={""}
                                                      style={{width: "50px", height: "50px"}}/>
@@ -107,7 +112,8 @@ function Stock() {
                                             <h1 className="ml-1 ticker"> {ticker}</h1>
                                         </div>
                                         {auth.isLoggedIn() &&
-                                        <div> <img onClick={manageFav} src={isFav ? star_fill : star_empty} alt={""} style={{width:"30px", cursor:"pointer"}}/></div>
+                                            <div><img onClick={manageFav} src={isFav ? star_fill : star_empty} alt={""}
+                                                      style={{width: "30px", cursor: "pointer"}}/></div>
                                         }
                                     </div>
                                     <div className="d-flex w-100">
@@ -138,55 +144,56 @@ function Stock() {
                                     </div>
                                 </div>
 
-                                <div className="rightSide ml-5 w-30 scrollbar-none">
-                                    <TransactionWidget price={data?.price} ticker={ticker}/>
-                                </div>
-                            </div>
-
-                            <div className="statistics">
-                                <h3> {t('stock.statistics')}</h3>
-                                <div className="d-flex w-100">
-                                    <div className="marketCap d-flex w-50">
-                                        <div className="label">{`${t('stock.marketCap')}:`}</div>
-                                        <div
-                                            className="ml-3"> {`${formatCurrency(data?.marketCap)} ${data?.currency}`} </div>
+                                <div className="statistics">
+                                    <h3> {t('stock.statistics')}</h3>
+                                    <div className="d-flex w-100">
+                                        <div className="marketCap d-flex w-50">
+                                            <div className="label">{`${t('stock.marketCap')}:`}</div>
+                                            <div
+                                                className="ml-3"> {`${formatCurrency(data?.marketCap)} ${data?.currency}`} </div>
+                                        </div>
                                     </div>
+
                                 </div>
 
-                            </div>
+                                <div className="about mt-3">
+                                    <h3>{`${t('stock.about')} ${data?.name}`}</h3>
+                                    <div>
+                                        <div className="infos mt-5 mb-5 w-100 d-flex flex-column">
+                                            {data?.ceo !== null && data?.ceo !== "" &&
+                                                <div className="ceo d-flex align-center">
+                                                    <img src={logoCeo} style={{width: "40px"}}/>
+                                                    <div className="ml-3">{data?.ceo}</div>
+                                                </div>}
+                                            {data?.website !== null && data?.website !== "" &&
+                                                <div className="website d-flex  align-center mt-3">
+                                                    <img src={logoWeb} style={{width: "40px"}}/>
+                                                    <a href={data?.website} target="_blank" rel="noopener noreferrer"
+                                                       className="ml-3">{data?.website}</a>
+                                                </div>}
+                                            {data?.exchange !== null && data?.exchange !== "" &&
+                                                <div className="exchange d-flex align-center mt-3">
+                                                    <img src={logoExchange} style={{width: "40px"}}/>
+                                                    <div className="ml-3">{data?.exchange}</div>
+                                                </div>}
 
-                            <div className="about mt-3">
-                                <h3>{`${t('stock.about')} ${data?.name}`}</h3>
-                                <div className="d-flex p">
-                                    <div className="infos w-30 d-flex flex-column">
-                                        {data?.ceo !== null && data?.ceo !== "" &&
-                                            <div className="ceo d-flex align-center">
-                                                <img src={logoCeo} style={{width: "40px"}}/>
-                                                <div className="ml-3">{data?.ceo}</div>
+                                        </div>
+                                        {data?.description !== null && data?.description !== "" &&
+                                            <div className="stockDescription w-100">
+                                                {data?.description}
                                             </div>}
-                                        {data?.website !== null && data?.website !== "" &&
-                                            <div className="website d-flex  align-center mt-3">
-                                                <img src={logoWeb} style={{width: "40px"}}/>
-                                                <a href={data?.website} target="_blank" rel="noopener noreferrer"
-                                                   className="ml-3">{data?.website}</a>
-                                            </div>}
-                                        {data?.exchange !== null && data?.exchange !== "" &&
-                                            <div className="exchange d-flex align-center mt-3">
-                                                <img src={logoExchange} style={{width: "40px"}}/>
-                                                <div className="ml-3">{data?.exchange}</div>
-                                            </div>}
-
                                     </div>
-                                    {data?.description !== null && data?.description !== "" &&
-                                        <div className="stockDescription w-70">
-                                            {data?.description}
-                                        </div>}
+
                                 </div>
                             </div>
-                            {username ? <StocksChat stocks={ticker} username={username}/> : <></>}
+                            <div className="scrollbar-none containerWidget">
+                                <TransactionWidget price={data?.price} ticker={ticker}/>
+                            </div>
                         </div>
+                        {username ? <StocksChat stocks={ticker} username={username}/> : <></>}
+                    </div>
 
-                }
+            }
         </div>)
 }
 

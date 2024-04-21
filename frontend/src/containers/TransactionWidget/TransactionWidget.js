@@ -57,6 +57,7 @@ const TransactionWidget = ({ticker, price}) => {
         ERROR_TITLES: t('transactionWidget.errors.insufficient_titles'),
     }
     const [error, setError] = useState()
+    const [automations, setAutomations] = useState([])
 
     async function fetchData() {
         const stockPerformance = await requestWallet.getStockPerformance(ticker);
@@ -71,10 +72,19 @@ const TransactionWidget = ({ticker, price}) => {
         }
     }
 
+    async function fetchAutomation(){
+        const resp = await requestAutomation.getAutomation();
+        if (resp.data){
+            setAutomations(resp.data);
+        }
+        console.log(resp.data)
+    }
+
     useEffect(() => {
         if (auth.isLoggedIn()) {
             setIsAuth(true)
             fetchData()
+            //fetchAutomation()
         } else {
             setIsAuth(false)
         }
@@ -87,12 +97,12 @@ const TransactionWidget = ({ticker, price}) => {
                 setReadyReview(isValidInteger(quantity) && isValidDecimal(stopPrice) && calcAmount <= wallet.solde)
             } else if (orderType === orderTypes.ORDER_MARKET) {
                 setReadyReview(isValidInteger(quantity) && calcAmount <= wallet.solde)
-            }else if (orderType === orderTypes.INVESTMENT_PLANNING) {
+            } else if (orderType === orderTypes.INVESTMENT_PLANNING) {
                 setReadyReview(isValidInteger(quantity) && calcAmount <= wallet.solde)
             }
             if (calcAmount > wallet.solde) {
                 setError(errors.ERROR_BALANCE)
-            }else{
+            } else {
                 setError("")
             }
         } else {
@@ -100,12 +110,12 @@ const TransactionWidget = ({ticker, price}) => {
                 setReadyReview(isValidInteger(quantity) && isValidDecimal(stopPrice) && ownedQuantity >= quantity)
             } else if (orderType === orderTypes.ORDER_MARKET) {
                 setReadyReview(isValidInteger(quantity) && ownedQuantity >= quantity)
-            }else if (orderType === orderTypes.INVESTMENT_PLANNING){
+            } else if (orderType === orderTypes.INVESTMENT_PLANNING) {
                 setReadyReview(isValidInteger(quantity) && ownedQuantity >= quantity)
             }
             if (ownedQuantity < quantity) {
                 setError(errors.ERROR_TITLES)
-            }else{
+            } else {
                 setError("")
             }
         }
@@ -156,14 +166,12 @@ const TransactionWidget = ({ticker, price}) => {
                 await requestWallet.vendre(ticker, quantity);
             }
             window.location.reload()
-        }
-        else if (orderType === orderTypes.INVESTMENT_PLANNING){
-            await requestAutomation.dcaAutomation(ticker,parseFloat(quantity),recurrence=== recurrences.WEEKLY ? "Weekly" : "Monthly",transactionType === transactionTypes.BUY ? "Buy" : "Sell");
+        } else if (orderType === orderTypes.INVESTMENT_PLANNING) {
+            await requestAutomation.dcaAutomation(ticker, parseFloat(quantity), recurrence === recurrences.WEEKLY ? "Weekly" : "Monthly", transactionType === transactionTypes.BUY ? "Buy" : "Sell");
             window.location.reload()
 
-        }
-        else if (orderType === orderTypes.ORDER_STOP){
-            await requestAutomation.pricethresholdAutomation(ticker,parseFloat(stopPrice),transactionType === transactionTypes.BUY ? "Buy" : "Sell",typeOrder === typeOrders.ABOVE ? "Above" : "Below",parseFloat(quantity));
+        } else if (orderType === orderTypes.ORDER_STOP) {
+            await requestAutomation.pricethresholdAutomation(ticker, parseFloat(stopPrice), transactionType === transactionTypes.BUY ? "Buy" : "Sell", typeOrder === typeOrders.ABOVE ? "Above" : "Below", parseFloat(quantity));
             window.location.reload()
 
         }
@@ -269,7 +277,7 @@ const TransactionWidget = ({ticker, price}) => {
 
                                 <div className="containerInput mt-5">
 
-                                        <Select options={Object.values(typeOrders)} onSelect={handleSelectOrderChange}/>
+                                    <Select options={Object.values(typeOrders)} onSelect={handleSelectOrderChange}/>
 
                                     <InputDecimal onInputChange={handleInputStopPriceChange}
                                                   label={t('transactionWidget.stopPrice')}
@@ -293,8 +301,15 @@ const TransactionWidget = ({ticker, price}) => {
                             </div>
 
                             {
+                                orderType === orderTypes.ORDER_STOP &&
+                                <div className="thresholdDef">
+                                    {t('transactionWidget.thresholdDef')}
+                                </div>
+                            }
+
+                            {
                                 ownedQuantity !== 0 &&
-                                <div className={"containerPosition mt-30"}>
+                                <div className={"containerPosition mt-5"}>
                                     <h2>{t('transactionWidget.position')} </h2>
                                     <div className="d-flex">
                                         <div
@@ -312,6 +327,27 @@ const TransactionWidget = ({ticker, price}) => {
                                     <div className="mt-4">{dataStock.quantity}</div>
                                     <div className="mt-4 Gabarito-Bold">{t('transactionWidget.buyIn')}</div>
                                     <div className="mt-4">{`${dataStock.buyPrice}$`}</div>
+                                </div>
+                            }
+
+                            {
+                                automations.length !== 0 &&
+                                <div className="mt-10">
+                                    <h2>{t('wallet.ordersPlaced')}</h2>
+                                    {automations.map(item =>
+                                        <div className="orderLoop">
+                                            {
+                                                Object.keys(item).map(
+                                                    (auto) =>
+                                                        <div className="d-flex w-100 mt-3">
+                                                            <div className="w-50 Gabarito-Bold"> {`${auto}: `}</div>
+                                                            <div className="w-50"> {item[auto]}</div>
+                                                        </div>
+                                                )
+                                            }
+                                        </div>
+                                    )
+                                    }
                                 </div>
                             }
 

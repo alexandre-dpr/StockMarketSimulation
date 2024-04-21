@@ -1,9 +1,5 @@
 @import '../../index.scss';
 
-.rightSide {
-  margin-top: 25px;
-}
-
 .buyCell, .sellCell {
   cursor: pointer;
   height: 40px;
@@ -27,13 +23,13 @@
   background-color: black;
   transition: transform 0.3s ease;
 }
+
 .containerTransactionWidget::-webkit-scrollbar {
   display: none;
 }
 
 
 .containerTransactionWidget {
-  height: 70vh;
   overflow-y: auto;
   scrollbar-width: none;
 
@@ -41,6 +37,10 @@
     .input-container {
       width: 100%;
     }
+  }
+
+  .inputOrderStop {
+    margin-top: 40px
   }
 
   select {
@@ -52,7 +52,17 @@
     font-family: Gabarito;
   }
 
+  .thresholdDef {
+    margin-top: 50px;
+    color: gray;
+    font-style: italic;
+  }
 
+  .orderLoop {
+    border-bottom: 1px solid grey;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
 
 }
 

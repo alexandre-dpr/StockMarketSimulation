@@ -11,7 +11,7 @@ export class RequestAutomation {
         try {
             return await this.axios.get(constants.url_api_automation);
         } catch (error) {
-            throw error;
+            console.error(error);
         }
     }
 
@@ -19,7 +19,7 @@ export class RequestAutomation {
         try {
             return await this.axios.delete(constants.url_api_automation + "?idAutomation=" +idAutomation);
         } catch (error) {
-            throw error;
+            console.error(error);
         }
     }
 
