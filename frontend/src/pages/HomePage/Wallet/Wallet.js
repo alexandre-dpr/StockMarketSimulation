@@ -70,15 +70,17 @@ function Wallet() {
             const liste_aux = resp.data.automations
             liste_aux.map((item)=>{
                 let order = {}
-                if(item.type === "priceThreshold"){
-                    order[t("transactionWidget.orderType")] =t("transactionWidget.stopOrder")
-                    if(item.transactionType === "buy"){
+                order["Ticker"] = item.ticker
+                order.id = item.id
+                if (item.type === "priceThreshold") {
+                    order[t("transactionWidget.orderType")] = t("transactionWidget.stopOrder")
+                    if (item.transactionType === "buy") {
                         order[t("transactionWidget.transactionType")] = transactionTypes.BUY
-                    }else{
+                    } else {
                         order[t("transactionWidget.transactionType")] = transactionTypes.SELL
                     }
                     order[t('transactionWidget.quantity')] = item.quantity
-                    order[t('transactionWidget.thresholdType')] =  t(`transactionWidget.${item.thresholdType}`)
+                    order[t('transactionWidget.thresholdType')] = t(`transactionWidget.${item.thresholdType}`)
                     order[t('transactionWidget.stopPrice')] = item.thresholdPrice
                 }else{
                     order[t("transactionWidget.orderType")] =t("transactionWidget.investmentPlanning")
@@ -87,7 +89,7 @@ function Wallet() {
                     }else{
                         order[t("transactionWidget.transactionType")] = transactionTypes.SELL
                     }
-                    order[t('transactionWidget.quantity')] = item.quantity
+                    order[t('transactionWidget.quantity')] = item.buyQuantity
                     order[t('transactionWidget.recurrence')] = t(`transactionWidget.${item.frequency}`)
                 }
                 liste_automations.push(order)
