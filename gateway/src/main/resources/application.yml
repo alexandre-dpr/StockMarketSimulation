@@ -63,3 +63,10 @@ spring:
           filters:
             - RewritePath=/api/portefeuille(?<segment>/?.*), /portefeuille$\{segment}
             - PreserveHostHeader=true
+        - id: automation
+          uri: lb://service-automation
+          predicates:
+            - Path=/api/automation/**
+          filters:
+            - RewritePath=/api/automation(?<segment>/?.*), /automation$\{segment}
+            - PreserveHostHeader=true

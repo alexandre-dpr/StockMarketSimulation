@@ -191,6 +191,25 @@ services:
       - service-auth
       - mysql_database_portefeuille
       - rabbitmq
+
+  service-automation:
+    build:
+      context: ./Automation
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - "8100:8080"
+    environment:
+      - RABBITMQ=rabbitmq
+    networks:
+      - my_network
+    depends_on:
+        - discovery
+        - mysql_database_automation
+        - service-auth
+        - rabbitmq
+        - service-bourse
+        - service-portefeuille
   gateway:
     build:
       context: ./gateway

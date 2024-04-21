@@ -28,7 +28,7 @@ builder.Services.AddHostedService<ScheduledTaskService>();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // TODO Changer URL BDD
 builder.Services.AddDbContext<UserAutomationDbContext>(options =>
-        options.UseMySql("server=localhost;port=3310;database=your_database;uid=your_user;pwd=your_user_password;",
+        options.UseMySql("server=mysql_database_automation;port=3306;database=your_database;uid=your_user;pwd=your_user_password;",
             new MySqlServerVersion(new Version(8, 3, 0))),
     ServiceLifetime.Singleton
 );
@@ -71,8 +71,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Read public key from file
-var publicKeyPath = Path.Combine(Directory.GetCurrentDirectory(), "app.pub");
+var assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+var directoryPath = Path.GetDirectoryName(assemblyPath);
+var publicKeyPath = Path.Combine(directoryPath, "app.pub");
 var publicKeyPem = File.ReadAllText(publicKeyPath);
 var publicKey = RSA.Create();
 publicKey.ImportFromPem(publicKeyPem);
