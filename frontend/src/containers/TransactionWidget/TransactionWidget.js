@@ -74,10 +74,37 @@ const TransactionWidget = ({ticker, price}) => {
 
     async function fetchAutomation(){
         const resp = await requestAutomation.getAutomation();
+        let liste_automations = []
         if (resp.data){
-            setAutomations(resp.data.automations);
+            const liste_aux = resp.data.automations
+            liste_aux.map((item)=>{
+                if(item.ticker === ticker){
+                    let order = {}
+                    if(item.type === "priceThreshold"){
+                        order[t("transactionWidget.orderType")] =t("transactionWidget.stopOrder")
+                        if(item.transactionType === "buy"){
+                            order[t("transactionWidget.transactionType")] = transactionTypes.BUY
+                        }else{
+                            order[t("transactionWidget.transactionType")] = transactionTypes.SELL
+                        }
+                        order[t('transactionWidget.thresholdType')] =  t(`transactionWidget.${item.thresholdType}`)
+                        order[t('transactionWidget.quantity')] = item.quantity
+                        order[t('transactionWidget.stopPrice')] = item.thresholdPrice
+                    }else{
+                        order[t("transactionWidget.orderType")] =t("transactionWidget.investmentPlanning")
+                        if(item.transactionType === "buy"){
+                            order[t("transactionWidget.transactionType")] = transactionTypes.BUY
+                        }else{
+                            order[t("transactionWidget.transactionType")] = transactionTypes.SELL
+                        }
+                        order[t('transactionWidget.quantity')] = item.quantity
+                        order[t('transactionWidget.recurrence')] = t(`transactionWidget.${item.frequency}`)
+                    }
+                    liste_automations.push(order)
+                }
+            })
+            setAutomations(liste_automations);
         }
-        console.log(resp.data)
     }
 
     useEffect(() => {

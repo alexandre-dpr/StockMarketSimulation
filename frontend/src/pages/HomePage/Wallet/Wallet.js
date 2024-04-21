@@ -31,6 +31,10 @@ function Wallet() {
     const [switchBtn, setSwitchBtn] = useState(true);
     const [favsTickers, setFavsTickers] = useState([])
     const [dataAutomation, setDataAutomation] = useState([]);
+    const transactionTypes = {
+        BUY: t('transactionWidget.buy'),
+        SELL: t('transactionWidget.sell')
+    };
 
     useEffect(() => {
         const baliseHeader = document.getElementById("header");
@@ -61,14 +65,41 @@ function Wallet() {
 
     async function initAutomation(){
         const resp = await requestAutomation.getAutomation();
-        if (resp.data){
-            setDataAutomation(resp.data.automations);
+        if (resp.data !== undefined){
+            let liste_automations = []
+            const liste_aux = resp.data.automations
+            liste_aux.map((item)=>{
+                let order = {}
+                if(item.type === "priceThreshold"){
+                    order[t("transactionWidget.orderType")] =t("transactionWidget.stopOrder")
+                    if(item.transactionType === "buy"){
+                        order[t("transactionWidget.transactionType")] = transactionTypes.BUY
+                    }else{
+                        order[t("transactionWidget.transactionType")] = transactionTypes.SELL
+                    }
+                    order[t('transactionWidget.quantity')] = item.quantity
+                    order[t('transactionWidget.thresholdType')] =  t(`transactionWidget.${item.thresholdType}`)
+                    order[t('transactionWidget.stopPrice')] = item.thresholdPrice
+                }else{
+                    order[t("transactionWidget.orderType")] =t("transactionWidget.investmentPlanning")
+                    if(item.transactionType === "buy"){
+                        order[t("transactionWidget.transactionType")] = transactionTypes.BUY
+                    }else{
+                        order[t("transactionWidget.transactionType")] = transactionTypes.SELL
+                    }
+                    order[t('transactionWidget.quantity')] = item.quantity
+                    order[t('transactionWidget.recurrence')] = t(`transactionWidget.${item.frequency}`)
+                }
+                liste_automations.push(order)
+            })
+            setDataAutomation(liste_automations);
         }
         console.log(resp.data)
     }
 
     async function delAutomation(id) {
         const resp = await requestAutomation.deleteAutomation(id);
+        initAutomation();
     }
 
     function sleep(ms) {

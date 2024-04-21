@@ -88,7 +88,7 @@
     "marketOrder": "Ordre au marché",
     "stopOrder": "Ordre de seuil *",
     "investmentPlanning": "Planification d'investissement",
-    "stopPrice": "Prix d'ordre stop ($)",
+    "stopPrice": "Seuil de prix ($)",
     "indicative": "indicatif",
     "weekly": "Hebdomadaire",
     "monthly": "Mensuelle",
