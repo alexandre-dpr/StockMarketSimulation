@@ -5,7 +5,7 @@ import bourse.dto.rabbitMq.TickerInfo;
 import bourse.enums.Range;
 import bourse.exceptions.NotFoundException;
 import bourse.exceptions.UnauthorizedException;
-import bourse.service.StockService;
+import bourse.service.impl.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

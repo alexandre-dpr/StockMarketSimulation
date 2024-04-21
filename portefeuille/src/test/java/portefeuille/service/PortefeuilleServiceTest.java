@@ -1,6 +1,10 @@
 package portefeuille.service;
 
 
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import portefeuille.config.Constants;
 import portefeuille.dto.HistoryDto;
@@ -13,10 +17,10 @@ import portefeuille.modele.Portefeuille;
 import portefeuille.modele.Rank;
 import portefeuille.repository.MouvementRepository;
 import portefeuille.repository.PortefeuilleRepository;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import portefeuille.service.impl.DirectPriceService;
+import portefeuille.service.impl.PerformanceHistoryService;
+import portefeuille.service.impl.PortefeuilleService;
+import portefeuille.service.impl.RankService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,16 +37,16 @@ import static org.mockito.Mockito.when;
 public class PortefeuilleServiceTest {
 
     @Mock
-    private  PortefeuilleRepository portefeuilleRepository;
+    private PortefeuilleRepository portefeuilleRepository;
 
     @Mock
-    private  MouvementRepository mouvementRepository;
+    private MouvementRepository mouvementRepository;
 
     @Mock
-    private  PerformanceHistoryService performanceHistoryService;
+    private PerformanceHistoryService performanceHistoryService;
 
     @Mock
-    private  DirectPriceService directPriceService;
+    private DirectPriceService directPriceService;
 
     @Mock
     private RankService rankService;
@@ -61,7 +65,7 @@ public class PortefeuilleServiceTest {
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.empty());
         when(rankService.getDefaultRank()).thenReturn(new Rank());
         PortefeuilleDto portefeuilleDto = facade.creerPortefeuille(username);
-        assertEquals(Constants.STARTING_BALANCE, portefeuilleDto.getSolde().doubleValue(),0);
+        assertEquals(Constants.STARTING_BALANCE, portefeuilleDto.getSolde(), 0);
 
     }
 
@@ -79,16 +83,17 @@ public class PortefeuilleServiceTest {
 
     @Test
     public void getPortefeuilleDto_create_OK() throws WalletAlreadyCreatedException, InterruptedException {
-        String username="user";
+        String username = "user";
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.empty());
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.empty());
         when(rankService.getDefaultRank()).thenReturn(new Rank());
         PortefeuilleDto portefeuilleDto = facade.getPortefeuilleDto(username);
-        assertEquals(Constants.STARTING_BALANCE, portefeuilleDto.getSolde().doubleValue(),0);
+        assertEquals(Constants.STARTING_BALANCE, portefeuilleDto.getSolde(), 0);
     }
+
     @Test
     public void getPortefeuilleDto_get_OK() throws WalletAlreadyCreatedException, InterruptedException {
-        String username="user";
+        String username = "user";
         Portefeuille p = Portefeuille.builder()
                 .username(username)
                 .solde(Constants.STARTING_BALANCE)
@@ -102,7 +107,7 @@ public class PortefeuilleServiceTest {
         PortefeuilleDto portefeuilleDto = facade.getPortefeuilleDto(username);
 
         assertNotNull(portefeuilleDto);
-        assertEquals(p.getSolde(),portefeuilleDto.getSolde());
+        assertEquals(p.getSolde(), portefeuilleDto.getSolde());
     }
 
     @Test
@@ -114,8 +119,8 @@ public class PortefeuilleServiceTest {
                 .type(TypeMouvement.ACHAT)
                 .time(LocalDateTime.now())
                 .build();
-        StockPerformanceDto stockPerformanceDto =facade.getStockPerformance(m,directPriceService);
-        assertEquals(m.getQuantity(),stockPerformanceDto.getQuantity());
+        StockPerformanceDto stockPerformanceDto = facade.getStockPerformance(m, directPriceService);
+        assertEquals(m.getQuantity(), stockPerformanceDto.getQuantity());
     }
 
     @Test
@@ -127,16 +132,16 @@ public class PortefeuilleServiceTest {
                 .type(TypeMouvement.ACHAT)
                 .time(LocalDateTime.now())
                 .build();
-        when(portefeuilleRepository.getStockForUser("ticker","user")).thenReturn(m);
-        StockPerformanceDto stockPerformanceDto = facade.getStockPerformance("ticker","user");
-        assertEquals(m.getQuantity(),stockPerformanceDto.getQuantity());
+        when(portefeuilleRepository.getStockForUser("ticker", "user")).thenReturn(m);
+        StockPerformanceDto stockPerformanceDto = facade.getStockPerformance("ticker", "user");
+        assertEquals(m.getQuantity(), stockPerformanceDto.getQuantity());
 
     }
 
     @Test(expected = NotFoundException.class)
     public void getStockPerformance2_KO_NotFoundException() throws NotFoundException, InterruptedException {
-        when(portefeuilleRepository.getStockForUser("ticker","user")).thenReturn(null);
-        facade.getStockPerformance("ticker","user");
+        when(portefeuilleRepository.getStockForUser("ticker", "user")).thenReturn(null);
+        facade.getStockPerformance("ticker", "user");
     }
 
     @Test
@@ -152,8 +157,8 @@ public class PortefeuilleServiceTest {
                 .build();
         when(portefeuilleRepository.getHistorique(username)).thenReturn(Optional.of(p));
         HistoryDto historyDto = facade.getHistorique(username);
-        assertEquals(p.getUsername(),historyDto.getUsername());
-        assertEquals(p.getHistorique(),historyDto.getMouvements());
+        assertEquals(p.getUsername(), historyDto.getUsername());
+        assertEquals(p.getHistorique(), historyDto.getMouvements());
     }
 
     @Test(expected = NotFoundException.class)
@@ -186,10 +191,10 @@ public class PortefeuilleServiceTest {
                 .build();
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
         when(directPriceService.getPrice(ticker)).thenReturn(30.);
-        when(portefeuilleRepository.getActionPossedee(username,ticker)).thenReturn(Optional.of(m));
-        facade.acheterAction(username,ticker,quantity);
+        when(portefeuilleRepository.getActionPossedee(username, ticker)).thenReturn(Optional.of(m));
+        facade.acheterAction(username, ticker, quantity);
         verify(portefeuilleRepository).save(p);
-        assertEquals(9940.0, p.getSolde(),0.1);
+        assertEquals(9940.0, p.getSolde(), 0.1);
     }
 
     @Test
@@ -208,10 +213,10 @@ public class PortefeuilleServiceTest {
                 .build();
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
         when(directPriceService.getPrice(ticker)).thenReturn(30.);
-        when(portefeuilleRepository.getActionPossedee(username,ticker)).thenReturn(Optional.empty());
-        facade.acheterAction(username,ticker,quantity);
+        when(portefeuilleRepository.getActionPossedee(username, ticker)).thenReturn(Optional.empty());
+        facade.acheterAction(username, ticker, quantity);
         verify(portefeuilleRepository).save(p);
-        assertEquals(9940.0, p.getSolde(),0.1);
+        assertEquals(9940.0, p.getSolde(), 0.1);
     }
 
     @Test(expected = InsufficientFundsException.class)
@@ -230,7 +235,7 @@ public class PortefeuilleServiceTest {
                 .build();
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
         when(directPriceService.getPrice(ticker)).thenReturn(7000.);
-        facade.acheterAction(username,ticker,quantity);
+        facade.acheterAction(username, ticker, quantity);
     }
 
     @Test(expected = NotFoundException.class)
@@ -239,7 +244,7 @@ public class PortefeuilleServiceTest {
         String ticker = "ticker";
         int quantity = 2;
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.empty());
-        facade.acheterAction(username,ticker,quantity);
+        facade.acheterAction(username, ticker, quantity);
     }
 
     @Test
@@ -264,8 +269,8 @@ public class PortefeuilleServiceTest {
                 .time(LocalDateTime.now())
                 .build();
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
-        when(portefeuilleRepository.getActionPossedee(username,ticker)).thenReturn(Optional.of(m));
-        facade.vendreAction(username,ticker,quantity);
+        when(portefeuilleRepository.getActionPossedee(username, ticker)).thenReturn(Optional.of(m));
+        facade.vendreAction(username, ticker, quantity);
         verify(mouvementRepository).delete(m);
         verify(portefeuilleRepository).save(p);
     }
@@ -292,8 +297,8 @@ public class PortefeuilleServiceTest {
                 .time(LocalDateTime.now())
                 .build();
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
-        when(portefeuilleRepository.getActionPossedee(username,ticker)).thenReturn(Optional.of(m));
-        facade.vendreAction(username,ticker,quantity);
+        when(portefeuilleRepository.getActionPossedee(username, ticker)).thenReturn(Optional.of(m));
+        facade.vendreAction(username, ticker, quantity);
         verify(portefeuilleRepository).save(p);
     }
 
@@ -319,8 +324,8 @@ public class PortefeuilleServiceTest {
                 .time(LocalDateTime.now())
                 .build();
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
-        when(portefeuilleRepository.getActionPossedee(username,ticker)).thenReturn(Optional.of(m));
-        facade.vendreAction(username,ticker,quantity);
+        when(portefeuilleRepository.getActionPossedee(username, ticker)).thenReturn(Optional.of(m));
+        facade.vendreAction(username, ticker, quantity);
     }
 
     @Test(expected = NotFoundException.class)
@@ -338,8 +343,8 @@ public class PortefeuilleServiceTest {
                 .historique(new ArrayList<>())
                 .build();
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
-        when(portefeuilleRepository.getActionPossedee(username,ticker)).thenReturn(Optional.empty());
-        facade.vendreAction(username,ticker,quantity);
+        when(portefeuilleRepository.getActionPossedee(username, ticker)).thenReturn(Optional.empty());
+        facade.vendreAction(username, ticker, quantity);
     }
 
     @Test(expected = NotFoundException.class)
@@ -348,7 +353,7 @@ public class PortefeuilleServiceTest {
         String ticker = "ticker";
         int quantity = 4;
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.empty());
-        facade.vendreAction(username,ticker,quantity);
+        facade.vendreAction(username, ticker, quantity);
     }
 
     @Test
@@ -366,7 +371,7 @@ public class PortefeuilleServiceTest {
                 .build();
         when(portefeuilleRepository.getNbFavoris(username)).thenReturn(0);
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
-        facade.ajouterFavori(ticker,username);
+        facade.ajouterFavori(ticker, username);
         verify(portefeuilleRepository).save(p);
 
     }
@@ -375,33 +380,33 @@ public class PortefeuilleServiceTest {
     public void ajouterFavori_KO_TooManyFavorites() throws TooManyFavorites {
         String username = "username";
         String ticker = "ticker";
-        when(portefeuilleRepository.getNbFavoris(username)).thenReturn(Constants.MAX_FAVORITE_STOCKS+1);
-        facade.ajouterFavori(ticker,username);
+        when(portefeuilleRepository.getNbFavoris(username)).thenReturn(Constants.MAX_FAVORITE_STOCKS + 1);
+        facade.ajouterFavori(ticker, username);
     }
 
 
     @Test
-    public void supprimerFavori_OK(){
+    public void supprimerFavori_OK() {
         String username = "username";
         String ticker = "ticker";
         Portefeuille p = Portefeuille.builder()
                 .username(username)
                 .solde(Constants.STARTING_BALANCE)
                 .rank(rankService.getDefaultRank())
-                .favoris(new ArrayList<>(Arrays.asList(ticker)))
+                .favoris(new ArrayList<>(List.of(ticker)))
                 .actions(new ArrayList<>())
                 .rank(new Rank())
                 .historique(new ArrayList<>())
                 .build();
 
         when(portefeuilleRepository.getPortefeuille(username)).thenReturn(Optional.of(p));
-        facade.supprimerFavori(ticker,username);
+        facade.supprimerFavori(ticker, username);
         verify(portefeuilleRepository).save(p);
 
     }
 
     @Test
-    public void getAllPortefeuille_OK(){
+    public void getAllPortefeuille_OK() {
         Portefeuille p1 = Portefeuille.builder()
                 .username("user1")
                 .solde(Constants.STARTING_BALANCE)
@@ -420,13 +425,13 @@ public class PortefeuilleServiceTest {
                 .rank(new Rank())
                 .historique(new ArrayList<>())
                 .build();
-        List<Portefeuille> allPortefeuille = new ArrayList<>(Arrays.asList(p1,p2));
+        List<Portefeuille> allPortefeuille = new ArrayList<>(Arrays.asList(p1, p2));
         when(portefeuilleRepository.findAll()).thenReturn(allPortefeuille);
         facade.getAllPortefeuilles();
     }
 
     @Test
-    public void savePortefeuille_OK(){
+    public void savePortefeuille_OK() {
         Portefeuille p = Portefeuille.builder()
                 .username("user")
                 .solde(Constants.STARTING_BALANCE)

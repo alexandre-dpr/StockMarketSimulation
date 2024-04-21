@@ -1,33 +1,25 @@
 package auth.service;
 
+import auth.exceptions.BadLoginException;
+import auth.exceptions.ExistingUserException;
 import auth.modele.User;
 import auth.repository.UserRepository;
-import auth.service.exceptions.BadLoginException;
-import auth.service.exceptions.ExistingUserException;
+import auth.service.impl.UserService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
-
 
     @Mock
     private UserRepository userRepository;

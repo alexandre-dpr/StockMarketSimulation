@@ -27,14 +27,17 @@ public class Dca : Automation
     {
     }
 
-    public override void Execute(RabbitMqSender rabbitMqSender, string username)
+    public override bool Execute(RabbitMqSender rabbitMqSender, string username)
     {
         if (IsReady(rabbitMqSender))
         {
             var achat = new OrderDto(TransactionType.ToString(), username, Ticker, BuyQuantity);
             rabbitMqSender.SendOrder(achat);
             LastBuyTime = DateTime.Now;
+            return true;
         }
+
+        return false;
     }
 
     public override bool IsReady(RabbitMqSender _)

@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import portefeuille.service.ScheduledTasksService;
+import portefeuille.service.IScheduledTasksService;
 
 @SpringBootApplication
 @EnableRabbit
@@ -18,7 +18,7 @@ public class PortefeuilleApplication implements CommandLineRunner {
     }
 
     @Autowired
-    private ScheduledTasksService scheduledTasksService;
+    private IScheduledTasksService scheduledTasksService;
 
     @Override
     public void run(String... args) {

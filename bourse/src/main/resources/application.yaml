@@ -37,6 +37,10 @@ fetch:
     stocks: 1 # en minutes
     trends: 2 # en heures
 api:
+  url:
+    yahoo: https://query1.finance.yahoo.com/v8/finance/chart/%s?region=US&lang=en-US&includePrePost=false&interval=%s&useYfid=true&range=%s&corsDomain=finance.yahoo.com&.tsrc=finance
+    fmi: https://financialmodelingprep.com/api/v3/profile/%s?apikey=%s
+    alphavantage: https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=%s
   token:
     fmi: <TOKEN_API_FMI> # https://site.financialmodelingprep.com/developer --> Compte gratuit
     alphavantage: <TOKEN_API_ALPHAVANTAGE> # https://www.alphavantage.co/support/#api-key --> Compte gratuit

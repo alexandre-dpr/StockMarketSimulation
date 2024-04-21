@@ -12,7 +12,7 @@ import portefeuille.exceptions.InsufficientFundsException;
 import portefeuille.exceptions.NotEnoughStocksException;
 import portefeuille.exceptions.NotFoundException;
 import portefeuille.repository.TickerInfoRepository;
-import portefeuille.service.PortefeuilleService;
+import portefeuille.service.IPortefeuilleService;
 
 @Component
 public class Receiver implements RabbitListenerConfigurer {
@@ -22,19 +22,20 @@ public class Receiver implements RabbitListenerConfigurer {
     TickerInfoRepository repository;
 
     @Autowired
-    PortefeuilleService portefeuilleService;
+    IPortefeuilleService portefeuilleService;
 
 
     @RabbitListener(queues = "${spring.rabbitmq.queue.action}")
     public void receivedAction(OrderDto order) throws InsufficientFundsException, NotFoundException, InterruptedException, NotEnoughStocksException {
         logger.info("Service portfeuille Order received is  " + order);
-        if (order.action().equalsIgnoreCase("achat")){
+        if (order.action().equalsIgnoreCase("Buy")) {
             portefeuilleService.acheterAction(order.username(), order.ticker(), order.quantity());
-        }else {
+        } else {
             portefeuilleService.vendreAction(order.username(), order.ticker(), order.quantity());
         }
         logger.info("Service portfeuille Order executed  " + order);
     }
+
     @Override
     public void configureRabbitListeners(RabbitListenerEndpointRegistrar rabbitListenerEndpointRegistrar) {
 

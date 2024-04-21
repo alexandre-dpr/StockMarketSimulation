@@ -24,6 +24,7 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<AutomationService>();
+builder.Services.AddHostedService<ScheduledTaskService>();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 // TODO Changer URL BDD
 builder.Services.AddDbContext<UserAutomationDbContext>(options =>

@@ -13,9 +13,17 @@ public abstract class Automation
 
     public AutomationType Type { get; set; }
 
-    public bool DeleteAfterExecution { get; set; }
+    [JsonIgnore] public bool DeleteAfterExecution { get; set; }
 
-    public abstract void Execute(RabbitMqSender rabbitMqSender, string username);
+    /**
+     * Execute l'automation
+     * @return true si l'automation a été exécutée, false sinon
+     */
+    public abstract bool Execute(RabbitMqSender rabbitMqSender, string username);
 
+    /**
+     * Vérifie si l'automation est prête à être exécutée
+     * @return true si l'automation est prête, false sinon
+     */
     public abstract bool IsReady(RabbitMqSender rabbitMqSender);
 }

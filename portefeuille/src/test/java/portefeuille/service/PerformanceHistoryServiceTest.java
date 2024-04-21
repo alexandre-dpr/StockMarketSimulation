@@ -1,4 +1,5 @@
 package portefeuille.service;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -8,12 +9,11 @@ import portefeuille.config.Constants;
 import portefeuille.dto.PerformanceDto;
 import portefeuille.modele.PerformanceHistory;
 import portefeuille.repository.PerformanceHistoryRepository;
+import portefeuille.service.impl.PerformanceHistoryService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -32,18 +32,16 @@ public class PerformanceHistoryServiceTest {
     }
 
     @Test
-    public void savePerformance_OK(){
+    public void savePerformance_OK() {
         String username = "username";
-        PerformanceDto performanceDto = new PerformanceDto("30%",40.);
-        PerformanceHistory performance = new PerformanceHistory(performanceDto.getPercentage(), performanceDto.getValue(), username);
+        PerformanceDto performanceDto = new PerformanceDto("30%", 40.);
         when(performanceHistoryRepository.isPerformanceSavedSinceDate(LocalDateTime.now().minusHours(Constants.HISTORY_SAVE_INTERVAL), username)).thenReturn(false);
-        service.savePerformance(performanceDto,username);
+        service.savePerformance(performanceDto, username);
         verify(performanceHistoryRepository, times(1)).save(any(PerformanceHistory.class));
-
     }
 
     @Test
-    public void getPerformanceHistory_OK(){
+    public void getPerformanceHistory_OK() {
         String username = "username";
         PerformanceHistory performanceHistory = PerformanceHistory.builder()
                 .id(1)
@@ -56,6 +54,6 @@ public class PerformanceHistoryServiceTest {
         listPerfHistory.add(performanceHistory);
         when(performanceHistoryRepository.findPerformanceHistoryByUsername(username)).thenReturn(listPerfHistory);
         List<PerformanceHistory> result = service.getPerformanceHistory(username);
-        assertEquals(listPerfHistory,result);
+        assertEquals(listPerfHistory, result);
     }
 }

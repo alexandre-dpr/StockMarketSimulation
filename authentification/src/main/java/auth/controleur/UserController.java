@@ -2,12 +2,11 @@ package auth.controleur;
 
 import auth.dto.LoginDto;
 import auth.dto.UserDto;
-import auth.service.UserService;
-import auth.service.exceptions.BadLoginException;
-import auth.service.exceptions.ExistingUserException;
+import auth.exceptions.BadLoginException;
+import auth.exceptions.ExistingUserException;
+import auth.service.IUserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,7 +25,7 @@ import java.net.URI;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    IUserService userService;
 
     @PostMapping(value = "/register")
     public ResponseEntity<String> inscription(@Valid @RequestBody UserDto userDto) {

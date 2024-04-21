@@ -28,27 +28,28 @@ public class PriceThreshold : Automation
         DeleteAfterExecution = true;
     }
 
-    public override void Execute(RabbitMqSender rabbitMqSender, string username)
+    public override bool Execute(RabbitMqSender rabbitMqSender, string username)
     {
         if (IsReady(rabbitMqSender))
         {
             var order = new OrderDto(TransactionType.ToString(), username, Ticker, Quantity);
             rabbitMqSender.SendOrder(order);
+            return true;
         }
+
+        return false;
     }
 
     public override bool IsReady(RabbitMqSender rabbitMqSender)
     {
-        // TODO Compléter Dto
+        double price = rabbitMqSender.getPrice(new TickerInfoDto(Ticker));
         switch (ThresholdType)
         {
             case ThresholdType.Above:
-                return rabbitMqSender.getPrice(new TickerInfoDto(Ticker)) >
-                       ThresholdPrice;
+                return price > ThresholdPrice;
 
             case ThresholdType.Below:
-                return rabbitMqSender.getPrice(new TickerInfoDto(Ticker)) <
-                       ThresholdPrice;
+                return price < ThresholdPrice;
 
             default:
                 return false;
