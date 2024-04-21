@@ -38,8 +38,11 @@ values (1, '2024-04-21 10:25:38.439767', '0.00%', 'Alex', 0),
        (6, '2024-04-16 10:25:38.439000', '0.2%', 'Alex', 20),
        (7, '2024-04-15 10:25:38.439000', '-0.5%', 'Alex', -50);
 
-# insert into your_database.performance_history_seq (next_val)
-# values (451);
+DELETE
+FROM your_database.performance_history_seq
+WHERE next_val = 1;
+insert into your_database.performance_history_seq (next_val)
+values (451);
 
 insert into your_database.favoris (username, favori)
 values ('Alex', 'MSFT'),
