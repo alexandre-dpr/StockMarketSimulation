@@ -3,15 +3,16 @@
 Site de simulation boursière. Permet aux utilisateurs de pratiquer et tester leurs
 stratégies d'investissement sans prendre de risques financiers.
 
-### Installation service Authentification
-
-Générer les clés RSA :
+### Installation
 
 ```bash
-./generatekeys.sh
+docker compose up -d
 ```
 
-### Installation service Bourse
+### Utilisateur de test
 
-Définir le token pour accéder aux api dans application.properties \
-/!\ Attention à ne pas push le token
+En créant l'utilisateur "Alex", des données de test sont fournies.
+
+### URL
+
+[Frontend](http://localhost:3000)
