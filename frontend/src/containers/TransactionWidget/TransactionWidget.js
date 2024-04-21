@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './TransactionWidget.scss';
 import {useTranslation} from 'react-i18next';
 import Button from "../../components/Buttons/Button/Button";
@@ -75,7 +75,7 @@ const TransactionWidget = ({ticker, price}) => {
     async function fetchAutomation(){
         const resp = await requestAutomation.getAutomation();
         if (resp.data){
-            setAutomations(resp.data);
+            setAutomations(resp.data.automations);
         }
         console.log(resp.data)
     }
@@ -84,7 +84,7 @@ const TransactionWidget = ({ticker, price}) => {
         if (auth.isLoggedIn()) {
             setIsAuth(true)
             fetchData()
-            //fetchAutomation()
+            fetchAutomation()
         } else {
             setIsAuth(false)
         }

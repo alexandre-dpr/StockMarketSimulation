@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Wallet.scss";
 import {RequestWallet} from "../../../request/RequestWallet";
 import {Auth} from "../../../utils/Auth";
@@ -37,7 +37,7 @@ function Wallet() {
         baliseHeader.classList.remove('h-home');
         initWallet();
         initHistorique();
-        //initAutomation();
+        initAutomation();
     }, [])
 
     async function initWallet() {
@@ -62,7 +62,7 @@ function Wallet() {
     async function initAutomation(){
         const resp = await requestAutomation.getAutomation();
         if (resp.data){
-            setDataAutomation(resp.data);
+            setDataAutomation(resp.data.automations);
         }
         console.log(resp.data)
     }
