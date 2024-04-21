@@ -18,6 +18,14 @@ public class AutomationService
         _rabbitMqSender = new RabbitMqSender();
     }
 
+    /**
+     * Ajoute une automation de type DCA
+     * @param username Le nom de l'utilisateur
+     * @param ticker Le ticker de l'action
+     * @param quantite La quantité de l'action
+     * @param frequence La fréquence de l'achat
+     * @param transactionType Le type de transaction
+     */
     public void AjouterDca(string username, string ticker, int quantite, Frequency frequence,
         TransactionType transactionType)
     {
@@ -26,6 +34,15 @@ public class AutomationService
         _dbContext.SaveChanges();
     }
 
+    /**
+     * Ajoute une automation de type PriceThreshold
+     * @param username Le nom de l'utilisateur
+     * @param ticker Le ticker de l'action
+     * @param thresholdPrice Le prix seuil
+     * @param action L'action à effectuer
+     * @param thresholdType Le type de seuil
+     * @param quantity La quantité de l'action
+     */
     public void AjouterPriceThreshold(string ticker, double thresholdPrice, TransactionType action,
         ThresholdType thresholdType, int quantity, string username)
     {
@@ -35,7 +52,11 @@ public class AutomationService
         _dbContext.SaveChanges();
     }
 
-
+    /**
+     * Récupère les automations d'un utilisateur
+     * @param username Le nom de l'utilisateur
+     * @return Les automations de l'utilisateur
+     */
     public UserAutomation GetAutomations(string username)
     {
         var userAutomation = _dbContext.UserAutomations
@@ -45,6 +66,11 @@ public class AutomationService
         return userAutomation ?? new UserAutomation(username);
     }
 
+    /**
+     * Supprime une automation
+     * @param id L'id de l'automation
+     * @param username Le nom de l'utilisateur
+     */
     public void DeleteAutomation(int id, string username)
     {
         _dbContext.UserAutomations
@@ -69,6 +95,10 @@ public class AutomationService
         return automation;
     }
 
+    /**
+     * Exécute les automations
+     * @param state L'état de l'automate
+     */
     public void ExecuteAutomations(object? state)
     {
         var userAutomations = _dbContext.UserAutomations
