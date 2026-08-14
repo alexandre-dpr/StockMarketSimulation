@@ -34,6 +34,7 @@ public class AuthConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.GET, "/portefeuille/leaderboard").permitAll()
                         .anyRequest().authenticated()
                 )
