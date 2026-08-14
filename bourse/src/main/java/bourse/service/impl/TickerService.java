@@ -1,10 +1,11 @@
 package bourse.service.impl;
 
+import lombok.RequiredArgsConstructor;
+
 import bourse.modele.Ticker;
 import bourse.repository.TickerRepository;
 import bourse.service.ITickerService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +14,10 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TickerService implements ITickerService {
 
-    @Autowired
-    TickerRepository tickerRepository;
+    private final TickerRepository tickerRepository;
 
     @Override
     public Page<Ticker> findTickerByName(String name, int page) {

@@ -191,12 +191,14 @@ public class StockService implements IStockService {
                 }
 
             } else if (response.getStatusLine().getStatusCode() == 404) {
+                EntityUtils.consumeQuietly(response.getEntity());
                 throw new NotFoundException();
             } else {
+                EntityUtils.consumeQuietly(response.getEntity());
                 throw new UnauthorizedException(String.format("Failed to get stock price for ticker '%s'", ticker));
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            logger.error("Error while fetching stock price for ticker: {}", ticker, e);
             throw new IOException(String.format("Failed to get stock price for ticker '%s'", ticker));
         }
     }
@@ -219,9 +221,11 @@ public class StockService implements IStockService {
                 return Optional.of(objectMapper.readTree(responseBody).path(0));
 
             } else if (response.getStatusLine().getStatusCode() == 404 || response.getStatusLine().getStatusCode() == 403) {
+                EntityUtils.consumeQuietly(response.getEntity());
                 return Optional.empty();
 
             } else {
+                EntityUtils.consumeQuietly(response.getEntity());
                 throw new UnauthorizedException(String.format("Failed to get stock price for ticker '%s'", ticker));
             }
 
@@ -268,6 +272,7 @@ public class StockService implements IStockService {
                 return StockTrendListDto.getStockTrendListDto(stockTrendList);
 
             } else {
+                EntityUtils.consumeQuietly(response.getEntity());
                 throw new UnauthorizedException("Failed to fetch stock trends");
             }
         } catch (IOException e) {
@@ -303,7 +308,8 @@ public class StockService implements IStockService {
                                     node.path("volume").asInt()
                             )
                     );
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    logger.warn("Failed to extract trend for ticker " + ticker, e);
                 }
             } else {
                 break;

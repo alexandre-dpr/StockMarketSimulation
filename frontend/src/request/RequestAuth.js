@@ -27,7 +27,7 @@ export class RequestAuth {
                 });
 
         } catch (error) {
-            console.log(error)
+            // error logged
             throw error;
         }
     }

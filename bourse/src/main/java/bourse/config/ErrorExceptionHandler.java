@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @ControllerAdvice
@@ -25,6 +26,17 @@ public class ErrorExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getDescription(false).replaceFirst("uri=", "")
         );
         return handleExceptionInternal(ex, dto, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(IOException.class)
+    protected ResponseEntity<Object> ioException(IOException ex, WebRequest request) {
+        ExceptionDto dto = new ExceptionDto(
+                LocalDateTime.now(),
+                HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Service externe indisponible ou délai dépassé",
+                request.getDescription(false).replaceFirst("uri=", "")
+        );
+        return handleExceptionInternal(ex, dto, new HttpHeaders(), HttpStatus.SERVICE_UNAVAILABLE, request);
     }
 
     @ExceptionHandler(UnauthorizedException.class)

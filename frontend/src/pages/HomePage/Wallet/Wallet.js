@@ -96,7 +96,7 @@ function Wallet() {
             })
             setDataAutomation(liste_automations);
         }
-        console.log(resp.data)
+
     }
 
     async function delAutomation(id) {

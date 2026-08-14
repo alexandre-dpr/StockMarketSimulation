@@ -5,8 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import lombok.RequiredArgsConstructor;
 import portefeuille.dto.rabbitMq.OrderDto;
 import portefeuille.exceptions.InsufficientFundsException;
 import portefeuille.exceptions.NotEnoughStocksException;
@@ -15,14 +16,13 @@ import portefeuille.repository.TickerInfoRepository;
 import portefeuille.service.IPortefeuilleService;
 
 @Component
+@RequiredArgsConstructor
 public class Receiver implements RabbitListenerConfigurer {
     private static final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
-    @Autowired
-    TickerInfoRepository repository;
+    private final TickerInfoRepository repository;
 
-    @Autowired
-    IPortefeuilleService portefeuilleService;
+    private final IPortefeuilleService portefeuilleService;
 
 
     @RabbitListener(queues = "${spring.rabbitmq.queue.action}")

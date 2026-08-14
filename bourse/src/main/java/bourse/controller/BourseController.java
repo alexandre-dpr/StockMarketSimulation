@@ -1,5 +1,7 @@
 package bourse.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import bourse.dto.StockDto;
 import bourse.dto.StockTrendListDto;
 import bourse.enums.Range;
@@ -10,7 +12,6 @@ import bourse.service.IStockService;
 import bourse.service.ITickerService;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,12 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/bourse")
+@RequiredArgsConstructor
 public class BourseController {
 
-    @Autowired
-    IStockService stockService;
+    private final IStockService stockService;
 
-    @Autowired
-    ITickerService tickerService;
+    private final ITickerService tickerService;
 
     @GetMapping("/stock/{ticker}")
     public ResponseEntity<StockDto> getStock(@PathVariable @NotBlank String ticker, @RequestParam @NotNull Range range) throws IOException, UnauthorizedException, NotFoundException {

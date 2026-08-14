@@ -1,5 +1,7 @@
 package community.service;
 
+import lombok.RequiredArgsConstructor;
+
 import community.dto.request.AddCommentDTO;
 import community.dto.request.AddInteractionDTO;
 import community.dto.request.UpdateCommentaireDTO;
@@ -10,7 +12,6 @@ import community.exceptions.PasDeContenuException;
 import community.model.Commentaire;
 import community.repository.CommentaireRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +19,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("CommunityService")
+@RequiredArgsConstructor
 public class CommunityService implements ICommunityService {
 
-    @Autowired
-    CommentaireRepository commentaireRepository;
+    private final CommentaireRepository commentaireRepository;
 
     @Override
     public List<CommentaireDTO> getComments(String action) {

@@ -1,6 +1,7 @@
 package portefeuille.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import portefeuille.service.IPriceService;
 
@@ -8,10 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class CachedPriceService implements IPriceService {
 
-    @Autowired
-    private DirectPriceService directPriceService;
+    private final DirectPriceService directPriceService;
 
     Map<String, Double> cache = new HashMap<>();
 

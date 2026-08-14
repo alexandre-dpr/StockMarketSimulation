@@ -1,12 +1,13 @@
 package auth.service.impl;
 
+import lombok.RequiredArgsConstructor;
+
 import auth.exceptions.BadLoginException;
 import auth.exceptions.ExistingUserException;
 import auth.modele.User;
 import auth.repository.UserRepository;
 import auth.service.IUserService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,14 @@ import java.util.function.Function;
 
 
 @Service("UserService")
+@RequiredArgsConstructor
 public class UserService implements IUserService {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    Function<User, String> generateToken;
+    private final Function<User, String> generateToken;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional

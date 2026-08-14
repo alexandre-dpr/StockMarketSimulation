@@ -1,4 +1,3 @@
-version: '3'
 services:
   discovery:
     image: consul:1.9
@@ -21,10 +20,10 @@ services:
     image: mysql:latest
     container_name: db_auth
     environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: your_database
-      MYSQL_USER: your_user
-      MYSQL_PASSWORD: your_user_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       GOSU_VERSION: 1.16
       MYSQL_MAJOR: innovation
@@ -42,10 +41,10 @@ services:
     image: mysql:latest
     container_name: db_bourse
     environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: your_database
-      MYSQL_USER: your_user
-      MYSQL_PASSWORD: your_user_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       GOSU_VERSION: 1.16
       MYSQL_MAJOR: innovation
@@ -64,10 +63,10 @@ services:
     image: mysql:latest
     container_name: db_community
     environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: your_database
-      MYSQL_USER: your_user
-      MYSQL_PASSWORD: your_user_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       GOSU_VERSION: 1.16
       MYSQL_MAJOR: innovation
@@ -85,10 +84,10 @@ services:
     image: mysql:latest
     container_name: db_portefeuille
     environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: your_database
-      MYSQL_USER: your_user
-      MYSQL_PASSWORD: your_user_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       GOSU_VERSION: 1.16
       MYSQL_MAJOR: innovation
@@ -106,10 +105,10 @@ services:
     image: mysql:latest
     container_name: db_automation
     environment:
-      MYSQL_ROOT_PASSWORD: your_password
-      MYSQL_DATABASE: your_database
-      MYSQL_USER: your_user
-      MYSQL_PASSWORD: your_user_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       GOSU_VERSION: 1.16
       MYSQL_MAJOR: innovation

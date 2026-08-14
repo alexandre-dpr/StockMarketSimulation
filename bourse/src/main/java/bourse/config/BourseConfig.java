@@ -31,6 +31,14 @@ public class BourseConfig {
 
     @Bean
     public HttpClient httpClient() {
-        return HttpClients.createDefault();
+        org.apache.http.client.config.RequestConfig requestConfig = org.apache.http.client.config.RequestConfig.custom()
+                .setConnectTimeout(5000)
+                .setConnectionRequestTimeout(5000)
+                .setSocketTimeout(5000)
+                .build();
+        return HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .build();
     }
 }

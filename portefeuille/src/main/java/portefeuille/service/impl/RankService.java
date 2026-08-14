@@ -1,6 +1,7 @@
 package portefeuille.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,16 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RankService implements IRankService {
 
-    @Autowired
-    private RankRepository rankRepository;
+    private final RankRepository rankRepository;
 
-    @Autowired
-    private IPortefeuilleService portefeuilleService;
+    private final IPortefeuilleService portefeuilleService;
 
-    @Autowired
-    private CachedPriceService cachedPriceService;
+    private final CachedPriceService cachedPriceService;
 
     private record Pair(Portefeuille pf, PortefeuilleDto dto) {
     }
