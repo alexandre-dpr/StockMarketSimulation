@@ -1,6 +1,7 @@
 package portefeuille.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import portefeuille.config.Constants;
@@ -13,10 +14,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PerformanceHistoryService implements IPerformanceHistoryService {
 
-    @Autowired
-    PerformanceHistoryRepository performanceHistoryRepository;
+    private final PerformanceHistoryRepository performanceHistoryRepository;
 
     @Override
     @Transactional

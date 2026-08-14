@@ -1,8 +1,9 @@
 package portefeuille.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,12 @@ import portefeuille.service.IRankService;
 
 @RestController
 @RequestMapping("/portefeuille")
+@RequiredArgsConstructor
 public class PortefeuilleController {
 
-    @Autowired
-    private IPortefeuilleService portefeuilleService;
+    private final IPortefeuilleService portefeuilleService;
 
-    @Autowired
-    private IRankService rankService;
+    private final IRankService rankService;
 
     @GetMapping
     public ResponseEntity<PortefeuilleDto> getPortefeuille(Authentication authentication) throws InterruptedException, WalletAlreadyCreatedException {

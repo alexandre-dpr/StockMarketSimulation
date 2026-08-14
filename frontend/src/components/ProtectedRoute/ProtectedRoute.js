@@ -7,7 +7,7 @@ import {jwtDecode} from "jwt-decode";
 
 const AuthWrapper = () => {
     function isExpired(token) {
-        console.log(token)
+
         if (token !== null) {
             const dcode = jwtDecode(token);
             const currentTime = Math.floor(Date.now() / 1000);

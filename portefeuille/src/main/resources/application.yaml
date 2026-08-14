@@ -21,14 +21,13 @@ spring:
       port: ${CONSUL_PORT:8500}
   datasource:
     url: jdbc:mysql://mysql_database_portefeuille:3306/your_database # TODO Changer pour la bonne base
-    username: your_user
-    password: your_user_password
+    username: ${MYSQL_USER:your_user}
+    password: ${MYSQL_PASSWORD:your_user_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
 jwt:
-  public.key: classpath:app.pub
+  public.key: ${JWT_PUBLIC_KEY:classpath:app.pub}
 server:
   port: 8085

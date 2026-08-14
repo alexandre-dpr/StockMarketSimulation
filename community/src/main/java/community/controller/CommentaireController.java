@@ -1,5 +1,7 @@
 package community.controller;
 
+import lombok.RequiredArgsConstructor;
+
 import community.dto.request.AddCommentDTO;
 import community.dto.request.AddInteractionDTO;
 import community.dto.request.UpdateCommentaireDTO;
@@ -8,7 +10,6 @@ import community.exceptions.AuteurInconnuException;
 import community.exceptions.CommentaireInexistantException;
 import community.exceptions.PasDeContenuException;
 import community.service.CommunityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,10 +19,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/community", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor
 public class CommentaireController {
 
-    @Autowired
-    private CommunityService communityService;
+    private final CommunityService communityService;
 
     @GetMapping(value = "/{ticker}")
     public ResponseEntity<List<CommentaireDTO>> getComments(@PathVariable String ticker) {

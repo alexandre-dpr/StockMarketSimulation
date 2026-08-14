@@ -1,12 +1,13 @@
 package auth.controleur;
 
+import lombok.RequiredArgsConstructor;
+
 import auth.dto.LoginDto;
 import auth.dto.UserDto;
 import auth.exceptions.BadLoginException;
 import auth.exceptions.ExistingUserException;
 import auth.service.IUserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,10 +23,10 @@ import java.net.URI;
 @RestController
 @RequestMapping("/auth")
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    IUserService userService;
+    private final IUserService userService;
 
     @PostMapping(value = "/register")
     public ResponseEntity<String> inscription(@Valid @RequestBody UserDto userDto) {

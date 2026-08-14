@@ -1,7 +1,8 @@
 package portefeuille;
 
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,20 +19,18 @@ import java.util.List;
 @SpringBootApplication
 @EnableRabbit
 @EnableScheduling
+@RequiredArgsConstructor
 public class PortefeuilleApplication implements CommandLineRunner {
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(PortefeuilleApplication.class, args);
     }
 
-    @Autowired
-    private IScheduledTasksService scheduledTasksService;
+    private final IScheduledTasksService scheduledTasksService;
 
     @Override
     public void run(String... args) {

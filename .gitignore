@@ -3,3 +3,6 @@
 nettoyage_data.py
 /Automation/obj/
 /Automation/bin/
+
+# Variables d'environnement
+.env

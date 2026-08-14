@@ -1,14 +1,28 @@
 package portefeuille.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
 import portefeuille.config.Constants;
-import portefeuille.dto.*;
+import portefeuille.dto.FavoriteStockDto;
+import portefeuille.dto.HistoryDto;
+import portefeuille.dto.PerformanceDto;
+import portefeuille.dto.PortefeuilleDto;
+import portefeuille.dto.StockPerformanceDto;
 import portefeuille.enums.TypeMouvement;
-import portefeuille.exceptions.*;
+import portefeuille.exceptions.InsufficientFundsException;
+import portefeuille.exceptions.NotEnoughStocksException;
+import portefeuille.exceptions.NotFoundException;
+import portefeuille.exceptions.TooManyFavorites;
+import portefeuille.exceptions.WalletAlreadyCreatedException;
 import portefeuille.modele.Mouvement;
 import portefeuille.modele.PerformanceHistory;
 import portefeuille.modele.Portefeuille;
@@ -18,11 +32,6 @@ import portefeuille.service.IPerformanceHistoryService;
 import portefeuille.service.IPortefeuilleService;
 import portefeuille.service.IPriceService;
 import portefeuille.service.IRankService;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PortefeuilleService implements IPortefeuilleService {
@@ -130,7 +139,12 @@ public class PortefeuilleService implements IPortefeuilleService {
     @Override
     public StockPerformanceDto getStockPerformance(Mouvement action, IPriceService priceService) throws InterruptedException {
         double prixAchat = action.getQuantity() * action.getPrice();
-        double currentPrice = priceService.getPrice(action.getTicker());
+        double currentPrice;
+        try {
+            currentPrice = priceService.getPrice(action.getTicker());
+        } catch (Exception e) {
+            currentPrice = action.getPrice(); // Fallback to purchase price if price service is down
+        }
         double prixActuel = action.getQuantity() * currentPrice;
         PerformanceDto perf = PerformanceDto.createPerformanceDto(prixAchat, prixActuel);
         return new StockPerformanceDto(action.getTicker(), action.getPrice(), currentPrice, action.getQuantity(), perf);
@@ -162,7 +176,7 @@ public class PortefeuilleService implements IPortefeuilleService {
         if (p.isPresent()) {
             Portefeuille portefeuille = p.get();
 
-            double prixAction = directPriceService.getPrice(ticker); // TODO VOIR POUR FRAIS ACHAT
+            double prixAction = directPriceService.getPrice(ticker);
 
             if (portefeuille.getSolde() >= prixAction * quantity) {
 
@@ -212,7 +226,7 @@ public class PortefeuilleService implements IPortefeuilleService {
 
                 if (actionPossedee.getQuantity() >= quantity) {
 
-                    double prixAction = directPriceService.getPrice(ticker); // TODO VOIR POUR FRAIS VENTE
+                    double prixAction = directPriceService.getPrice(ticker);
                     Mouvement mouvementHistorique = Mouvement.builder()
                             .time(LocalDateTime.now())
                             .type(TypeMouvement.VENTE)
